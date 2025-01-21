@@ -1,62 +1,82 @@
 ﻿using System;
+using System.Net;
 using System.Net.Sockets;
-using System.Threading.Tasks;
 
 namespace FengShengServer
 {
     public class CSConnect
     {
-        public TcpClient TcpClient { get; set; }
+        public TcpClient TcpClient { get; private set; }
 
         public int ID { get; set; }
+        public EndPoint RemoteEndPoint { get; private set; }
 
         /// <summary>
         /// 心跳处理器
         /// </summary>
-        private HeartBeat mHeartBeat;
-        public HeartBeat HeartBeat => mHeartBeat;
+        public HeartBeat HeartBeat { get; private set; }
 
         /// <summary>
         /// 消息接收器
         /// </summary>
-        private MessageReceiver mReceiver;
+        public MessageReceiver Receiver { get; private set; }
 
         /// <summary>
         /// 消息发送器
         /// </summary>
-        private MessageSender mSender;
+        public MessageSender Sender { get; private set; }
+
+        /// <summary>
+        /// 协议监听器
+        /// </summary>
+        public ProtosListener ProtosListener { get; private set; }
+
+        /// <summary>
+        /// 登录模块托管
+        /// </summary>
+        public Login Login { get; private set; }
 
         public CSConnect(TcpClient tcpClient, int id)
         {
             TcpClient = tcpClient;
-            mHeartBeat = new HeartBeat();
-            mReceiver = new MessageReceiver();
-            mSender = new MessageSender();
+            HeartBeat = new HeartBeat();
+            Receiver = new MessageReceiver();
+            Sender = new MessageSender();
+            ProtosListener = new ProtosListener();
+            Login = new Login();
             ID = id;
+            RemoteEndPoint = tcpClient.Client.RemoteEndPoint;
         }
 
         public void Start()
         {
+            //登陆托管初始化
+            Login.SetCSConnect(this);
+
             //消息发送器初始化
-            mSender.SetTcpClient(TcpClient);
+            Sender.SetTcpClient(TcpClient);
 
             //消息接收器初始化
-            mReceiver.SetCSConnect(this);
+            Receiver.SetCSConnect(this);
 
             //心跳处理器初始化
-            mHeartBeat.SetCSConnect(this);
-            mHeartBeat.SetTimer(1000);
+            HeartBeat.SetCSConnect(this);
+            HeartBeat.SetTimer(1000);
 
-            mSender.Start();
-            mReceiver.Start();
-            mHeartBeat.Start();
+            Login.Start();
+            Sender.Start();
+            Receiver.Start();
+            HeartBeat.Start();
         }
 
         public void Close()
         {
-            mSender.Close();
-            mHeartBeat.Close();
-            mReceiver.Close();
+            TcpClient?.Close();
+            Sender.Close();
+            HeartBeat.Close();
+            Receiver.Close();
+            Login.Close();
+            ProtosListener.Close();
         }
 
     }

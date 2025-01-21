@@ -7,11 +7,6 @@ namespace FengShengServer
     public class HeartBeat
     {
         /// <summary>
-        /// 协议号
-        /// </summary>
-        public const uint Cmd = 0x0000;
-
-        /// <summary>
         /// 心跳间隔
         /// </summary>
         private int mInterval;
@@ -104,6 +99,11 @@ namespace FengShengServer
             mTimer.Enabled= false;
             mTimer.Elapsed -= OnTimedEvent;
             Console.WriteLine("心跳处理器已关闭");
+        }
+
+        public byte[] GetHeatBeatData()
+        {
+            return new byte[0];
         }
 
     }

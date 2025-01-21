@@ -16,39 +16,40 @@ namespace FengShengServer
             }
         }
 
-        private Dictionary<string, Action<System.Object>> mListeners = new Dictionary<string, Action<System.Object>>();
+        private Dictionary<string, Action<System.Object>> mEventListeners = new Dictionary<string, Action<System.Object>>();
 
         public void AddListener(string eventName, Action<System.Object> callBack)
         {
-            if (mListeners.ContainsKey(eventName))
+            if (mEventListeners.ContainsKey(eventName))
             {
-                mListeners[eventName] += callBack;
+                mEventListeners[eventName] += callBack;
             }
             else
             {
-                mListeners.Add(eventName, callBack);
+                mEventListeners.Add(eventName, callBack);
             }
         }
 
         public void RemoveListener(string eventName, Action<System.Object> callBack)
         {
-            if (mListeners.ContainsKey(eventName))
+            if (mEventListeners.ContainsKey(eventName))
             {
-                mListeners[eventName] -= callBack;
-                if (mListeners[eventName] == null)
+                mEventListeners[eventName] -= callBack;
+                if (mEventListeners[eventName] == null)
                 {
-                    mListeners.Remove(eventName);
+                    mEventListeners.Remove(eventName);
                 }
             }
         }
 
         public void TriggerEvent(string eventName, object arg)
         {
-            if (mListeners.ContainsKey(eventName))
+            if (mEventListeners.ContainsKey(eventName))
             {
-                Action<System.Object> callBack = mListeners[eventName];
+                Action<System.Object> callBack = mEventListeners[eventName];
                 callBack.Invoke(arg);
             }
         }
+
     }
 }

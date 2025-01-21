@@ -3,7 +3,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Net.Sockets;
-using System.Runtime.InteropServices.ComTypes;
+using System.Linq;
 
 namespace FengShengServer
 {
@@ -58,12 +58,29 @@ namespace FengShengServer
                     {
                         uint length = (uint)(buffer[0] << 8) + (uint)buffer[1];
                         uint cmd = (uint)(buffer[2] << 8) + (uint)buffer[3];
-                        Console.WriteLine($"Receive 0x{cmd:x4}, Length {length}");
+                        if (cmd != CmdConfig.HeartBeat)
+                        {
+                            Console.WriteLine($"Receive 0x{cmd:x4}, Length {length}, bytesRead {bytesRead}");
 
-                        if (cmd == HeartBeat.Cmd)
+                            uint len = length - 4;
+                            byte[] data = new byte[len];
+                            for (int i = 0, j = 4; i < len; i++, j++)
+                            {
+                                data[i] = buffer[j];
+                            }
+
+                            mCSConnect.ProtosListener.TriggerEvent(cmd, data);
+                        }
+
+                        if (cmd == CmdConfig.HeartBeat)
                         {
                             mCSConnect.HeartBeat.SetHeartBeatFlag(true);
+                            mCSConnect.Sender.SendMessage(CmdConfig.HeartBeat, mCSConnect.HeartBeat.GetHeatBeatData(), false);
                         }
+                    }
+                    else
+                    {
+                        EventManager.Instance.TriggerEvent(Server.Event_OnConnectInterrupt, new NetworkEventPackage() { ID = mCSConnect.ID });
                     }
                 }
                 catch (IOException ex)

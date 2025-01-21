@@ -74,7 +74,7 @@ namespace FengShengServer
                 if (list[i].ID == package.ID && mClients.TryTake(out list[i]))
                 {
                     list[i].Close();
-                    Console.WriteLine("检测到客户端断开连接：" + list[i].TcpClient.Client == null ? "未知" : list[i].TcpClient.Client.RemoteEndPoint.ToString());
+                    Console.WriteLine($"检测到客户端断开连接: 客户端ID:{list[i].ID} RemoteEndPoint:{list[i].RemoteEndPoint}");
                 }
             }
         }
