@@ -8,7 +8,6 @@ namespace FengShengServer
 {
     public class Server
     {
-        public const string Event_OnConnectInterrupt = "OnConnectInterrupt";
 
         /// <summary>
         /// 端口号
@@ -27,11 +26,12 @@ namespace FengShengServer
 
         public static async Task Main(string[] args)
         {
-            EventManager.Instance.AddListener(Event_OnConnectInterrupt, OnConnectInterrupt);
+            EventManager.Instance.AddListener(EventManager.Event_OnConnectInterrupt, OnConnectInterrupt);
 
             TcpListener listener = new TcpListener(IPAddress.Any, Port);
             listener.Start();
 
+            DataManager.Instance.Start();
             Console.WriteLine("服务器已启动，等待客户端连接...");
 
             int clientID = 0;

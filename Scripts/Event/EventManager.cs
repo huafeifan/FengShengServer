@@ -5,6 +5,9 @@ namespace FengShengServer
 {
     public class EventManager
     {
+        public const string Event_OnConnectInterrupt = "OnConnectInterrupt";
+        public const string Event_OnUserOffline = "OnUserOffline";
+
         private static EventManager mInstance;
         public static EventManager Instance
         {

@@ -11,6 +11,7 @@ namespace FengShengServer
         /// <summary>
         /// µÇÂ½Ð­ÒéºÅ
         /// </summary>
-        public const uint Login = 0x0001;
+        public const uint Login_C2S = 0x0001;
+        public const uint Login_S2C = 0x0001;
     }
 }

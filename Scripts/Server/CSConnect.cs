@@ -71,12 +71,13 @@ namespace FengShengServer
 
         public void Close()
         {
-            TcpClient?.Close();
+            Login.Close();
+
             Sender.Close();
             HeartBeat.Close();
             Receiver.Close();
-            Login.Close();
             ProtosListener.Close();
+            TcpClient?.Close();
         }
 
     }

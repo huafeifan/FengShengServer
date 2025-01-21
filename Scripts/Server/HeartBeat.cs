@@ -77,7 +77,7 @@ namespace FengShengServer
 
             if (mHeartBeatMissCount >= mHeartBeatMissCountLimit)
             {
-                EventManager.Instance.TriggerEvent(Server.Event_OnConnectInterrupt, new NetworkEventPackage() { ID = mCSConnect.ID });
+                EventManager.Instance.TriggerEvent(EventManager.Event_OnConnectInterrupt, new NetworkEventPackage() { ID = mCSConnect.ID });
             }
         }
 

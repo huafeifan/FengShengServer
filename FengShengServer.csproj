@@ -69,6 +69,7 @@
     <Compile Include="Scripts\Login\Login.cs" />
     <Compile Include="Scripts\Protos\CmdConfig.cs" />
     <Compile Include="Scripts\Protos\LoginServerLoginC2S.cs" />
+    <Compile Include="Scripts\Protos\LoginServerLoginS2C.cs" />
     <Compile Include="Scripts\Server\CSConnect.cs" />
     <Compile Include="Scripts\Server\HeartBeat.cs" />
     <Compile Include="Scripts\Server\MessageReceiver.cs" />
