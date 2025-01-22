@@ -13,6 +13,9 @@ namespace FengShengServer
         private NetworkStream mStream;
         private CancellationTokenSource mCts;
 
+        private bool mIsDebugReceive;
+        private bool mIsDebug;
+
         public MessageReceiver()
         {
             
@@ -28,11 +31,23 @@ namespace FengShengServer
             mStream = cSConnect.TcpClient.GetStream();
         }
 
+        /// <summary>
+        /// 是否打印接受处理器日志
+        /// </summary>
+        /// <param name="flag">接收处理器日志</param>
+        /// <param name="receiveFlag">接收数据日志</param>
+        public void SetDebug(bool flag, bool receiveFlag)
+        {
+            mIsDebug = flag;
+            mIsDebugReceive = receiveFlag;
+        }
+
         public void Start()
         {
             mCts = new CancellationTokenSource();
             _ = Task.Run(() => ReceiveDataAsync());
-            Console.WriteLine("消息接受器已开启");
+            if (mIsDebug)
+                Console.WriteLine($"客户端ID:{mCSConnect.ID} RemoteEndPoint:{mCSConnect.RemoteEndPoint} 消息接受器已开启");
         }
 
         public void Close()
@@ -41,7 +56,8 @@ namespace FengShengServer
             {
                 mCts.Cancel();
             }
-            Console.WriteLine("消息接受器已关闭");
+            if (mIsDebug)
+                Console.WriteLine($"客户端ID:{mCSConnect.ID} RemoteEndPoint:{mCSConnect.RemoteEndPoint} 消息接受器已关闭");
         }
 
         private async Task ReceiveDataAsync()
@@ -60,7 +76,8 @@ namespace FengShengServer
                         uint cmd = (uint)(buffer[2] << 8) + (uint)buffer[3];
                         if (cmd != CmdConfig.HeartBeat)
                         {
-                            Console.WriteLine($"Receive 0x{cmd:x4}, Length {length}, bytesRead {bytesRead}");
+                            if (mIsDebugReceive)
+                                Console.WriteLine($"Receive 0x{cmd:x4}, Length {length}, bytesRead {bytesRead}");
 
                             uint len = length - 4;
                             byte[] data = new byte[len];

@@ -26,6 +26,11 @@ namespace FengShengServer
         /// </summary>
         private bool mHeartBeatFlag;
 
+        /// <summary>
+        /// 是否打印日志
+        /// </summary>
+        private bool mIsDebug;
+
         private Timer mTimer;
         private CSConnect mCSConnect;
 
@@ -63,6 +68,15 @@ namespace FengShengServer
             mHeartBeatFlag = flag;
         }
 
+        /// <summary>
+        /// 是否打印心跳日志
+        /// </summary>
+        /// <param name="flag"></param>
+        public void SetDebug(bool flag)
+        {
+            mIsDebug = flag;
+        }
+
         private void OnTimedEvent(object sender, ElapsedEventArgs e)
         {
             if (mHeartBeatFlag) 
@@ -88,7 +102,9 @@ namespace FengShengServer
             mTimer.Interval = mInterval;
             mTimer.Enabled = true;
             mTimer.Start();
-            Console.WriteLine("心跳处理器已开启");
+
+            if (mIsDebug)
+                Console.WriteLine($"客户端ID:{mCSConnect.ID} RemoteEndPoint:{mCSConnect.RemoteEndPoint} 心跳处理器已开启");
         }
 
         public void Close()
@@ -98,7 +114,9 @@ namespace FengShengServer
             mTimer.Stop();
             mTimer.Enabled= false;
             mTimer.Elapsed -= OnTimedEvent;
-            Console.WriteLine("心跳处理器已关闭");
+
+            if (mIsDebug)
+                Console.WriteLine($"客户端ID:{mCSConnect.ID} RemoteEndPoint:{mCSConnect.RemoteEndPoint} 心跳处理器已关闭");
         }
 
         public byte[] GetHeatBeatData()

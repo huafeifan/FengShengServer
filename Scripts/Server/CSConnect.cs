@@ -52,16 +52,20 @@ namespace FengShengServer
         {
             //登陆托管初始化
             Login.SetCSConnect(this);
+            Login.SetDebug(false);
 
             //消息发送器初始化
-            Sender.SetTcpClient(TcpClient);
+            Sender.SetCSConnect(this);
+            Sender.SetDebug(false);
 
             //消息接收器初始化
             Receiver.SetCSConnect(this);
+            Receiver.SetDebug(false, true);
 
             //心跳处理器初始化
             HeartBeat.SetCSConnect(this);
             HeartBeat.SetTimer(1000);
+            HeartBeat.SetDebug(false);
 
             Login.Start();
             Sender.Start();

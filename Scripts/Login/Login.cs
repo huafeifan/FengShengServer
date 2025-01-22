@@ -1,6 +1,4 @@
-﻿
-using System;
-using System.Diagnostics;
+﻿using System;
 using Google.Protobuf;
 
 namespace FengShengServer
@@ -10,9 +8,20 @@ namespace FengShengServer
         private CSConnect mCSConnect;
         private UserData mUserData;
 
+        private bool mIsDebug;
+
         public void SetCSConnect(CSConnect cSConnect)
         {
             mCSConnect = cSConnect;
+        }
+
+        /// <summary>
+        /// 是否打印登录模块日志
+        /// </summary>
+        /// <param name="flag"></param>
+        public void SetDebug(bool flag)
+        {
+            mIsDebug = flag;
         }
 
         public void Start()

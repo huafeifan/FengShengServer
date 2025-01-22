@@ -6,8 +6,10 @@ namespace FengShengServer
 {
     public class MessageSender
     {
-        private TcpClient mTcpClient;
+        private CSConnect mCSConnect;
         private Stream mStream;
+
+        private bool mIsDebug;
 
         public MessageSender()
         {
@@ -18,20 +20,31 @@ namespace FengShengServer
         /// 传入连接对象
         /// </summary>
         /// <param name="tcpClient"></param>
-        public void SetTcpClient(TcpClient tcpClient)
+        public void SetCSConnect(CSConnect cSConnect)
         {
-            mTcpClient = tcpClient;
-            mStream = tcpClient.GetStream();
+            mCSConnect = cSConnect;
+            mStream = cSConnect.TcpClient.GetStream();
+        }
+
+        /// <summary>
+        /// 是否打印发送处理器日志
+        /// </summary>
+        /// <param name="flag"></param>
+        public void SetDebug(bool flag)
+        {
+            mIsDebug = flag;
         }
 
         public void Start()
         {
-            Console.WriteLine("消息发送器已开启");
+            if (mIsDebug)
+                Console.WriteLine($"客户端ID:{mCSConnect.ID} RemoteEndPoint:{mCSConnect.RemoteEndPoint} 消息发送器已开启");
         }
 
         public void Close()
         {
-            Console.WriteLine("消息发送器已关闭");
+            if (mIsDebug)
+                Console.WriteLine($"客户端ID:{mCSConnect.ID} RemoteEndPoint:{mCSConnect.RemoteEndPoint} 消息发送器已关闭");
         }
 
         /// <summary>
@@ -42,7 +55,7 @@ namespace FengShengServer
         /// <param name="isLog">是否显示日志</param>
         public void SendMessage(uint cmd, byte[] data, bool isLog = true)
         {
-            if (mTcpClient != null && mTcpClient.Connected)
+            if (mCSConnect.TcpClient != null && mCSConnect.TcpClient.Connected)
             {
                 int len = data.Length + 4;
                 byte b1 = (byte)((uint)len >> 8 & 0xFFu);
@@ -60,11 +73,11 @@ namespace FengShengServer
                 mStream.Write(bytes, 0, bytes.Length);
 
                 if (isLog)
-                    Console.WriteLine($"Send 0x{cmd:x4}, Length {len}");
+                    Console.WriteLine($"客户端ID:{mCSConnect.ID} RemoteEndPoint:{mCSConnect.RemoteEndPoint} Send 0x{cmd:x4}, Length {len}");
             }
             else
             {
-                Console.WriteLine($"连接已断开,消息{cmd:x4}发送失败");
+                Console.WriteLine($"客户端ID:{mCSConnect.ID} RemoteEndPoint:{mCSConnect.RemoteEndPoint} 连接已断开,消息{cmd:x4}发送失败");
             }
 
         }
