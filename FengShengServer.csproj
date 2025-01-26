@@ -62,14 +62,18 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Scripts\Data\DataManager.cs" />
+    <Compile Include="Scripts\Data\RoomDataManager.cs" />
     <Compile Include="Scripts\Data\UserData.cs" />
+    <Compile Include="Scripts\Data\UserDataManager.cs" />
     <Compile Include="Scripts\Event\EventManager.cs" />
     <Compile Include="Scripts\Event\ProtosListener.cs" />
     <Compile Include="Scripts\Login\Login.cs" />
     <Compile Include="Scripts\Protos\CmdConfig.cs" />
-    <Compile Include="Scripts\Protos\LoginServerLoginC2S.cs" />
-    <Compile Include="Scripts\Protos\LoginServerLoginS2C.cs" />
+    <Compile Include="Scripts\Protos\LoginServerLogin.cs" />
+    <Compile Include="Scripts\Protos\LoginServerRoom.cs" />
+    <Compile Include="Scripts\Room\ChairInfo.cs" />
+    <Compile Include="Scripts\Room\Room.cs" />
+    <Compile Include="Scripts\Room\RoomInfo.cs" />
     <Compile Include="Scripts\Server\CSConnect.cs" />
     <Compile Include="Scripts\Server\HeartBeat.cs" />
     <Compile Include="Scripts\Server\MessageReceiver.cs" />

@@ -5,9 +5,9 @@ namespace FengShengServer
 {
     public class ProtosListener
     {
-        private Dictionary<uint, Action<byte[]>> mProtosListeners = new Dictionary<uint, Action<byte[]>>();
+        private Dictionary<uint, Action<object>> mProtosListeners = new Dictionary<uint, Action<object>>();
 
-        public void AddListener(uint cmd, Action<byte[]> callBack)
+        public void AddListener(uint cmd, Action<object> callBack)
         {
             if (mProtosListeners.ContainsKey(cmd))
             {
@@ -19,7 +19,7 @@ namespace FengShengServer
             }
         }
 
-        public void RemoveListener(uint cmd, Action<byte[]> callBack)
+        public void RemoveListener(uint cmd, Action<object> callBack)
         {
             if (mProtosListeners.ContainsKey(cmd))
             {
@@ -31,16 +31,16 @@ namespace FengShengServer
             }
         }
 
-        public void TriggerEvent(uint cmd, byte[] data)
+        public void TriggerEvent(uint cmd, object data)
         {
             if (mProtosListeners.ContainsKey(cmd))
             {
-                Action<byte[]> callBack = (Action<byte[]>)mProtosListeners[cmd].Clone();
+                Action<object> callBack = (Action<object>)mProtosListeners[cmd].Clone();
                 callBack.Invoke(data);
             }
         }
 
-        public void Close()
+        public void Clear()
         {
             mProtosListeners.Clear();
         }

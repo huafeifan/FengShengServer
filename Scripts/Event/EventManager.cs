@@ -6,7 +6,6 @@ namespace FengShengServer
     public class EventManager
     {
         public const string Event_OnConnectInterrupt = "OnConnectInterrupt";
-        public const string Event_OnUserOffline = "OnUserOffline";
 
         private static EventManager mInstance;
         public static EventManager Instance
@@ -19,7 +18,24 @@ namespace FengShengServer
             }
         }
 
+        /// <summary>
+        /// 常规监听 事件名，事件回调
+        /// </summary>
         private Dictionary<string, Action<System.Object>> mEventListeners = new Dictionary<string, Action<System.Object>>();
+
+        public void Start()
+        {
+            Console.WriteLine("事件管理器已启动");
+        }
+
+        public void Close()
+        {
+            mEventListeners.Clear();
+
+            Console.WriteLine("事件管理器已关闭");
+        }
+
+        #region 常规事件组
 
         public void AddListener(string eventName, Action<System.Object> callBack)
         {
@@ -53,6 +69,6 @@ namespace FengShengServer
                 callBack.Invoke(arg);
             }
         }
-
+        #endregion
     }
 }

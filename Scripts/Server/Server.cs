@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading.Tasks;
@@ -23,15 +25,20 @@ namespace FengShengServer
         /// 线程安全的客户端连接列表
         /// </summary>
         private static ConcurrentBag<CSConnect> mClients = new ConcurrentBag<CSConnect>();
+        public static List<CSConnect> Clients { get { return mClients.ToList(); } }
 
         public static async Task Main(string[] args)
         {
-            EventManager.Instance.AddListener(EventManager.Event_OnConnectInterrupt, OnConnectInterrupt);
-
             TcpListener listener = new TcpListener(IPAddress.Any, Port);
             listener.Start();
 
-            DataManager.Instance.Start();
+            UserDataManager.Instance.Start();
+            RoomDataManager.Instance.Start();
+            EventManager.Instance.Start();
+            ProtosManager.Instance.Start();
+
+            EventManager.Instance.AddListener(EventManager.Event_OnConnectInterrupt, OnConnectInterrupt);
+
             Console.WriteLine("服务器已启动，等待客户端连接...");
 
             int clientID = 0;
@@ -78,7 +85,6 @@ namespace FengShengServer
                 }
             }
         }
-
 
     }
 }

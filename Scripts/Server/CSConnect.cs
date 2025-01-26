@@ -27,32 +27,43 @@ namespace FengShengServer
         public MessageSender Sender { get; private set; }
 
         /// <summary>
-        /// 协议监听器
+        /// 用户数据
         /// </summary>
-        public ProtosListener ProtosListener { get; private set; }
+        public UserData UserData { get; set; }
 
         /// <summary>
         /// 登录模块托管
         /// </summary>
         public Login Login { get; private set; }
 
+        /// <summary>
+        /// 房间模块托管
+        /// </summary>
+        public Room Room { get; private set; }
+
         public CSConnect(TcpClient tcpClient, int id)
         {
             TcpClient = tcpClient;
+            ID = id;
+            RemoteEndPoint = tcpClient.Client.RemoteEndPoint;
+
             HeartBeat = new HeartBeat();
             Receiver = new MessageReceiver();
             Sender = new MessageSender();
-            ProtosListener = new ProtosListener();
+
             Login = new Login();
-            ID = id;
-            RemoteEndPoint = tcpClient.Client.RemoteEndPoint;
+            Room = new Room();
         }
 
         public void Start()
         {
-            //登陆托管初始化
+            //登陆模块托管初始化
             Login.SetCSConnect(this);
             Login.SetDebug(false);
+
+            //房间模块托管初始化
+            Room.SetCSConnect(this);
+            Room.SetDebug(false);
 
             //消息发送器初始化
             Sender.SetCSConnect(this);
@@ -67,7 +78,11 @@ namespace FengShengServer
             HeartBeat.SetTimer(1000);
             HeartBeat.SetDebug(false);
 
+            //注册协议监听器
+            EventManager.Instance.RegisterProtosListener(ID);
+
             Login.Start();
+            Room.Start();
             Sender.Start();
             Receiver.Start();
             HeartBeat.Start();
@@ -76,11 +91,13 @@ namespace FengShengServer
         public void Close()
         {
             Login.Close();
+            Room.Close();
+
+            EventManager.Instance.RemoveProtosListener(ID);
 
             Sender.Close();
             HeartBeat.Close();
             Receiver.Close();
-            ProtosListener.Close();
             TcpClient?.Close();
         }
 

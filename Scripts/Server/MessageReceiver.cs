@@ -77,7 +77,7 @@ namespace FengShengServer
                         if (cmd != CmdConfig.HeartBeat)
                         {
                             if (mIsDebugReceive)
-                                Console.WriteLine($"Receive 0x{cmd:x4}, Length {length}, bytesRead {bytesRead}");
+                                Console.WriteLine($"¿Í»§¶ËID:{mCSConnect.ID} RemoteEndPoint:{mCSConnect.RemoteEndPoint} Receive 0x{cmd:x4}, Length {length}, bytesRead {bytesRead}");
 
                             uint len = length - 4;
                             byte[] data = new byte[len];
@@ -86,7 +86,7 @@ namespace FengShengServer
                                 data[i] = buffer[j];
                             }
 
-                            mCSConnect.ProtosListener.TriggerEvent(cmd, data);
+                            ProtosManager.Instance.ProtosConvert(mCSConnect.ID, cmd, data);
                         }
 
                         if (cmd == CmdConfig.HeartBeat)
