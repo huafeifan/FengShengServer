@@ -65,21 +65,27 @@
     <Compile Include="Scripts\Data\RoomDataManager.cs" />
     <Compile Include="Scripts\Data\UserData.cs" />
     <Compile Include="Scripts\Data\UserDataManager.cs" />
+    <Compile Include="Scripts\Data\UserStatus.cs" />
     <Compile Include="Scripts\Event\EventManager.cs" />
-    <Compile Include="Scripts\Event\ProtosListener.cs" />
+    <Compile Include="Scripts\Game\Game.cs" />
     <Compile Include="Scripts\Login\Login.cs" />
     <Compile Include="Scripts\Protos\CmdConfig.cs" />
-    <Compile Include="Scripts\Protos\LoginServerLogin.cs" />
-    <Compile Include="Scripts\Protos\LoginServerRoom.cs" />
+    <Compile Include="Scripts\Protos\Protocols\LoginServerGame.cs" />
+    <Compile Include="Scripts\Protos\Protocols\LoginServerLogin.cs" />
+    <Compile Include="Scripts\Protos\Protocols\LoginServerRoom.cs" />
+    <Compile Include="Scripts\Protos\ProtosManager.cs" />
+    <Compile Include="Scripts\Protos\ProtosListener.cs" />
     <Compile Include="Scripts\Room\ChairInfo.cs" />
     <Compile Include="Scripts\Room\Room.cs" />
     <Compile Include="Scripts\Room\RoomInfo.cs" />
     <Compile Include="Scripts\Server\CSConnect.cs" />
     <Compile Include="Scripts\Server\HeartBeat.cs" />
     <Compile Include="Scripts\Server\MessageReceiver.cs" />
-    <Compile Include="Scripts\Server\MessageSender.cs" />
-    <Compile Include="Scripts\Server\NetworkEventPackage.cs" />
+    <Compile Include="Scripts\Event\EventPackage\NetworkEventPackage.cs" />
+    <Compile Include="Scripts\Sender\SenderManager.cs" />
+    <Compile Include="Scripts\Sender\SenderPackage.cs" />
     <Compile Include="Scripts\Server\Server.cs" />
+    <Compile Include="Scripts\Utils.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

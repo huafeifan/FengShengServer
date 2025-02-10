@@ -30,6 +30,11 @@ namespace FengShengServer
         /// </summary>
         private bool mIsDebug;
 
+        /// <summary>
+        /// 默认消息包
+        /// </summary>
+        private byte[] mDefaultMessage = new byte[0];
+
         private Timer mTimer;
         private CSConnect mCSConnect;
 
@@ -120,7 +125,7 @@ namespace FengShengServer
 
         public byte[] GetHeatBeatData()
         {
-            return new byte[0];
+            return mDefaultMessage;
         }
 
     }

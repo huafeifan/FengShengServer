@@ -19,12 +19,22 @@ namespace FengShengServer
             if (UserData != null)
             {
                 UserData.RoomInfo = null;
+                UserData.IdentityType = LoginServer.Game.IdentityType.None;
+                UserData.CharacterType = LoginServer.Game.CharacterType.None;
                 UserData = null;
             }
 
             IsReady = false;
             IsRobot = false;
             IsNull = true;
+        }
+
+        /// <summary>
+        /// 是否是房主
+        /// </summary>
+        public bool IsRoomOwner()
+        {
+            return ChairID == 1;
         }
     }
 }

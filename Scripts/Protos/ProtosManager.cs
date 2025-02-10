@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.Tracing;
 using System.Linq;
 using Google.Protobuf;
 
@@ -129,7 +128,8 @@ namespace FengShengServer
         /// <param name="sendData"></param>
         public void Unicast(CSConnect connect, uint cmd, IMessage sendData)
         {
-            connect.Sender.SendMessage(cmd, sendData.ToByteArray());
+            if (connect == null) return;
+            SenderManager.Instance.AddSendMessage(connect, cmd, sendData.ToByteArray(), true);
         }
 
         /// <summary>
@@ -190,6 +190,37 @@ namespace FengShengServer
                     TriggerProtos(connectID, cmd, LoginServer.Room.EnterRoom_C2S.Parser.ParseFrom(bytes));
                     return;
 
+                case CmdConfig.ExitRoom_C2S:
+                    TriggerProtos(connectID, cmd, LoginServer.Room.ExitRoom_C2S.Parser.ParseFrom(bytes));
+                    return;
+
+                //case CmdConfig.RoomInfoChange_C2S:
+                //    TriggerProtos(connectID, cmd, LoginServer.Room.RoomInfoChange_C2S.Parser.ParseFrom(bytes));
+                //    return;
+
+                case CmdConfig.RequestRoomInfo_C2S:
+                    TriggerProtos(connectID, cmd, LoginServer.Room.RequestRoomInfo_C2S.Parser.ParseFrom(bytes));
+                    return;
+
+                case CmdConfig.ReadyStatus_C2S:
+                    TriggerProtos(connectID, cmd, LoginServer.Room.ReadyStatus_C2S.Parser.ParseFrom(bytes));
+                    return;
+
+                case CmdConfig.GameStart_C2S:
+                    TriggerProtos(connectID, cmd, LoginServer.Game.GameStart_C2S.Parser.ParseFrom(bytes));
+                    return;
+
+                //case CmdConfig.Identity_C2S:
+                //    TriggerProtos(connectID, cmd, LoginServer.Game.Identity_C2S.Parser.ParseFrom(bytes));
+                //    return;
+
+                case CmdConfig.CharacterChoose_C2S:
+                    TriggerProtos(connectID, cmd, LoginServer.Game.CharacterChoose_C2S.Parser.ParseFrom(bytes));
+                    return;
+
+                //case CmdConfig.CharacterChooseList_C2S:
+                //    TriggerProtos(connectID, cmd, LoginServer.Game.CharacterChooseList_C2S.Parser.ParseFrom(bytes));
+                //    return;
             }
         }
         #endregion

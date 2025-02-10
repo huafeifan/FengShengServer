@@ -39,6 +39,8 @@ namespace FengShengServer
         {
             mRoomList.Clear();
 
+            EventManager.Instance.RemoveListener(EventManager.Event_OnUserStatusChange, OnUserStatusChange);
+
             Console.WriteLine("房间数据管理器已关闭");
         }
 
@@ -107,5 +109,6 @@ namespace FengShengServer
             arg2.RobotCount = arg1.GetRobotCount();
         }
 
+                var userData = (UserData)obj;
     }
 }

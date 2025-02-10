@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using LoginServer.Room;
 
 namespace FengShengServer
 {
@@ -30,6 +31,8 @@ namespace FengShengServer
             ProtosManager.Instance.AddProtosListener(mCSConnect.ID, CmdConfig.CreateRoom_C2S, OnReceiveCreateRoom);
             ProtosManager.Instance.AddProtosListener(mCSConnect.ID, CmdConfig.EnterRoom_C2S, OnReceiveEnterRoom);
             ProtosManager.Instance.AddProtosListener(mCSConnect.ID, CmdConfig.ExitRoom_C2S, OnReceiveExitRoom);
+            ProtosManager.Instance.AddProtosListener(mCSConnect.ID, CmdConfig.RequestRoomInfo_C2S, OnReceiveRequestRoomInfo);
+            ProtosManager.Instance.AddProtosListener(mCSConnect.ID, CmdConfig.ReadyStatus_C2S, OnReceiveReadyStatus);
         }
 
         public void Close()
@@ -38,6 +41,33 @@ namespace FengShengServer
             ProtosManager.Instance.RemoveProtosListener(mCSConnect.ID, CmdConfig.CreateRoom_C2S, OnReceiveCreateRoom);
             ProtosManager.Instance.RemoveProtosListener(mCSConnect.ID, CmdConfig.EnterRoom_C2S, OnReceiveEnterRoom);
             ProtosManager.Instance.RemoveProtosListener(mCSConnect.ID, CmdConfig.ExitRoom_C2S, OnReceiveExitRoom);
+            ProtosManager.Instance.RemoveProtosListener(mCSConnect.ID, CmdConfig.RequestRoomInfo_C2S, OnReceiveRequestRoomInfo);
+            ProtosManager.Instance.RemoveProtosListener(mCSConnect.ID, CmdConfig.ReadyStatus_C2S, OnReceiveReadyStatus);
+        }
+
+        private LoginServer.Room.RoomInfoChange_S2C GetRoomInfoChange(RoomInfo roomInfo)
+        {
+            var result = new LoginServer.Room.RoomInfoChange_S2C();
+            result.RoomInfo = new LoginServer.Room.RoomInfo();
+            RoomDataManager.Instance.RoomInfoConvert(roomInfo, result.RoomInfo);
+
+            if (roomInfo.Chairs != null)
+            {
+                for (int i = 0; i < roomInfo.Chairs.Count; i++)
+                {
+                    var chairInfo = new LoginServer.Room.ChairInfo();
+                    chairInfo.ChairNub = roomInfo.Chairs[i].ChairID;
+                    chairInfo.UserData = new LoginServer.Room.UserData();
+                    chairInfo.UserData.Name = roomInfo.Chairs[i].UserData == null ? string.Empty : roomInfo.Chairs[i].UserData.Name;
+                    chairInfo.IsReady = roomInfo.Chairs[i].IsReady;
+                    chairInfo.IsRobot = roomInfo.Chairs[i].IsRobot;
+                    chairInfo.IsNull = roomInfo.Chairs[i].IsNull;
+
+                    result.ChairInfoList.Add(chairInfo);
+                }
+            }
+
+            return result;
         }
 
         private void OnReceiveRoomList(object obj)
@@ -62,6 +92,11 @@ namespace FengShengServer
             var data = obj as LoginServer.Room.CreateRoom_C2S;
             if (data == null)
                 return;
+
+            if (mCSConnect.UserData.RoomInfo != null)
+            {
+                return;
+            }
 
             //尝试添加房间
             if (RoomDataManager.Instance.TryAddRoom(data.RoomName, data.ChairCount, out RoomInfo roomInfo))
@@ -147,8 +182,7 @@ namespace FengShengServer
                     ProtosManager.Instance.Unicast(mCSConnect, CmdConfig.EnterRoom_S2C, enterRoomData);
 
                     //设置roomInfoChangeData
-                    var roomInfoChangeData = new LoginServer.Room.RoomInfoChange_S2C();
-                    roomInfoChangeData.RoomInfo = sendRoomInfo;
+                    var roomInfoChangeData = GetRoomInfoChange(roomInfo);
 
                     //获取多播连接列表
                     var connectList = roomInfo.GetAllUserData().Select(u => u.CSConnect).ToList();
@@ -190,8 +224,10 @@ namespace FengShengServer
                 var connectList = roomInfo.GetAllUserData().Select(u => u.CSConnect).Where(c => c.ID != mCSConnect.ID).ToList();
 
                 //多播玩家离开房间
-                exitRoomData.Msg = "房主已离开房间";
-                ProtosManager.Instance.Multicast(connectList, CmdConfig.ExitRoom_S2C, exitRoomData);
+                var exitRoomData2 = new LoginServer.Room.ExitRoom_S2C();
+                exitRoomData2.Code = ExitRoom_S2C.Types.Ret_Code.Kick; 
+                exitRoomData2.Msg = "房主已离开房间";
+                ProtosManager.Instance.Multicast(connectList, CmdConfig.ExitRoom_S2C, exitRoomData2);
 
                 RoomDataManager.Instance.CloseRoom(roomInfo.RoomNub);
                 return;
@@ -207,8 +243,7 @@ namespace FengShengServer
                 ProtosManager.Instance.Unicast(mCSConnect, CmdConfig.ExitRoom_S2C, exitRoomData);
 
                 //设置roomInfoChangeData
-                var roomInfoChangeData = new LoginServer.Room.RoomInfoChange_S2C();
-                RoomDataManager.Instance.RoomInfoConvert(roomInfo, roomInfoChangeData.RoomInfo);
+                var roomInfoChangeData = GetRoomInfoChange(roomInfo);
 
                 //获取多播连接列表
                 var connectList = roomInfo.GetAllUserData().Select(u => u.CSConnect).ToList();
@@ -226,5 +261,86 @@ namespace FengShengServer
             }
 
         }
+
+        private void OnReceiveRequestRoomInfo(object obj)
+        {
+            var data = obj as LoginServer.Room.RequestRoomInfo_C2S;
+            if (data == null)
+                return;
+
+            var requestRoomInfoData = new LoginServer.Room.RequestRoomInfo_S2C();
+            var roomInfo = RoomDataManager.Instance.GetRoomInfo(data.RoomNub);
+            if (roomInfo == null)
+            {
+                requestRoomInfoData.Code = LoginServer.Room.RequestRoomInfo_S2C.Types.Ret_Code.Failed;
+                requestRoomInfoData.Msg = "房间不存在";
+                ProtosManager.Instance.Unicast(mCSConnect, CmdConfig.RequestRoomInfo_S2C, requestRoomInfoData);
+                return;
+            }
+
+            requestRoomInfoData.RoomInfo = new LoginServer.Room.RoomInfo();
+            RoomDataManager.Instance.RoomInfoConvert(roomInfo, requestRoomInfoData.RoomInfo);
+
+            for (int i = 0; i < roomInfo.Chairs.Count; i++)
+            {
+                var chairInfo = new LoginServer.Room.ChairInfo();
+                chairInfo.ChairNub = roomInfo.Chairs[i].ChairID;
+                chairInfo.UserData = new LoginServer.Room.UserData();
+                chairInfo.UserData.Name = roomInfo.Chairs[i].UserData == null ? string.Empty : roomInfo.Chairs[i].UserData.Name;
+                chairInfo.IsReady = roomInfo.Chairs[i].IsReady;
+                chairInfo.IsRobot = roomInfo.Chairs[i].IsRobot;
+                chairInfo.IsNull = roomInfo.Chairs[i].IsNull;
+
+                requestRoomInfoData.ChairInfoList.Add(chairInfo);
+            }
+
+            requestRoomInfoData.Code = LoginServer.Room.RequestRoomInfo_S2C.Types.Ret_Code.Success;
+            ProtosManager.Instance.Unicast(mCSConnect, CmdConfig.RequestRoomInfo_S2C, requestRoomInfoData);
+        }
+
+        private void OnReceiveReadyStatus(object obj)
+        {
+            var data = obj as LoginServer.Room.ReadyStatus_C2S;
+            if (data == null)
+                return;
+
+            var readyStatusData = new LoginServer.Room.ReadyStatus_S2C();
+            var userData = UserDataManager.Instance.GetUserData(data.UserName);
+            if (userData == null)
+            {
+                readyStatusData.Code = LoginServer.Room.ReadyStatus_S2C.Types.Ret_Code.Failed;
+                readyStatusData.Msg = "用户不存在";
+                ProtosManager.Instance.Unicast(mCSConnect, CmdConfig.ReadyStatus_S2C, readyStatusData);
+                return;
+            }
+
+            if (userData.RoomInfo == null)
+            {
+                readyStatusData.Code = LoginServer.Room.ReadyStatus_S2C.Types.Ret_Code.Failed;
+                readyStatusData.Msg = "用户不在房间内";
+                ProtosManager.Instance.Unicast(mCSConnect, CmdConfig.ReadyStatus_S2C, readyStatusData);
+                return;
+            }
+
+            var chair = userData.RoomInfo.Chairs.Find(c => c.UserData.Name == data.UserName);
+            chair.IsReady = true;
+
+            readyStatusData.Code = LoginServer.Room.ReadyStatus_S2C.Types.Ret_Code.Success;
+            readyStatusData.Msg = string.Empty;
+            ProtosManager.Instance.Unicast(mCSConnect, CmdConfig.ReadyStatus_S2C, readyStatusData);
+
+            var roomInfo = userData.RoomInfo;
+
+            //获取多播连接列表
+            var connectList = userData.RoomInfo.GetAllUserData().Select(u => u.CSConnect).ToList();
+
+            //设置roomInfoChangeData
+            var roomInfoChangeData = GetRoomInfoChange(roomInfo);
+
+            //多播房间信息变更
+            ProtosManager.Instance.Multicast(connectList, CmdConfig.RoomInfoChange_S2C, roomInfoChangeData);
+        }
+
+
     }
 }

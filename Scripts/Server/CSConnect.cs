@@ -22,11 +22,6 @@ namespace FengShengServer
         public MessageReceiver Receiver { get; private set; }
 
         /// <summary>
-        /// 消息发送器
-        /// </summary>
-        public MessageSender Sender { get; private set; }
-
-        /// <summary>
         /// 用户数据
         /// </summary>
         public UserData UserData { get; set; }
@@ -41,6 +36,11 @@ namespace FengShengServer
         /// </summary>
         public Room Room { get; private set; }
 
+        /// <summary>
+        /// 游戏模块托管
+        /// </summary>
+        public Game Game { get; private set; }
+
         public CSConnect(TcpClient tcpClient, int id)
         {
             TcpClient = tcpClient;
@@ -49,10 +49,10 @@ namespace FengShengServer
 
             HeartBeat = new HeartBeat();
             Receiver = new MessageReceiver();
-            Sender = new MessageSender();
 
             Login = new Login();
             Room = new Room();
+            Game = new Game();
         }
 
         public void Start()
@@ -65,9 +65,9 @@ namespace FengShengServer
             Room.SetCSConnect(this);
             Room.SetDebug(false);
 
-            //消息发送器初始化
-            Sender.SetCSConnect(this);
-            Sender.SetDebug(false);
+            //游戏模块托管初始化
+            Game.SetCSConnect(this);
+            Game.SetDebug(false);
 
             //消息接收器初始化
             Receiver.SetCSConnect(this);
@@ -79,11 +79,11 @@ namespace FengShengServer
             HeartBeat.SetDebug(false);
 
             //注册协议监听器
-            EventManager.Instance.RegisterProtosListener(ID);
+            ProtosManager.Instance.RegisterProtosListener(ID);
 
             Login.Start();
             Room.Start();
-            Sender.Start();
+            Game.Start();
             Receiver.Start();
             HeartBeat.Start();
         }
@@ -92,10 +92,10 @@ namespace FengShengServer
         {
             Login.Close();
             Room.Close();
+            Game.Close();
 
-            EventManager.Instance.RemoveProtosListener(ID);
+            ProtosManager.Instance.RemoveProtosListener(ID);
 
-            Sender.Close();
             HeartBeat.Close();
             Receiver.Close();
             TcpClient?.Close();

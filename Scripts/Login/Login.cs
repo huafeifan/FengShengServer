@@ -29,8 +29,6 @@ namespace FengShengServer
 
         public void Close()
         {
-            UserDataManager.Instance.RemoveUser(mCSConnect.UserData);
-
             ProtosManager.Instance.RemoveProtosListener(mCSConnect.ID, CmdConfig.Login_C2S, OnReceiveLogin);
         }
 
@@ -52,26 +50,29 @@ namespace FengShengServer
             {
                 Name = receiveData.Name,
                 RoomInfo = null,
-                CSConnect = mCSConnect
+                CSConnect = mCSConnect,
+                Status = UserStatus.Online
             };
             mCSConnect.UserData = userData;
 
             bool isSuccess = UserDataManager.Instance.AddUser(userData);
 
+            var sendUserData = new LoginServer.Login.UserData() { Name = userData.Name };
             if (isSuccess)
             {
-                sendData.User.Name = userData.Name;
+                sendData.User = sendUserData;
                 sendData.Code = LoginServer.Login.Login_S2C.Types.Ret_Code.Success;
                 sendData.Msg = "登录成功";
             }
             else 
             {
                 Console.WriteLine($"用户 {userData.Name} 仍在在线用户列表中");
-                sendData.User.Name = receiveData.Name;
+                sendData.User = sendUserData;
                 sendData.Code = LoginServer.Login.Login_S2C.Types.Ret_Code.Failed;
                 sendData.Msg = "名称重复";
             }
             ProtosManager.Instance.Unicast(mCSConnect, CmdConfig.Login_S2C, sendData);
+            EventManager.Instance.TriggerEvent(EventManager.Event_OnUserStatusChange, userData);
         }
     }
 }

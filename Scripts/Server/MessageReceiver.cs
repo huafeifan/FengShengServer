@@ -92,7 +92,7 @@ namespace FengShengServer
                         if (cmd == CmdConfig.HeartBeat)
                         {
                             mCSConnect.HeartBeat.SetHeartBeatFlag(true);
-                            mCSConnect.Sender.SendMessage(CmdConfig.HeartBeat, mCSConnect.HeartBeat.GetHeatBeatData(), false);
+                            SenderManager.Instance.AddSendMessage(mCSConnect, CmdConfig.HeartBeat, mCSConnect.HeartBeat.GetHeatBeatData(), false);
                         }
                     }
                     else

@@ -21,12 +21,17 @@ namespace FengShengServer
 
         public void Start()
         {
+            EventManager.Instance.AddListener(EventManager.Event_OnUserStatusChange, OnUserStatusChange);
+
             Console.WriteLine("用户数据管理器已启动");
+            Test();
         }
 
         public void Close()
         {
             mUserList.Clear();
+
+            EventManager.Instance.AddListener(EventManager.Event_OnUserStatusChange, OnUserStatusChange);
 
             Console.WriteLine("用户数据管理器已关闭");
         }
@@ -104,6 +109,93 @@ namespace FengShengServer
                 }
             }
             return result;
+        }
+
+        private void OnUserStatusChange(object obj)
+        {
+            if (obj != null && obj is UserData)
+            {
+                var userData = (UserData)obj;
+                if (userData != null && userData.Status == UserStatus.Offline)
+                {
+                    RemoveUser(userData);
+                }
+            }
+        }
+
+        private void Test()
+        {
+            AddUser(new UserData()
+            {
+                CSConnect = null,
+                Name = "test1",
+                RoomInfo = null,
+                Status = UserStatus.Online
+            });
+            Console.WriteLine("用户test1已被添加到用户列表");
+
+            AddUser(new UserData()
+            {
+                CSConnect = null,
+                Name = "test2",
+                RoomInfo = null,
+                Status = UserStatus.Online
+            });
+            Console.WriteLine("用户test2已被添加到用户列表");
+
+            AddUser(new UserData()
+            {
+                CSConnect = null,
+                Name = "test3",
+                RoomInfo = null,
+                Status = UserStatus.Online
+            });
+            Console.WriteLine("用户test3已被添加到用户列表");
+
+            AddUser(new UserData()
+            {
+                CSConnect = null,
+                Name = "test4",
+                RoomInfo = null,
+                Status = UserStatus.Online
+            });
+            Console.WriteLine("用户test4已被添加到用户列表");
+
+            AddUser(new UserData()
+            {
+                CSConnect = null,
+                Name = "test5",
+                RoomInfo = null,
+                Status = UserStatus.Online
+            });
+            Console.WriteLine("用户test5已被添加到用户列表");
+
+            AddUser(new UserData()
+            {
+                CSConnect = null,
+                Name = "test6",
+                RoomInfo = null,
+                Status = UserStatus.Online
+            });
+            Console.WriteLine("用户test6已被添加到用户列表");
+
+            AddUser(new UserData()
+            {
+                CSConnect = null,
+                Name = "test7",
+                RoomInfo = null,
+                Status = UserStatus.Online
+            });
+            Console.WriteLine("用户test7已被添加到用户列表");
+
+            AddUser(new UserData()
+            {
+                CSConnect = null,
+                Name = "test8",
+                RoomInfo = null,
+                Status = UserStatus.Online
+            });
+            Console.WriteLine("用户test8已被添加到用户列表");
         }
 
     }

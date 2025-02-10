@@ -87,6 +87,8 @@ namespace FengShengServer
                     Chairs[i].IsRobot = false;
 
                     Chairs[i].UserData = user;
+                    Chairs[i].UserData.IdentityType = LoginServer.Game.IdentityType.None;
+                    Chairs[i].UserData.CharacterType = LoginServer.Game.CharacterType.None;
                     user.RoomInfo = this;
                     break;
                 }
