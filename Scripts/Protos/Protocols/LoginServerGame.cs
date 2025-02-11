@@ -25,75 +25,88 @@ namespace LoginServer.Game {
       byte[] descriptorData = global::System.Convert.FromBase64String(
           string.Concat(
             "Ch1Qcm90b3MvbG9naW5TZXJ2ZXIuZ2FtZS5wcm90bxIQbG9naW5TZXJ2ZXIu",
-            "Z2FtZSK8AwoIQ2FyZFR5cGUSNQoIdHJhbnNtaXQYASABKA4yIy5sb2dpblNl",
-            "cnZlci5nYW1lLkNhcmRfVHJhbnNtaXRUeXBlEjcKCWRpcmVjdGlvbhgCIAEo",
-            "DjIkLmxvZ2luU2VydmVyLmdhbWUuQ2FyZF9EaXJlY3Rpb25UeXBlEi8KBWNv",
-            "bG9yGAMgASgOMiAubG9naW5TZXJ2ZXIuZ2FtZS5DYXJkX0NvbG9yVHlwZRIt",
-            "CgRsb2NrGAQgASgOMh8ubG9naW5TZXJ2ZXIuZ2FtZS5DYXJkX0xvY2tUeXBl",
-            "EjMKB3hpYW9ndW8YBSABKA4yIi5sb2dpblNlcnZlci5nYW1lLkNhcmRfWGlh",
-            "b0d1b1R5cGUSPwoNZ29uZ2thaXdlbmJlbhgGIAEoDjIoLmxvZ2luU2VydmVy",
-            "LmdhbWUuQ2FyZF9Hb25nS2FpV2VuQmVuVHlwZRI3CgltaW1peGlhZGEYByAB",
-            "KA4yJC5sb2dpblNlcnZlci5nYW1lLkNhcmRfTWlNaVhpYURhVHlwZRIxCgZz",
-            "aGl0YW4YCCABKA4yIS5sb2dpblNlcnZlci5nYW1lLkNhcmRfU2hpVGFuVHlw",
-            "ZSIgCg1HYW1lU3RhcnRfQzJTEg8KB3Jvb21OdWIYASABKAUieQoNR2FtZVN0",
-            "YXJ0X1MyQxI2CgRjb2RlGAEgASgOMigubG9naW5TZXJ2ZXIuZ2FtZS5HYW1l",
-            "U3RhcnRfUzJDLlJldF9Db2RlEgsKA21zZxgCIAEoCSIjCghSZXRfQ29kZRIL",
-            "CgdTdWNjZXNzEAASCgoGRmFpbGVkEAEiQAoMSWRlbnRpdHlfUzJDEjAKCGlk",
-            "ZW50aXR5GAEgASgOMh4ubG9naW5TZXJ2ZXIuZ2FtZS5JZGVudGl0eVR5cGUi",
-            "WwoTQ2hhcmFjdGVyQ2hvb3NlX0MyUxIQCgh1c2VyTmFtZRgBIAEoCRIyCglj",
-            "aGFyYWN0ZXIYAiABKA4yHy5sb2dpblNlcnZlci5nYW1lLkNoYXJhY3RlclR5",
-            "cGUiTgoXQ2hhcmFjdGVyQ2hvb3NlTGlzdF9TMkMSMwoKY2hhcmFjdGVycxgB",
-            "IAMoDjIfLmxvZ2luU2VydmVyLmdhbWUuQ2hhcmFjdGVyVHlwZSISChBHYW1l",
-            "Q29tcGxldGVfUzJDIg8KDURlYWxDYXJkc19TMkMqcQoMSWRlbnRpdHlUeXBl",
-            "EhUKEUlkZW50aXR5VHlwZV9Ob25lEAASFwoTSWRlbnRpdHlUeXBlX1RlR29u",
-            "ZxABEhgKFElkZW50aXR5VHlwZV9KdW5RaW5nEAISFwoTSWRlbnRpdHlUeXBl",
-            "X1FpYW5GdRADKvIFCg1DaGFyYWN0ZXJUeXBlEhYKEkNoYXJhY3RlclR5cGVf",
-            "Tm9uZRAAEhgKFENoYXJhY3RlclR5cGVfTGFvSmluEAESGQoVQ2hhcmFjdGVy",
-            "VHlwZV9EYU1laU52EAISGgoWQ2hhcmFjdGVyVHlwZV9FTWVpRmVuZxADEhsK",
-            "F0NoYXJhY3RlclR5cGVfQmVpTGVpTWFvEAQSGQoVQ2hhcmFjdGVyVHlwZV9E",
-            "YW9GZW5nEAUSFwoTQ2hhcmFjdGVyVHlwZV9EYWlMaRAGEhoKFkNoYXJhY3Rl",
-            "clR5cGVfSHVhbmdRdWUQBxIZChVDaGFyYWN0ZXJUeXBlX1NoYW5MaW4QCBIX",
-            "ChNDaGFyYWN0ZXJUeXBlX0Z1U2hlEAkSHAoYQ2hhcmFjdGVyVHlwZV9ZaURp",
-            "YW5ZdWFuEAoSGAoUQ2hhcmFjdGVyVHlwZV9MaXVKaWUQCxIYChRDaGFyYWN0",
-            "ZXJUeXBlX0Z1UGluZxAMEiEKHUNoYXJhY3RlclR5cGVfUWluZ0Jhb0NodVpo",
-            "YW5nEA0SIQodQ2hhcmFjdGVyVHlwZV9aaGlNaW5YaWFuZ1NodWkQDhIfChtD",
-            "aGFyYWN0ZXJUeXBlX0d1YWlEYW9KaXVKaXUQDxIfChtDaGFyYWN0ZXJUeXBl",
-            "X0dhbmdUaWVUZUdvbmcQEBIeChpDaGFyYWN0ZXJUeXBlX0xpRnVNZW5nTWlh",
-            "bhAREhoKFkNoYXJhY3RlclR5cGVfRnVFck1vU2kQEhIZChVDaGFyYWN0ZXJU",
-            "eXBlX1hpYW9CYWkQExIaChZDaGFyYWN0ZXJUeXBlX1hpYW9NYUdlEBQSHgoa",
-            "Q2hhcmFjdGVyVHlwZV9aaGlZZVNoYVNob3UQFRIYChRDaGFyYWN0ZXJUeXBl",
-            "X0xhb0d1aRAWEhcKE0NoYXJhY3RlclR5cGVfUWlCYWkQFxIaChZDaGFyYWN0",
-            "ZXJUeXBlX0xhb1FpYW5nEBgSGwoXQ2hhcmFjdGVyVHlwZV9IZWlNZWlHdWkQ",
-            "GSqIAQoRQ2FyZF9UcmFuc21pdFR5cGUSGgoWQ2FyZF9UcmFuc21pdFR5cGVf",
-            "Tm9uZRAAEhsKF0NhcmRfVHJhbnNtaXRUeXBlX1poaURhEAESHAoYQ2FyZF9U",
-            "cmFuc21pdFR5cGVfTWlEaWFuEAISHAoYQ2FyZF9UcmFuc21pdFR5cGVfV2Vu",
-            "QmVuEAMqaQoSQ2FyZF9EaXJlY3Rpb25UeXBlEhsKF0NhcmRfRGlyZWN0aW9u",
-            "VHlwZV9Ob25lEAASGwoXQ2FyZF9EaXJlY3Rpb25UeXBlX1NodW4QARIZChVD",
-            "YXJkX0RpcmVjdGlvblR5cGVfTmkQAiqPAQoOQ2FyZF9Db2xvclR5cGUSFwoT",
-            "Q2FyZF9Db2xvclR5cGVfTm9uZRAAEhcKE0NhcmRfQ29sb3JUeXBlX0dyYXkQ",
-            "ARIWChJDYXJkX0NvbG9yVHlwZV9SZWQQAhIXChNDYXJkX0NvbG9yVHlwZV9C",
-            "bHVlEAMSGgoWQ2FyZF9Db2xvclR5cGVfUmVkQmx1ZRAEKlkKDUNhcmRfTG9j",
-            "a1R5cGUSFgoSQ2FyZF9Mb2NrVHlwZV9Ob25lEAASFgoSQ2FyZF9Mb2NrVHlw",
-            "ZV9Mb2NrEAESGAoUQ2FyZF9Mb2NrVHlwZV9VbmxvY2sQAirsAQoWQ2FyZF9H",
-            "b25nS2FpV2VuQmVuVHlwZRIfChtDYXJkX0dvbmdLYWlXZW5CZW5UeXBlX05v",
-            "bmUQABIiCh5DYXJkX0dvbmdLYWlXZW5CZW5UeXBlX0JsdWVTdWIQARIhCh1D",
-            "YXJkX0dvbmdLYWlXZW5CZW5UeXBlX1JlZFN1YhACEiIKHkNhcmRfR29uZ0th",
-            "aVdlbkJlblR5cGVfQmx1ZUFkZBADEiEKHUNhcmRfR29uZ0thaVdlbkJlblR5",
-            "cGVfUmVkQWRkEAQSIwofQ2FyZF9Hb25nS2FpV2VuQmVuVHlwZV9HcmVlbkFk",
-            "ZBAFKp0BChJDYXJkX01pTWlYaWFEYVR5cGUSGwoXQ2FyZF9NaU1pWGlhRGFU",
-            "eXBlX05vbmUQABIiCh5DYXJkX01pTWlYaWFEYVR5cGVfR3JheVJlZEJ1bGUQ",
-            "ARIiCh5DYXJkX01pTWlYaWFEYVR5cGVfQmx1ZUdyYXlSZWQQAhIiCh5DYXJk",
-            "X01pTWlYaWFEYVR5cGVfUmVkQmx1ZUdyYXkQAyrkAQoPQ2FyZF9TaGlUYW5U",
-            "eXBlEhgKFENhcmRfU2hpVGFuVHlwZV9Ob25lEAASGwoXQ2FyZF9TaGlUYW5U",
-            "eXBlX0JsdWVBZGQQARIaChZDYXJkX1NoaVRhblR5cGVfUmVkQWRkEAISHAoY",
-            "Q2FyZF9TaGlUYW5UeXBlX0dyZWVuQWRkEAMSHwobQ2FyZF9TaGlUYW5UeXBl",
-            "X0d1ZXNzSGFvUmVuEAQSHQoZQ2FyZF9TaGlUYW5UeXBlX0d1ZXNzV29EaRAF",
-            "EiAKHENhcmRfU2hpVGFuVHlwZV9HdWVzc0ppYW5EaWUQBiotChBDYXJkX1hp",
-            "YW9HdW9UeXBlEhkKFUNhcmRfWGlhb0d1b1R5cGVfTm9uZRAAYgZwcm90bzM="));
+            "Z2FtZSLOAwoIQ2FyZFR5cGUSEAoIY2FyZE5hbWUYASABKAkSNQoIdHJhbnNt",
+            "aXQYAiABKA4yIy5sb2dpblNlcnZlci5nYW1lLkNhcmRfVHJhbnNtaXRUeXBl",
+            "EjcKCWRpcmVjdGlvbhgDIAEoDjIkLmxvZ2luU2VydmVyLmdhbWUuQ2FyZF9E",
+            "aXJlY3Rpb25UeXBlEi8KBWNvbG9yGAQgASgOMiAubG9naW5TZXJ2ZXIuZ2Ft",
+            "ZS5DYXJkX0NvbG9yVHlwZRItCgRsb2NrGAUgASgOMh8ubG9naW5TZXJ2ZXIu",
+            "Z2FtZS5DYXJkX0xvY2tUeXBlEjMKB3hpYW9ndW8YBiABKA4yIi5sb2dpblNl",
+            "cnZlci5nYW1lLkNhcmRfWGlhb0d1b1R5cGUSPwoNZ29uZ2thaXdlbmJlbhgH",
+            "IAEoDjIoLmxvZ2luU2VydmVyLmdhbWUuQ2FyZF9Hb25nS2FpV2VuQmVuVHlw",
+            "ZRI3CgltaW1peGlhZGEYCCABKA4yJC5sb2dpblNlcnZlci5nYW1lLkNhcmRf",
+            "TWlNaVhpYURhVHlwZRIxCgZzaGl0YW4YCSABKA4yIS5sb2dpblNlcnZlci5n",
+            "YW1lLkNhcmRfU2hpVGFuVHlwZSIgCg1HYW1lU3RhcnRfQzJTEg8KB3Jvb21O",
+            "dWIYASABKAUieQoNR2FtZVN0YXJ0X1MyQxI2CgRjb2RlGAEgASgOMigubG9n",
+            "aW5TZXJ2ZXIuZ2FtZS5HYW1lU3RhcnRfUzJDLlJldF9Db2RlEgsKA21zZxgC",
+            "IAEoCSIjCghSZXRfQ29kZRILCgdTdWNjZXNzEAASCgoGRmFpbGVkEAEiQAoM",
+            "SWRlbnRpdHlfUzJDEjAKCGlkZW50aXR5GAEgASgOMh4ubG9naW5TZXJ2ZXIu",
+            "Z2FtZS5JZGVudGl0eVR5cGUiWwoTQ2hhcmFjdGVyQ2hvb3NlX0MyUxIQCgh1",
+            "c2VyTmFtZRgBIAEoCRIyCgljaGFyYWN0ZXIYAiABKA4yHy5sb2dpblNlcnZl",
+            "ci5nYW1lLkNoYXJhY3RlclR5cGUiTgoXQ2hhcmFjdGVyQ2hvb3NlTGlzdF9T",
+            "MkMSMwoKY2hhcmFjdGVycxgBIAMoDjIfLmxvZ2luU2VydmVyLmdhbWUuQ2hh",
+            "cmFjdGVyVHlwZSISChBHYW1lQ29tcGxldGVfUzJDIg8KDURlYWxDYXJkc19T",
+            "MkMqcQoMSWRlbnRpdHlUeXBlEhUKEUlkZW50aXR5VHlwZV9Ob25lEAASFwoT",
+            "SWRlbnRpdHlUeXBlX1RlR29uZxABEhgKFElkZW50aXR5VHlwZV9KdW5RaW5n",
+            "EAISFwoTSWRlbnRpdHlUeXBlX1FpYW5GdRADKvIFCg1DaGFyYWN0ZXJUeXBl",
+            "EhYKEkNoYXJhY3RlclR5cGVfTm9uZRAAEhgKFENoYXJhY3RlclR5cGVfTGFv",
+            "SmluEAESGQoVQ2hhcmFjdGVyVHlwZV9EYU1laU52EAISGgoWQ2hhcmFjdGVy",
+            "VHlwZV9FTWVpRmVuZxADEhsKF0NoYXJhY3RlclR5cGVfQmVpTGVpTWFvEAQS",
+            "GQoVQ2hhcmFjdGVyVHlwZV9EYW9GZW5nEAUSFwoTQ2hhcmFjdGVyVHlwZV9E",
+            "YWlMaRAGEhoKFkNoYXJhY3RlclR5cGVfSHVhbmdRdWUQBxIZChVDaGFyYWN0",
+            "ZXJUeXBlX1NoYW5MaW4QCBIXChNDaGFyYWN0ZXJUeXBlX0Z1U2hlEAkSHAoY",
+            "Q2hhcmFjdGVyVHlwZV9ZaURpYW5ZdWFuEAoSGAoUQ2hhcmFjdGVyVHlwZV9M",
+            "aXVKaWUQCxIYChRDaGFyYWN0ZXJUeXBlX0Z1UGluZxAMEiEKHUNoYXJhY3Rl",
+            "clR5cGVfUWluZ0Jhb0NodVpoYW5nEA0SIQodQ2hhcmFjdGVyVHlwZV9aaGlN",
+            "aW5YaWFuZ1NodWkQDhIfChtDaGFyYWN0ZXJUeXBlX0d1YWlEYW9KaXVKaXUQ",
+            "DxIfChtDaGFyYWN0ZXJUeXBlX0dhbmdUaWVUZUdvbmcQEBIeChpDaGFyYWN0",
+            "ZXJUeXBlX0xpRnVNZW5nTWlhbhAREhoKFkNoYXJhY3RlclR5cGVfRnVFck1v",
+            "U2kQEhIZChVDaGFyYWN0ZXJUeXBlX1hpYW9CYWkQExIaChZDaGFyYWN0ZXJU",
+            "eXBlX1hpYW9NYUdlEBQSHgoaQ2hhcmFjdGVyVHlwZV9aaGlZZVNoYVNob3UQ",
+            "FRIYChRDaGFyYWN0ZXJUeXBlX0xhb0d1aRAWEhcKE0NoYXJhY3RlclR5cGVf",
+            "UWlCYWkQFxIaChZDaGFyYWN0ZXJUeXBlX0xhb1FpYW5nEBgSGwoXQ2hhcmFj",
+            "dGVyVHlwZV9IZWlNZWlHdWkQGSqtAQoRQ2FyZF9UcmFuc21pdFR5cGUSGgoW",
+            "Q2FyZF9UcmFuc21pdFR5cGVfTm9uZRAAEhsKF0NhcmRfVHJhbnNtaXRUeXBl",
+            "X1poaURhEAESHAoYQ2FyZF9UcmFuc21pdFR5cGVfTWlEaWFuEAISHAoYQ2Fy",
+            "ZF9UcmFuc21pdFR5cGVfV2VuQmVuEAMSIwofQ2FyZF9UcmFuc21pdFR5cGVf",
+            "TWlEaWFuT3JaaGlEYRAEKogBChJDYXJkX0RpcmVjdGlvblR5cGUSGwoXQ2Fy",
+            "ZF9EaXJlY3Rpb25UeXBlX05vbmUQABIbChdDYXJkX0RpcmVjdGlvblR5cGVf",
+            "U2h1bhABEhkKFUNhcmRfRGlyZWN0aW9uVHlwZV9OaRACEh0KGUNhcmRfRGly",
+            "ZWN0aW9uVHlwZV9DaG9vc2UQAyqPAQoOQ2FyZF9Db2xvclR5cGUSFwoTQ2Fy",
+            "ZF9Db2xvclR5cGVfTm9uZRAAEhcKE0NhcmRfQ29sb3JUeXBlX0dyYXkQARIW",
+            "ChJDYXJkX0NvbG9yVHlwZV9SZWQQAhIXChNDYXJkX0NvbG9yVHlwZV9CbHVl",
+            "EAMSGgoWQ2FyZF9Db2xvclR5cGVfUmVkQmx1ZRAEKlkKDUNhcmRfTG9ja1R5",
+            "cGUSFgoSQ2FyZF9Mb2NrVHlwZV9Ob25lEAASFgoSQ2FyZF9Mb2NrVHlwZV9M",
+            "b2NrEAESGAoUQ2FyZF9Mb2NrVHlwZV9VbmxvY2sQAirsAQoWQ2FyZF9Hb25n",
+            "S2FpV2VuQmVuVHlwZRIfChtDYXJkX0dvbmdLYWlXZW5CZW5UeXBlX05vbmUQ",
+            "ABIiCh5DYXJkX0dvbmdLYWlXZW5CZW5UeXBlX0JsdWVTdWIQARIhCh1DYXJk",
+            "X0dvbmdLYWlXZW5CZW5UeXBlX1JlZFN1YhACEiIKHkNhcmRfR29uZ0thaVdl",
+            "bkJlblR5cGVfQmx1ZUFkZBADEiEKHUNhcmRfR29uZ0thaVdlbkJlblR5cGVf",
+            "UmVkQWRkEAQSIwofQ2FyZF9Hb25nS2FpV2VuQmVuVHlwZV9HcmVlbkFkZBAF",
+            "Kp0BChJDYXJkX01pTWlYaWFEYVR5cGUSGwoXQ2FyZF9NaU1pWGlhRGFUeXBl",
+            "X05vbmUQABIiCh5DYXJkX01pTWlYaWFEYVR5cGVfR3JheVJlZEJ1bGUQARIi",
+            "Ch5DYXJkX01pTWlYaWFEYVR5cGVfQmx1ZUdyYXlSZWQQAhIiCh5DYXJkX01p",
+            "TWlYaWFEYVR5cGVfUmVkQmx1ZUdyYXkQAyrkAQoPQ2FyZF9TaGlUYW5UeXBl",
+            "EhgKFENhcmRfU2hpVGFuVHlwZV9Ob25lEAASGwoXQ2FyZF9TaGlUYW5UeXBl",
+            "X0JsdWVBZGQQARIaChZDYXJkX1NoaVRhblR5cGVfUmVkQWRkEAISHAoYQ2Fy",
+            "ZF9TaGlUYW5UeXBlX0dyZWVuQWRkEAMSHwobQ2FyZF9TaGlUYW5UeXBlX0d1",
+            "ZXNzSGFvUmVuEAQSHQoZQ2FyZF9TaGlUYW5UeXBlX0d1ZXNzV29EaRAFEiAK",
+            "HENhcmRfU2hpVGFuVHlwZV9HdWVzc0ppYW5EaWUQBir/AwoQQ2FyZF9YaWFv",
+            "R3VvVHlwZRIZChVDYXJkX1hpYW9HdW9UeXBlX05vbmUQABIiCh5DYXJkX1hp",
+            "YW9HdW9UeXBlX0dvbmdLYWlXZW5CZW4QARIeChpDYXJkX1hpYW9HdW9UeXBl",
+            "X01pTWlYaWFEYRACEhsKF0NhcmRfWGlhb0d1b1R5cGVfU2hpVGFuEAMSHAoY",
+            "Q2FyZF9YaWFvR3VvVHlwZV9EaWFvQmFvEAQSGwoXQ2FyZF9YaWFvR3VvVHlw",
+            "ZV9KaWVIdW8QBRIbChdDYXJkX1hpYW9HdW9UeXBlX0xpSmlhbhAGEhkKFUNh",
+            "cmRfWGlhb0d1b1R5cGVfUG9ZaRAHEiEKHUNhcmRfWGlhb0d1b1R5cGVfRGlh",
+            "b0h1TGlTaGFuEAgSHQoZQ2FyZF9YaWFvR3VvVHlwZV9aZW5nWXVhbhAJEhwK",
+            "GENhcmRfWGlhb0d1b1R5cGVfU2hhb0h1aRAKEhwKGENhcmRfWGlhb0d1b1R5",
+            "cGVfU3VvRGluZxALEiIKHkNhcmRfWGlhb0d1b1R5cGVfV2VpWGlhblFpbkJh",
+            "bxAMEhoKFkNhcmRfWGlhb0d1b1R5cGVfU2hpUG8QDRIcChhDYXJkX1hpYW9H",
+            "dW9UeXBlX1podWFuWWkQDhIgChxDYXJkX1hpYW9HdW9UeXBlX0ppTWlXZW5K",
+            "aWFuEA9iBnByb3RvMw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(new[] {typeof(global::LoginServer.Game.IdentityType), typeof(global::LoginServer.Game.CharacterType), typeof(global::LoginServer.Game.Card_TransmitType), typeof(global::LoginServer.Game.Card_DirectionType), typeof(global::LoginServer.Game.Card_ColorType), typeof(global::LoginServer.Game.Card_LockType), typeof(global::LoginServer.Game.Card_GongKaiWenBenType), typeof(global::LoginServer.Game.Card_MiMiXiaDaType), typeof(global::LoginServer.Game.Card_ShiTanType), typeof(global::LoginServer.Game.Card_XiaoGuoType), }, null, new pbr::GeneratedClrTypeInfo[] {
-            new pbr::GeneratedClrTypeInfo(typeof(global::LoginServer.Game.CardType), global::LoginServer.Game.CardType.Parser, new[]{ "Transmit", "Direction", "Color", "Lock", "Xiaoguo", "Gongkaiwenben", "Mimixiada", "Shitan" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::LoginServer.Game.CardType), global::LoginServer.Game.CardType.Parser, new[]{ "CardName", "Transmit", "Direction", "Color", "Lock", "Xiaoguo", "Gongkaiwenben", "Mimixiada", "Shitan" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LoginServer.Game.GameStart_C2S), global::LoginServer.Game.GameStart_C2S.Parser, new[]{ "RoomNub" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LoginServer.Game.GameStart_S2C), global::LoginServer.Game.GameStart_S2C.Parser, new[]{ "Code", "Msg" }, null, new[]{ typeof(global::LoginServer.Game.GameStart_S2C.Types.Ret_Code) }, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LoginServer.Game.Identity_S2C), global::LoginServer.Game.Identity_S2C.Parser, new[]{ "Identity" }, null, null, null, null),
@@ -148,12 +161,14 @@ namespace LoginServer.Game {
     [pbr::OriginalName("Card_TransmitType_ZhiDa")] ZhiDa = 1,
     [pbr::OriginalName("Card_TransmitType_MiDian")] MiDian = 2,
     [pbr::OriginalName("Card_TransmitType_WenBen")] WenBen = 3,
+    [pbr::OriginalName("Card_TransmitType_MiDianOrZhiDa")] MiDianOrZhiDa = 4,
   }
 
   public enum Card_DirectionType {
     [pbr::OriginalName("Card_DirectionType_None")] None = 0,
     [pbr::OriginalName("Card_DirectionType_Shun")] Shun = 1,
     [pbr::OriginalName("Card_DirectionType_Ni")] Ni = 2,
+    [pbr::OriginalName("Card_DirectionType_Choose")] Choose = 3,
   }
 
   public enum Card_ColorType {
@@ -198,6 +213,21 @@ namespace LoginServer.Game {
 
   public enum Card_XiaoGuoType {
     [pbr::OriginalName("Card_XiaoGuoType_None")] None = 0,
+    [pbr::OriginalName("Card_XiaoGuoType_GongKaiWenBen")] GongKaiWenBen = 1,
+    [pbr::OriginalName("Card_XiaoGuoType_MiMiXiaDa")] MiMiXiaDa = 2,
+    [pbr::OriginalName("Card_XiaoGuoType_ShiTan")] ShiTan = 3,
+    [pbr::OriginalName("Card_XiaoGuoType_DiaoBao")] DiaoBao = 4,
+    [pbr::OriginalName("Card_XiaoGuoType_JieHuo")] JieHuo = 5,
+    [pbr::OriginalName("Card_XiaoGuoType_LiJian")] LiJian = 6,
+    [pbr::OriginalName("Card_XiaoGuoType_PoYi")] PoYi = 7,
+    [pbr::OriginalName("Card_XiaoGuoType_DiaoHuLiShan")] DiaoHuLiShan = 8,
+    [pbr::OriginalName("Card_XiaoGuoType_ZengYuan")] ZengYuan = 9,
+    [pbr::OriginalName("Card_XiaoGuoType_ShaoHui")] ShaoHui = 10,
+    [pbr::OriginalName("Card_XiaoGuoType_SuoDing")] SuoDing = 11,
+    [pbr::OriginalName("Card_XiaoGuoType_WeiXianQinBao")] WeiXianQinBao = 12,
+    [pbr::OriginalName("Card_XiaoGuoType_ShiPo")] ShiPo = 13,
+    [pbr::OriginalName("Card_XiaoGuoType_ZhuanYi")] ZhuanYi = 14,
+    [pbr::OriginalName("Card_XiaoGuoType_JiMiWenJian")] JiMiWenJian = 15,
   }
 
   #endregion
@@ -238,6 +268,7 @@ namespace LoginServer.Game {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public CardType(CardType other) : this() {
+      cardName_ = other.cardName_;
       transmit_ = other.transmit_;
       direction_ = other.direction_;
       color_ = other.color_;
@@ -255,8 +286,20 @@ namespace LoginServer.Game {
       return new CardType(this);
     }
 
+    /// <summary>Field number for the "cardName" field.</summary>
+    public const int CardNameFieldNumber = 1;
+    private string cardName_ = "";
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public string CardName {
+      get { return cardName_; }
+      set {
+        cardName_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
     /// <summary>Field number for the "transmit" field.</summary>
-    public const int TransmitFieldNumber = 1;
+    public const int TransmitFieldNumber = 2;
     private global::LoginServer.Game.Card_TransmitType transmit_ = global::LoginServer.Game.Card_TransmitType.None;
     /// <summary>
     ///传递方式
@@ -271,7 +314,7 @@ namespace LoginServer.Game {
     }
 
     /// <summary>Field number for the "direction" field.</summary>
-    public const int DirectionFieldNumber = 2;
+    public const int DirectionFieldNumber = 3;
     private global::LoginServer.Game.Card_DirectionType direction_ = global::LoginServer.Game.Card_DirectionType.None;
     /// <summary>
     ///传递方向
@@ -286,7 +329,7 @@ namespace LoginServer.Game {
     }
 
     /// <summary>Field number for the "color" field.</summary>
-    public const int ColorFieldNumber = 3;
+    public const int ColorFieldNumber = 4;
     private global::LoginServer.Game.Card_ColorType color_ = global::LoginServer.Game.Card_ColorType.None;
     /// <summary>
     ///阵营
@@ -301,7 +344,7 @@ namespace LoginServer.Game {
     }
 
     /// <summary>Field number for the "lock" field.</summary>
-    public const int LockFieldNumber = 4;
+    public const int LockFieldNumber = 5;
     private global::LoginServer.Game.Card_LockType lock_ = global::LoginServer.Game.Card_LockType.None;
     /// <summary>
     ///是否可毁坏
@@ -316,7 +359,7 @@ namespace LoginServer.Game {
     }
 
     /// <summary>Field number for the "xiaoguo" field.</summary>
-    public const int XiaoguoFieldNumber = 5;
+    public const int XiaoguoFieldNumber = 6;
     private global::LoginServer.Game.Card_XiaoGuoType xiaoguo_ = global::LoginServer.Game.Card_XiaoGuoType.None;
     /// <summary>
     ///效果
@@ -331,7 +374,7 @@ namespace LoginServer.Game {
     }
 
     /// <summary>Field number for the "gongkaiwenben" field.</summary>
-    public const int GongkaiwenbenFieldNumber = 6;
+    public const int GongkaiwenbenFieldNumber = 7;
     private global::LoginServer.Game.Card_GongKaiWenBenType gongkaiwenben_ = global::LoginServer.Game.Card_GongKaiWenBenType.None;
     /// <summary>
     ///公开文本特殊类
@@ -346,7 +389,7 @@ namespace LoginServer.Game {
     }
 
     /// <summary>Field number for the "mimixiada" field.</summary>
-    public const int MimixiadaFieldNumber = 7;
+    public const int MimixiadaFieldNumber = 8;
     private global::LoginServer.Game.Card_MiMiXiaDaType mimixiada_ = global::LoginServer.Game.Card_MiMiXiaDaType.None;
     /// <summary>
     ///秘密下达特殊类
@@ -361,7 +404,7 @@ namespace LoginServer.Game {
     }
 
     /// <summary>Field number for the "shitan" field.</summary>
-    public const int ShitanFieldNumber = 8;
+    public const int ShitanFieldNumber = 9;
     private global::LoginServer.Game.Card_ShiTanType shitan_ = global::LoginServer.Game.Card_ShiTanType.None;
     /// <summary>
     ///试探特殊类
@@ -390,6 +433,7 @@ namespace LoginServer.Game {
       if (ReferenceEquals(other, this)) {
         return true;
       }
+      if (CardName != other.CardName) return false;
       if (Transmit != other.Transmit) return false;
       if (Direction != other.Direction) return false;
       if (Color != other.Color) return false;
@@ -405,6 +449,7 @@ namespace LoginServer.Game {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override int GetHashCode() {
       int hash = 1;
+      if (CardName.Length != 0) hash ^= CardName.GetHashCode();
       if (Transmit != global::LoginServer.Game.Card_TransmitType.None) hash ^= Transmit.GetHashCode();
       if (Direction != global::LoginServer.Game.Card_DirectionType.None) hash ^= Direction.GetHashCode();
       if (Color != global::LoginServer.Game.Card_ColorType.None) hash ^= Color.GetHashCode();
@@ -431,36 +476,40 @@ namespace LoginServer.Game {
     #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       output.WriteRawMessage(this);
     #else
+      if (CardName.Length != 0) {
+        output.WriteRawTag(10);
+        output.WriteString(CardName);
+      }
       if (Transmit != global::LoginServer.Game.Card_TransmitType.None) {
-        output.WriteRawTag(8);
+        output.WriteRawTag(16);
         output.WriteEnum((int) Transmit);
       }
       if (Direction != global::LoginServer.Game.Card_DirectionType.None) {
-        output.WriteRawTag(16);
+        output.WriteRawTag(24);
         output.WriteEnum((int) Direction);
       }
       if (Color != global::LoginServer.Game.Card_ColorType.None) {
-        output.WriteRawTag(24);
+        output.WriteRawTag(32);
         output.WriteEnum((int) Color);
       }
       if (Lock != global::LoginServer.Game.Card_LockType.None) {
-        output.WriteRawTag(32);
+        output.WriteRawTag(40);
         output.WriteEnum((int) Lock);
       }
       if (Xiaoguo != global::LoginServer.Game.Card_XiaoGuoType.None) {
-        output.WriteRawTag(40);
+        output.WriteRawTag(48);
         output.WriteEnum((int) Xiaoguo);
       }
       if (Gongkaiwenben != global::LoginServer.Game.Card_GongKaiWenBenType.None) {
-        output.WriteRawTag(48);
+        output.WriteRawTag(56);
         output.WriteEnum((int) Gongkaiwenben);
       }
       if (Mimixiada != global::LoginServer.Game.Card_MiMiXiaDaType.None) {
-        output.WriteRawTag(56);
+        output.WriteRawTag(64);
         output.WriteEnum((int) Mimixiada);
       }
       if (Shitan != global::LoginServer.Game.Card_ShiTanType.None) {
-        output.WriteRawTag(64);
+        output.WriteRawTag(72);
         output.WriteEnum((int) Shitan);
       }
       if (_unknownFields != null) {
@@ -473,36 +522,40 @@ namespace LoginServer.Game {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
+      if (CardName.Length != 0) {
+        output.WriteRawTag(10);
+        output.WriteString(CardName);
+      }
       if (Transmit != global::LoginServer.Game.Card_TransmitType.None) {
-        output.WriteRawTag(8);
+        output.WriteRawTag(16);
         output.WriteEnum((int) Transmit);
       }
       if (Direction != global::LoginServer.Game.Card_DirectionType.None) {
-        output.WriteRawTag(16);
+        output.WriteRawTag(24);
         output.WriteEnum((int) Direction);
       }
       if (Color != global::LoginServer.Game.Card_ColorType.None) {
-        output.WriteRawTag(24);
+        output.WriteRawTag(32);
         output.WriteEnum((int) Color);
       }
       if (Lock != global::LoginServer.Game.Card_LockType.None) {
-        output.WriteRawTag(32);
+        output.WriteRawTag(40);
         output.WriteEnum((int) Lock);
       }
       if (Xiaoguo != global::LoginServer.Game.Card_XiaoGuoType.None) {
-        output.WriteRawTag(40);
+        output.WriteRawTag(48);
         output.WriteEnum((int) Xiaoguo);
       }
       if (Gongkaiwenben != global::LoginServer.Game.Card_GongKaiWenBenType.None) {
-        output.WriteRawTag(48);
+        output.WriteRawTag(56);
         output.WriteEnum((int) Gongkaiwenben);
       }
       if (Mimixiada != global::LoginServer.Game.Card_MiMiXiaDaType.None) {
-        output.WriteRawTag(56);
+        output.WriteRawTag(64);
         output.WriteEnum((int) Mimixiada);
       }
       if (Shitan != global::LoginServer.Game.Card_ShiTanType.None) {
-        output.WriteRawTag(64);
+        output.WriteRawTag(72);
         output.WriteEnum((int) Shitan);
       }
       if (_unknownFields != null) {
@@ -515,6 +568,9 @@ namespace LoginServer.Game {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public int CalculateSize() {
       int size = 0;
+      if (CardName.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(CardName);
+      }
       if (Transmit != global::LoginServer.Game.Card_TransmitType.None) {
         size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) Transmit);
       }
@@ -550,6 +606,9 @@ namespace LoginServer.Game {
     public void MergeFrom(CardType other) {
       if (other == null) {
         return;
+      }
+      if (other.CardName.Length != 0) {
+        CardName = other.CardName;
       }
       if (other.Transmit != global::LoginServer.Game.Card_TransmitType.None) {
         Transmit = other.Transmit;
@@ -594,35 +653,39 @@ namespace LoginServer.Game {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
-          case 8: {
-            Transmit = (global::LoginServer.Game.Card_TransmitType) input.ReadEnum();
+          case 10: {
+            CardName = input.ReadString();
             break;
           }
           case 16: {
-            Direction = (global::LoginServer.Game.Card_DirectionType) input.ReadEnum();
+            Transmit = (global::LoginServer.Game.Card_TransmitType) input.ReadEnum();
             break;
           }
           case 24: {
-            Color = (global::LoginServer.Game.Card_ColorType) input.ReadEnum();
+            Direction = (global::LoginServer.Game.Card_DirectionType) input.ReadEnum();
             break;
           }
           case 32: {
-            Lock = (global::LoginServer.Game.Card_LockType) input.ReadEnum();
+            Color = (global::LoginServer.Game.Card_ColorType) input.ReadEnum();
             break;
           }
           case 40: {
-            Xiaoguo = (global::LoginServer.Game.Card_XiaoGuoType) input.ReadEnum();
+            Lock = (global::LoginServer.Game.Card_LockType) input.ReadEnum();
             break;
           }
           case 48: {
-            Gongkaiwenben = (global::LoginServer.Game.Card_GongKaiWenBenType) input.ReadEnum();
+            Xiaoguo = (global::LoginServer.Game.Card_XiaoGuoType) input.ReadEnum();
             break;
           }
           case 56: {
-            Mimixiada = (global::LoginServer.Game.Card_MiMiXiaDaType) input.ReadEnum();
+            Gongkaiwenben = (global::LoginServer.Game.Card_GongKaiWenBenType) input.ReadEnum();
             break;
           }
           case 64: {
+            Mimixiada = (global::LoginServer.Game.Card_MiMiXiaDaType) input.ReadEnum();
+            break;
+          }
+          case 72: {
             Shitan = (global::LoginServer.Game.Card_ShiTanType) input.ReadEnum();
             break;
           }
@@ -645,35 +708,39 @@ namespace LoginServer.Game {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
-          case 8: {
-            Transmit = (global::LoginServer.Game.Card_TransmitType) input.ReadEnum();
+          case 10: {
+            CardName = input.ReadString();
             break;
           }
           case 16: {
-            Direction = (global::LoginServer.Game.Card_DirectionType) input.ReadEnum();
+            Transmit = (global::LoginServer.Game.Card_TransmitType) input.ReadEnum();
             break;
           }
           case 24: {
-            Color = (global::LoginServer.Game.Card_ColorType) input.ReadEnum();
+            Direction = (global::LoginServer.Game.Card_DirectionType) input.ReadEnum();
             break;
           }
           case 32: {
-            Lock = (global::LoginServer.Game.Card_LockType) input.ReadEnum();
+            Color = (global::LoginServer.Game.Card_ColorType) input.ReadEnum();
             break;
           }
           case 40: {
-            Xiaoguo = (global::LoginServer.Game.Card_XiaoGuoType) input.ReadEnum();
+            Lock = (global::LoginServer.Game.Card_LockType) input.ReadEnum();
             break;
           }
           case 48: {
-            Gongkaiwenben = (global::LoginServer.Game.Card_GongKaiWenBenType) input.ReadEnum();
+            Xiaoguo = (global::LoginServer.Game.Card_XiaoGuoType) input.ReadEnum();
             break;
           }
           case 56: {
-            Mimixiada = (global::LoginServer.Game.Card_MiMiXiaDaType) input.ReadEnum();
+            Gongkaiwenben = (global::LoginServer.Game.Card_GongKaiWenBenType) input.ReadEnum();
             break;
           }
           case 64: {
+            Mimixiada = (global::LoginServer.Game.Card_MiMiXiaDaType) input.ReadEnum();
+            break;
+          }
+          case 72: {
             Shitan = (global::LoginServer.Game.Card_ShiTanType) input.ReadEnum();
             break;
           }

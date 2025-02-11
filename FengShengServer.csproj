@@ -67,7 +67,10 @@
     <Compile Include="Scripts\Data\UserDataManager.cs" />
     <Compile Include="Scripts\Data\UserStatus.cs" />
     <Compile Include="Scripts\Event\EventManager.cs" />
+    <Compile Include="Scripts\Game\Character.cs" />
     <Compile Include="Scripts\Game\Game.cs" />
+    <Compile Include="Scripts\Game\GameCard.cs" />
+    <Compile Include="Scripts\Game\Identity.cs" />
     <Compile Include="Scripts\Login\Login.cs" />
     <Compile Include="Scripts\Protos\CmdConfig.cs" />
     <Compile Include="Scripts\Protos\Protocols\LoginServerGame.cs" />

@@ -109,6 +109,36 @@ namespace FengShengServer
             arg2.RobotCount = arg1.GetRobotCount();
         }
 
+        private void OnUserStatusChange(object obj)
+        {
+            if (obj != null && obj is UserData)
+            {
                 var userData = (UserData)obj;
+                if (userData != null && userData.Status == UserStatus.Offline && userData.RoomInfo != null)
+                {
+                    if (userData.RoomInfo.IsRoomOwner(userData.Name))
+                    {
+                        //设置exitRoomData
+                        var exitRoomData = new LoginServer.Room.ExitRoom_S2C();
+                        exitRoomData.Code = LoginServer.Room.ExitRoom_S2C.Types.Ret_Code.Success;
+                        exitRoomData.Msg = "房主已离开房间";
+
+                        //获取房间用户连接列表
+                        var connectList = userData.RoomInfo.GetAllUserData().Select(u => u.CSConnect).ToList();
+
+                        //多播玩家离开房间
+                        ProtosManager.Instance.Multicast(connectList, CmdConfig.ExitRoom_S2C, exitRoomData);
+
+                        CloseRoom(userData.RoomInfo.RoomNub);
+                    }
+                    else
+                    {
+                        userData.RoomInfo.RemoveUser(userData.Name);
+                    }
+                    userData.RoomInfo = null;
+                }
+            }
+        }
+
     }
 }

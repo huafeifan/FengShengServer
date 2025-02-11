@@ -9,13 +9,11 @@ namespace FengShengServer
     public class Game
     {
         private CSConnect mCSConnect;
+        private Identity mIdentity = new Identity();
+        private Character mCharacter = new Character();
+        private GameCard mGameCard = new GameCard();
 
         private bool mIsDebug;
-
-        private List<CharacterType> mCharacterList = new List<CharacterType>()
-        {
-            CharacterType.LaoJin, CharacterType.DaMeiNv, CharacterType.EmeiFeng
-        };
 
         public void SetCSConnect(CSConnect cSConnect)
         {
@@ -104,7 +102,7 @@ namespace FengShengServer
             ProtosManager.Instance.Multicast(connectList, CmdConfig.GameStart_S2C, sendData);
 
             //服务端为游戏玩家随机抽取身份
-            List<IdentityType> identityList = GetIdentityList(roomInfo);
+            List<IdentityType> identityList = Identity.GetIdentityList(roomInfo);
             for (int i = 0; i < roomInfo.GetChairCount(); i++)
             {
                 UserData user = roomInfo.Chairs[i].UserData;
@@ -118,7 +116,7 @@ namespace FengShengServer
             }
 
             //服务端为游戏玩家随机抽取3张角色牌
-            mCharacterList.FisherYatesShuffle();
+            mCharacter.Init();
             for (int i = 0; i < roomInfo.GetChairCount(); i++)
             {
                 UserData user = roomInfo.Chairs[i].UserData;
@@ -126,59 +124,9 @@ namespace FengShengServer
                 CSConnect connect = user.CSConnect;
 
                 var sendCharacterChooseListData = new LoginServer.Game.CharacterChooseList_S2C();
-                for (int j = 0; j < 3; j++)
-                {
-                    sendCharacterChooseListData.Characters.Add(mCharacterList[j]);
-                }
+                sendCharacterChooseListData.Characters.AddRange(mCharacter.GetCharacterChooseList());
                 ProtosManager.Instance.Unicast(connect, CmdConfig.CharacterChooseList_S2C, sendCharacterChooseListData);
             }
-        }
-
-        /// <summary>
-        /// 根据房间椅子数量得到对应的身份数量列表并打乱
-        /// </summary>
-        /// <param name="roomInfo"></param>
-        /// <returns></returns>
-        private List<IdentityType> GetIdentityList(RoomInfo roomInfo)
-        {
-            int playerCount = roomInfo.GetChairCount();
-            var result = new List<IdentityType>();
-            switch (playerCount)
-            {
-                case 3:
-                    result.Add(IdentityType.QianFu);
-                    result.Add(IdentityType.JunQing);
-                    result.Add(IdentityType.TeGong);
-                    result.Add(IdentityType.TeGong);
-                    break;
-                case 4:
-                case 6:
-                    result.Add(IdentityType.QianFu);
-                    result.Add(IdentityType.QianFu);
-                    result.Add(IdentityType.JunQing);
-                    result.Add(IdentityType.JunQing);
-                    result.Add(IdentityType.TeGong);
-                    result.Add(IdentityType.TeGong);
-                    break;
-                case 5:
-                    result.Add(IdentityType.QianFu);
-                    result.Add(IdentityType.QianFu);
-                    result.Add(IdentityType.JunQing);
-                    result.Add(IdentityType.JunQing);
-                    result.Add(IdentityType.TeGong);
-                    break;
-                case 7:
-                    result.Add(IdentityType.QianFu);
-                    result.Add(IdentityType.QianFu);
-                    result.Add(IdentityType.QianFu);
-                    result.Add(IdentityType.JunQing);
-                    result.Add(IdentityType.JunQing);
-                    result.Add(IdentityType.JunQing);
-                    result.Add(IdentityType.TeGong);
-                    break;
-            }
-            result.FisherYatesShuffle();
-            return result;
         }
 
         private void OnReceiveCharacterChoose(object obj)
@@ -215,5 +163,6 @@ namespace FengShengServer
             }
 
         }
+
     }
 }
