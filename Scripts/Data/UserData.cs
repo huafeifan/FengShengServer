@@ -13,10 +13,6 @@ namespace FengShengServer
 
         public UserStatus Status { get; set; }
 
-        public IdentityType IdentityType { get; set; }
-
-        public CharacterType CharacterType { get; set; } = CharacterType.None;
-
         /// <summary>
         /// 房间信息和用户信息相互关联
         /// </summary>

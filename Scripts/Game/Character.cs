@@ -17,20 +17,12 @@ namespace FengShengServer
             CharacterType.EmeiFeng
         };
 
-        /// <summary>
-        /// 本局游戏角色池
-        /// </summary>
-        public static List<CharacterType> CharacterList;
-
-        public void Init()
+        public static List<CharacterType> GetNewCharacterList()
         {
-            CharacterList = CharacterConfigList.ToList();
-            CharacterList.FisherYatesShuffle();
+            var list = CharacterConfigList.ToList();
+            list.FisherYatesShuffle();
+            return list;
         }
 
-        public List<CharacterType> GetCharacterChooseList()
-        {
-            return CharacterList.GetRange(0, 3);
-        }
     }
 }

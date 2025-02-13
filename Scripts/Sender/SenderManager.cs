@@ -69,34 +69,45 @@ namespace FengShengServer
         {
             while (!mCts.IsCancellationRequested)
             {
-                try
+                if (mSenderList.Count == 0)
                 {
-                    if (mSenderList.Count == 0)
+                    await Task.Delay(100);
+                }
+                else
+                {
+                    await Task.Delay(4);
+                    var sendPackage = mSenderList.Dequeue();
+                    try
                     {
-                        await Task.Delay(100);
-                    }
-                    else
-                    {
-                        var sendPackage = mSenderList.Dequeue();
-                        await sendPackage.WriteAsync();
+                        if (sendPackage == null)
+                        {
+                            continue;
+                        }
+
+                        var wait = sendPackage.WriteAsync();
+                        if (wait == null)
+                        {
+                            mSenderPool.Enqueue(sendPackage);
+                            continue;
+                        }
+
+                        await wait;
                         if (sendPackage.IsLog)
                         {
                             Console.WriteLine(sendPackage.GetLog());
                         }
                         mSenderPool.Enqueue(sendPackage);
-                        await Task.Delay(1);
+                    }
+                    catch (IOException ex)
+                    {
+                        Console.WriteLine("发送数据时发生IOException：" + ex.Message);
+                    }
+                    catch (OperationCanceledException)
+                    {
+                        // 正常情况下，当取消令牌被请求时，会抛出此异常
                     }
                 }
-                catch (IOException ex)
-                {
-                    Console.WriteLine("发送数据时发生IOException：" + ex.Message);
-                    break;
-                }
-                catch (OperationCanceledException)
-                {
-                    // 正常情况下，当取消令牌被请求时，会抛出此异常
-                    break;
-                }
+
             }
         }
 

@@ -1,10 +1,12 @@
 using System.Collections.Generic;
+using System.Linq;
 using LoginServer.Game;
 
 namespace FengShengServer
 {
     public class GameCard
     {
+        #region card config
         /// <summary>
         /// 1、传递方式：文本
         /// 2、传递方向：选择方向
@@ -1484,6 +1486,7 @@ namespace FengShengServer
             Mimixiada = Card_MiMiXiaDaType.None,
             Shitan = Card_ShiTanType.None,
         };
+        #endregion
 
         public static List<CardType> CardConfigList = new List<CardType>()
         {
@@ -1503,6 +1506,13 @@ namespace FengShengServer
             ZhuanYi1, ZhuanYi1, ZhuanYi1, ZhuanYi2, ZhuanYi3,
             JiMiWenJian1, JiMiWenJian1, JiMiWenJian1
         };
+
+        public static List<CardType> GetNewCardList()
+        {
+            var list = CardConfigList.ToList();
+            list.FisherYatesShuffle();
+            return list;
+        }
 
     }
 }

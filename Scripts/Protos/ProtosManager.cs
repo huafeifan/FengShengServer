@@ -218,9 +218,33 @@ namespace FengShengServer
                     TriggerProtos(connectID, cmd, LoginServer.Game.CharacterChoose_C2S.Parser.ParseFrom(bytes));
                     return;
 
-                //case CmdConfig.CharacterChooseList_C2S:
-                //    TriggerProtos(connectID, cmd, LoginServer.Game.CharacterChooseList_C2S.Parser.ParseFrom(bytes));
+                //case CmdConfig.GameComplete_C2S:
+                //    TriggerProtos(connectID, cmd, LoginServer.Game.GameComplete_C2S.Parser.ParseFrom(bytes));
                 //    return;
+
+                case CmdConfig.DealCards_C2S:
+                    TriggerProtos(connectID, cmd, LoginServer.Game.DealCards_C2S.Parser.ParseFrom(bytes));
+                    return;
+
+                //case CmdConfig.GameTurn_C2S:
+                //    TriggerProtos(connectID, cmd, LoginServer.Game.GameTurn_C2S.Parser.ParseFrom(bytes));
+                //    return;
+
+                case CmdConfig.GameTurnEnd_C2S:
+                    TriggerProtos(connectID, cmd, LoginServer.Game.GameTurnEnd_C2S.Parser.ParseFrom(bytes));
+                    return;
+
+                case CmdConfig.GameTurnStart_C2S:
+                    TriggerProtos(connectID, cmd, LoginServer.Game.GameTurnStart_C2S.Parser.ParseFrom(bytes));
+                    return;
+
+                case CmdConfig.GameTurnOpertateEnd_C2S:
+                    TriggerProtos(connectID, cmd, LoginServer.Game.GameTurnOpertateEnd_C2S.Parser.ParseFrom(bytes));
+                    return;
+
+                case CmdConfig.GameTurnDisCard_C2S:
+                    TriggerProtos(connectID, cmd, LoginServer.Game.GameTurnDisCard_C2S.Parser.ParseFrom(bytes));
+                    return;
             }
         }
         #endregion

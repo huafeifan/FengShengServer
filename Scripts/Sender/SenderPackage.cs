@@ -49,13 +49,13 @@ namespace FengShengServer
                 else
                 {
                     Console.WriteLine($"客户端ID:{mCSConnect.ID} RemoteEndPoint:{mCSConnect.RemoteEndPoint} 连接已断开,消息{mCmd:x4}发送失败");
-                    return null;
+                    return default(Task);
                 }
             }
             catch (Exception e)
             {
                 Console.WriteLine($"客户端ID:{mCSConnect.ID} RemoteEndPoint:{mCSConnect.RemoteEndPoint} Exception {e}");
-                return null;
+                return default(Task);
             }
         }
 

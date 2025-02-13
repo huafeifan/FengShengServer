@@ -70,6 +70,7 @@
     <Compile Include="Scripts\Game\Character.cs" />
     <Compile Include="Scripts\Game\Game.cs" />
     <Compile Include="Scripts\Game\GameCard.cs" />
+    <Compile Include="Scripts\Game\GameStage.cs" />
     <Compile Include="Scripts\Game\Identity.cs" />
     <Compile Include="Scripts\Login\Login.cs" />
     <Compile Include="Scripts\Protos\CmdConfig.cs" />

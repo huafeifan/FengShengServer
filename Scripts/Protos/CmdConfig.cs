@@ -84,6 +84,36 @@ namespace FengShengServer
         /// <summary>
         /// 发牌协议号
         /// </summary>
+        public const uint DealCards_C2S = 0x0205;
         public const uint DealCards_S2C = 0x0205;
+
+        /// <summary>
+        /// 轮到某人的回合协议号
+        /// </summary>
+        public const uint GameTurn_S2C = 0x0206;
+
+        /// <summary>
+        /// 某人回合结束协议号
+        /// </summary>
+        public const uint GameTurnEnd_C2S = 0x0207;
+        public const uint GameTurnEnd_S2C = 0x0207;
+
+        /// <summary>
+        /// 某人回合开始协议号
+        /// </summary>
+        public const uint GameTurnStart_C2S = 0x0208;
+        public const uint GameTurnStart_S2C = 0x0208;
+
+        /// <summary>
+        /// 某人回合操作结束协议号
+        /// </summary>
+        public const uint GameTurnOpertateEnd_C2S = 0x0209;
+        public const uint GameTurnOpertateEnd_S2C = 0x0209;
+
+        /// <summary>
+        /// 某人回合弃牌协议号
+        /// </summary>
+        public const uint GameTurnDisCard_C2S = 0x020A;
+        public const uint GameTurnDisCard_S2C = 0x020A;
     }
 }

@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using LoginServer.Game;
 
 namespace FengShengServer
 {
@@ -7,6 +9,12 @@ namespace FengShengServer
         public int ChairID { get; set; }
 
         public UserData UserData { get; set; }
+
+        public List<CardType> HandCard { get; set; } = new List<CardType>();
+
+        public IdentityType IdentityType { get; set; }
+
+        public CharacterType CharacterType { get; set; } = CharacterType.None;
 
         public bool IsReady { get; set; }
 
@@ -19,14 +27,15 @@ namespace FengShengServer
             if (UserData != null)
             {
                 UserData.RoomInfo = null;
-                UserData.IdentityType = LoginServer.Game.IdentityType.None;
-                UserData.CharacterType = LoginServer.Game.CharacterType.None;
                 UserData = null;
             }
 
+            IdentityType = IdentityType.None;
+            CharacterType = CharacterType.None;
             IsReady = false;
             IsRobot = false;
             IsNull = true;
+            HandCard.Clear();
         }
 
         /// <summary>
@@ -35,6 +44,24 @@ namespace FengShengServer
         public bool IsRoomOwner()
         {
             return ChairID == 1;
+        }
+
+        public bool DisCard(string cardName)
+        {
+            for (int i = 0; i < HandCard.Count; i++) 
+            { 
+                if (HandCard[i].CardName == cardName)
+                {
+                    HandCard.RemoveAt(i);
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public void DealCard(CardType card)
+        {
+            HandCard.Add(card);
         }
     }
 }
