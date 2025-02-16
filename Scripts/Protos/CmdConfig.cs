@@ -115,5 +115,69 @@ namespace FengShengServer
         /// </summary>
         public const uint GameTurnDisCard_C2S = 0x020A;
         public const uint GameTurnDisCard_S2C = 0x020A;
+
+        /// <summary>
+        /// 手牌数量协议号
+        /// </summary>
+        //public const uint HandCardCount_C2S = 0x020B;
+        public const uint HandCardCount_S2C = 0x020B;
+
+        /// <summary>
+        /// 情报宣言协议号
+        /// </summary>
+        public const uint InformationDeclaration_C2S = 0x020C;
+        public const uint InformationDeclaration_S2C = 0x020C;
+
+        /// <summary>
+        /// 情报宣言响应协议号
+        /// </summary>
+        public const uint InformationDeclarationResponse_C2S = 0x020D;
+
+        /// <summary>
+        /// 等待情报发出协议号
+        /// </summary>
+        public const uint WaitInformationTransmit_S2C = 0x020E;
+
+        /// <summary>
+        /// 情报传出协议号
+        /// </summary>
+        public const uint InformationTransmit_C2S = 0x020F;
+        public const uint InformationTransmit_S2C = 0x020F;
+
+        /// <summary>
+        /// 等待情报接受协议号
+        /// </summary>
+        public const uint WaitInformationReceive_C2S = 0x0210;
+        public const uint WaitInformationReceive_S2C = 0x0210;
+
+        /// <summary>
+        /// 跳过情报宣言响应协议号
+        /// </summary>
+        public const uint InformationDeclarationResponseEnd_C2S = 0x0211;
+
+        /// <summary>
+        /// 情报接收通知协议号
+        /// </summary>
+        public const uint InformationReceive_S2C = 0x0212;
+
+        /// <summary>
+        /// 情报接收响应协议号
+        /// </summary>
+        public const uint InformationReceiveResponse_C2S = 0x0213;
+
+        /// <summary>
+        /// 情报接收成功通知协议号
+        /// </summary>
+        public const uint InformationReceiveSuccess_S2C = 0x0214;
+
+        /// <summary>
+        /// 情报接收响应结束协议号
+        /// </summary>
+        public const uint InformationReceiveResponseEnd_C2S = 0x0215;
+
+        /// <summary>
+        /// 情报数量广播协议号
+        /// </summary>
+        public const uint InformationCount_S2C = 0x0216;
     }
 }

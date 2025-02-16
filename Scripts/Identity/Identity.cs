@@ -52,5 +52,19 @@ namespace FengShengServer
             result.FisherYatesShuffle();
             return result;
         }
+
+        public static IIdentity GetIdentity(IdentityType identity)
+        {
+            switch (identity)
+            {
+                case IdentityType.JunQing:
+                    return new JunQing();
+                case IdentityType.QianFu:
+                    return new QianFu();
+                case IdentityType.TeGong:
+                    return new TeGong();
+            }
+            return null;
+        }
     }
 }

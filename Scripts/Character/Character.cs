@@ -1,4 +1,3 @@
-
 using LoginServer.Game;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,6 +21,20 @@ namespace FengShengServer
             var list = CharacterConfigList.ToList();
             list.FisherYatesShuffle();
             return list;
+        }
+
+        public static ICharacter GetCharacter(CharacterType character)
+        {
+            switch (character)
+            {
+                case CharacterType.LaoJin:
+                    return new LaoJin();
+                case CharacterType.DaMeiNv:
+                    return new DaMeiNv();
+                case CharacterType.EmeiFeng:
+                    return new EmeiFeng();
+            }
+            return null;
         }
 
     }

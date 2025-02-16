@@ -15,7 +15,15 @@ namespace FengShengServer
 
         public List<ChairInfo> Chairs { get; set; }
 
+        /// <summary>
+        /// 当前游戏回合的玩家名称
+        /// </summary>
         public string CurrentGameTurnPlayerName { get; set; }
+
+        /// <summary>
+        /// 当前要询问是否接受情报的玩家名称
+        /// </summary>
+        public string CurrentAskInformationReceivedPlayerName { get; set; }
 
         /// <summary>
         /// 角色池
@@ -33,9 +41,19 @@ namespace FengShengServer
         public List<CardType> DisCardList { get; set; }
 
         /// <summary>
+        /// 当前正在传递的情报牌
+        /// </summary>
+        public InformationTransmit_C2S InformationCard { get; set; }
+
+        /// <summary>
         /// 游戏阶段
         /// </summary>
         public GameStage GameStage { get; set; }
+
+        /// <summary>
+        /// 情报阶段
+        /// </summary>
+        public InformationStage InformationStage { get; set; }
 
         public RoomInfo()
         {
@@ -106,6 +124,11 @@ namespace FengShengServer
             return Chairs.Find(c => !c.IsNull && c.UserData != null && c.UserData.Name == userName);
         }
 
+        public int GetHandCount(string userName)
+        {
+            return GetChair(userName).HandCard.Count;
+        }
+
         public void AddUser(UserData user)
         {
             for (int i = 0; i < Chairs.Count; i++)
@@ -117,8 +140,8 @@ namespace FengShengServer
                     Chairs[i].IsRobot = false;
 
                     Chairs[i].UserData = user;
-                    Chairs[i].IdentityType = IdentityType.None;
-                    Chairs[i].CharacterType = CharacterType.None;
+                    Chairs[i].Identity = null;
+                    Chairs[i].Character = null;
                     Chairs[i].HandCard.Clear();
                     user.RoomInfo = this;
                     break;
@@ -156,28 +179,73 @@ namespace FengShengServer
             return Chairs.Where(c => !c.IsNull && c.UserData != null).Select(s => s.UserData).ToList();
         }
 
-        public UserData GetNextUserData(string userName)
+        public UserData GetNextUserData(string userName, Card_TransmitType transmit = Card_TransmitType.MiDian, Card_DirectionType direction = Card_DirectionType.Ni)
         {
-            int index = -1;
-            for (int i = 0; i < Chairs.Count; i++)
+            if (transmit == Card_TransmitType.MiDian || transmit == Card_TransmitType.WenBen)
             {
-                if (Chairs[i].IsNull == false && Chairs[i].UserData != null && Chairs[i].UserData.Name == userName)
+                if (direction == Card_DirectionType.Ni)
                 {
-                    index = i + 1;
-                    break;
+                    int index = -100;
+                    for (int i = 0; i < Chairs.Count; i++)
+                    {
+                        if (Chairs[i].IsNull == false && Chairs[i].UserData != null && Chairs[i].UserData.Name == userName)
+                        {
+                            index = i - 1;
+                            break;
+                        }
+                    }
+
+                    if (index == -100) return null;
+
+                    if (index == -1)
+                        index = Chairs.Count - 1;
+
+                    for (int i = index; i >= 0; i--)
+                    {
+                        if (Chairs[i].IsNull == false && Chairs[i].UserData != null)
+                        {
+                            return Chairs[i].UserData;
+                        }
+                    }
+                }
+                else if (direction == Card_DirectionType.Shun)
+                {
+                    int index = -100;
+                    for (int i = 0; i < Chairs.Count; i++)
+                    {
+                        if (Chairs[i].IsNull == false && Chairs[i].UserData != null && Chairs[i].UserData.Name == userName)
+                        {
+                            index = i + 1;
+                            break;
+                        }
+                    }
+
+                    if (index == -100) return null;
+
+                    if (index == Chairs.Count)
+                        index = 0;
+
+                    for (int i = index; i < Chairs.Count; i++)
+                    {
+                        if (Chairs[i].IsNull == false && Chairs[i].UserData != null)
+                        {
+                            return Chairs[i].UserData;
+                        }
+                    }
                 }
             }
-
-            if (index == -1) return null;
-
-            if (index >= Chairs.Count) index = 0;
-            for (int i = index; i < Chairs.Count; i++)
+            else if (transmit == Card_TransmitType.ZhiDa)
             {
-                if (Chairs[i].IsNull == false && Chairs[i].UserData != null)
+                if (userName == InformationCard.FromUserName)
                 {
-                    return Chairs[i].UserData;
+                    return Chairs.Find(c => c.IsNull == false && c.UserData != null && c.UserData.Name == InformationCard.ToUserName).UserData;
+                }
+                else if (userName == InformationCard.ToUserName)
+                {
+                    return Chairs.Find(c => c.IsNull == false && c.UserData != null && c.UserData.Name == InformationCard.FromUserName).UserData;
                 }
             }
+            
             return null;
         }
 
@@ -186,6 +254,17 @@ namespace FengShengServer
             CharacterList = Character.GetNewCharacterList();
             CardList = GameCard.GetNewCardList();
             DisCardList.Clear();
+            CurrentGameTurnPlayerName = string.Empty;
+            CurrentAskInformationReceivedPlayerName = string.Empty;
+            InformationCard = null;
+            for (int i = 0; i < Chairs.Count; i++)
+            {
+                Chairs[i].Character = null;
+                Chairs[i].Identity = null;
+                Chairs[i].HandCard.Clear();
+                Chairs[i].InformationCard.Clear();
+                Chairs[i].IsReady = false;
+            }
         }
 
         public List<CharacterType> GetCharacterChooseList()
@@ -247,6 +326,35 @@ namespace FengShengServer
             return false;
         }
 
+        /// <summary>
+        /// 消耗卡牌
+        /// </summary>
+        /// <param name="userName"></param>
+        /// <param name="card"></param>
+        public bool UseCard(string userName, CardType card)
+        {
+            var chair = GetChair(userName);
+            bool isSuccess = chair.DisCard(card.CardName);
+            if (isSuccess)
+            {
+                DisCardList.Add(card);
+            }
+            return isSuccess;
+        }
+
+        /// <summary>
+        /// 发出情报
+        /// </summary>
+        /// <param name="userName"></param>
+        /// <param name="card"></param>
+        public bool InformationTransmit(string userName, InformationTransmit_C2S card)
+        {
+            var chair = GetChair(userName);
+            bool isSuccess = chair.DisCard(card.Card.CardName);
+            InformationCard = card;
+            return isSuccess;
+        }
+
         public void Close()
         {
             IsOpen = false;
@@ -255,6 +363,7 @@ namespace FengShengServer
             {
                 Chairs[i].Clear();
             }
+            DisCardList.Clear();
         }
 
     }

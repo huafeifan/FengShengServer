@@ -1248,7 +1248,7 @@ namespace FengShengServer
         };
 
         /// <summary>
-        /// 1、传递方式：密电或直达
+        /// 1、传递方式：自选
         /// 2、传递方向：选择方向
         /// 3、情报颜色：灰色
         /// 4、情报标记：锁定
@@ -1257,7 +1257,7 @@ namespace FengShengServer
         private static readonly CardType WeiXianQinBao1 = new CardType()
         {
             CardName = "card_weixianqinbao1",
-            Transmit = Card_TransmitType.MiDianOrZhiDa,
+            Transmit = Card_TransmitType.Choose,
             Direction = Card_DirectionType.Choose,
             Color = Card_ColorType.Gray,
             Lock = Card_LockType.Lock,
@@ -1268,7 +1268,7 @@ namespace FengShengServer
         };
 
         /// <summary>
-        /// 1、传递方式：密电或直达
+        /// 1、传递方式：自选
         /// 2、传递方向：逆时针方向
         /// 3、情报颜色：灰色
         /// 4、情报标记：锁定
@@ -1277,7 +1277,7 @@ namespace FengShengServer
         private static readonly CardType WeiXianQinBao2 = new CardType()
         {
             CardName = "card_weixianqinbao2",
-            Transmit = Card_TransmitType.MiDianOrZhiDa,
+            Transmit = Card_TransmitType.Choose,
             Direction = Card_DirectionType.Ni,
             Color = Card_ColorType.Gray,
             Lock = Card_LockType.Lock,

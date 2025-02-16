@@ -61,6 +61,11 @@ namespace FengShengServer
             }
 
             var result = mSenderPool.Dequeue();
+            if (result == null) 
+            {
+                return GetSenderPackage(connect, cmd, bytes, isLog);
+            }
+
             result.SetData(connect, cmd, bytes, isLog);
             return result;
         }
@@ -75,7 +80,7 @@ namespace FengShengServer
                 }
                 else
                 {
-                    await Task.Delay(4);
+                    await Task.Delay(10);
                     var sendPackage = mSenderList.Dequeue();
                     try
                     {

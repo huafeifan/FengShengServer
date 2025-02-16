@@ -62,16 +62,25 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Scripts\Character\EmeiFeng.cs" />
+    <Compile Include="Scripts\Character\ICharacter.cs" />
+    <Compile Include="Scripts\Character\DaMeiNv.cs" />
+    <Compile Include="Scripts\Character\LaoJin.cs" />
     <Compile Include="Scripts\Data\RoomDataManager.cs" />
     <Compile Include="Scripts\Data\UserData.cs" />
     <Compile Include="Scripts\Data\UserDataManager.cs" />
     <Compile Include="Scripts\Data\UserStatus.cs" />
     <Compile Include="Scripts\Event\EventManager.cs" />
-    <Compile Include="Scripts\Game\Character.cs" />
+    <Compile Include="Scripts\Character\Character.cs" />
     <Compile Include="Scripts\Game\Game.cs" />
     <Compile Include="Scripts\Game\GameCard.cs" />
     <Compile Include="Scripts\Game\GameStage.cs" />
-    <Compile Include="Scripts\Game\Identity.cs" />
+    <Compile Include="Scripts\Identity\TeGong.cs" />
+    <Compile Include="Scripts\Identity\QianFu.cs" />
+    <Compile Include="Scripts\Identity\JunQing.cs" />
+    <Compile Include="Scripts\Identity\IIdentity.cs" />
+    <Compile Include="Scripts\Identity\Identity.cs" />
+    <Compile Include="Scripts\Game\InformationStage.cs" />
     <Compile Include="Scripts\Login\Login.cs" />
     <Compile Include="Scripts\Protos\CmdConfig.cs" />
     <Compile Include="Scripts\Protos\Protocols\LoginServerGame.cs" />
