@@ -26,6 +26,11 @@ namespace FengShengServer
         public string CurrentAskInformationReceivedPlayerName { get; set; }
 
         /// <summary>
+        /// 当前出牌的玩家名称
+        /// </summary>
+        public string CurrentPlayHandCardPlayerName { get; set; }
+
+        /// <summary>
         /// 角色池
         /// </summary>
         public List<CharacterType> CharacterList { get; set; }
@@ -54,6 +59,11 @@ namespace FengShengServer
         /// 情报阶段
         /// </summary>
         public InformationStage InformationStage { get; set; }
+
+        /// <summary>
+        /// 出牌链
+        /// </summary>
+        public PlayCardStage PlayCardStage { get; set; }
 
         public RoomInfo()
         {
@@ -256,6 +266,7 @@ namespace FengShengServer
             DisCardList.Clear();
             CurrentGameTurnPlayerName = string.Empty;
             CurrentAskInformationReceivedPlayerName = string.Empty;
+            CurrentPlayHandCardPlayerName = string.Empty;
             InformationCard = null;
             for (int i = 0; i < Chairs.Count; i++)
             {

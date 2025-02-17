@@ -6,6 +6,8 @@ using LoginServer.Game;
 using Google.Protobuf.Collections;
 using System;
 using LoginServer.Room;
+using System.Runtime.Remoting.Contexts;
+using LoginServer.Login;
 
 namespace FengShengServer
 {
@@ -42,12 +44,10 @@ namespace FengShengServer
             ProtosManager.Instance.AddProtosListener(mCSConnect.ID, CmdConfig.GameTurnDisCard_C2S, OnReceiveGameTurnDisCard);
             ProtosManager.Instance.AddProtosListener(mCSConnect.ID, CmdConfig.GameTurnEnd_C2S, OnReceiveGameTurnEnd);
             ProtosManager.Instance.AddProtosListener(mCSConnect.ID, CmdConfig.InformationDeclaration_C2S, OnReceiveInformationDeclaration);
-            ProtosManager.Instance.AddProtosListener(mCSConnect.ID, CmdConfig.InformationDeclarationResponse_C2S, OnReceiveInformationDeclarationResponse);
-            ProtosManager.Instance.AddProtosListener(mCSConnect.ID, CmdConfig.InformationDeclarationResponseEnd_C2S, OnReceiveInformationDeclarationResponseEnd);
+            ProtosManager.Instance.AddProtosListener(mCSConnect.ID, CmdConfig.PlayHandCardResponse_C2S, OnReceivePlayHandCardResponse);
             ProtosManager.Instance.AddProtosListener(mCSConnect.ID, CmdConfig.InformationTransmit_C2S, OnReceiveInformationTransmit);
             ProtosManager.Instance.AddProtosListener(mCSConnect.ID, CmdConfig.WaitInformationReceive_C2S, OnReceiveWaitInformationReceive);
-            ProtosManager.Instance.AddProtosListener(mCSConnect.ID, CmdConfig.InformationReceiveResponse_C2S, OnReceiveInformationReceiveResponse);
-            ProtosManager.Instance.AddProtosListener(mCSConnect.ID, CmdConfig.InformationReceiveResponseEnd_C2S, OnReceiveInformationReceiveResponseEnd);
+            ProtosManager.Instance.AddProtosListener(mCSConnect.ID, CmdConfig.PlayHandCard_C2S, OnReceivePlayHandCard);
         }
 
         public void Close()
@@ -60,26 +60,27 @@ namespace FengShengServer
             ProtosManager.Instance.RemoveProtosListener(mCSConnect.ID, CmdConfig.GameTurnDisCard_C2S, OnReceiveGameTurnDisCard);
             ProtosManager.Instance.RemoveProtosListener(mCSConnect.ID, CmdConfig.GameTurnEnd_C2S, OnReceiveGameTurnEnd);
             ProtosManager.Instance.RemoveProtosListener(mCSConnect.ID, CmdConfig.InformationDeclaration_C2S, OnReceiveInformationDeclaration);
-            ProtosManager.Instance.RemoveProtosListener(mCSConnect.ID, CmdConfig.InformationDeclarationResponse_C2S, OnReceiveInformationDeclarationResponse);
-            ProtosManager.Instance.RemoveProtosListener(mCSConnect.ID, CmdConfig.InformationDeclarationResponseEnd_C2S, OnReceiveInformationDeclarationResponseEnd);
+            ProtosManager.Instance.RemoveProtosListener(mCSConnect.ID, CmdConfig.PlayHandCardResponse_C2S, OnReceivePlayHandCardResponse);
             ProtosManager.Instance.RemoveProtosListener(mCSConnect.ID, CmdConfig.InformationTransmit_C2S, OnReceiveInformationTransmit);
             ProtosManager.Instance.RemoveProtosListener(mCSConnect.ID, CmdConfig.WaitInformationReceive_C2S, OnReceiveWaitInformationReceive);
-            ProtosManager.Instance.RemoveProtosListener(mCSConnect.ID, CmdConfig.InformationReceiveResponse_C2S, OnReceiveInformationReceiveResponse);
-            ProtosManager.Instance.RemoveProtosListener(mCSConnect.ID, CmdConfig.InformationReceiveResponseEnd_C2S, OnReceiveInformationReceiveResponseEnd);
+            ProtosManager.Instance.RemoveProtosListener(mCSConnect.ID, CmdConfig.PlayHandCard_C2S, OnReceivePlayHandCard);
         }
 
+        /// <summary>
+        /// 游戏开始
+        /// </summary>
         private void SendGameStart(RoomInfo roomInfo, List<CSConnect> connectList)
         {
             var sendData = new LoginServer.Game.GameStart_S2C();
-            //多播游戏开始
             sendData.Code = LoginServer.Game.GameStart_S2C.Types.Ret_Code.Success;
             sendData.GameCardCount = roomInfo.CardList.Count;
             ProtosManager.Instance.Multicast(connectList, CmdConfig.GameStart_S2C, sendData);
-
-            roomInfo.GameStage = GameStage.WaitIdentityChoose;
         }
 
-        private void SendIdentityChoose(RoomInfo roomInfo)
+        /// <summary>
+        /// 选择身份
+        /// </summary>
+        private void IdentityChoose(RoomInfo roomInfo)
         {
             List<IdentityType> identityList = Identity.GetIdentityList(roomInfo);
             for (int i = 0; i < roomInfo.GetChairCount(); i++)
@@ -87,29 +88,46 @@ namespace FengShengServer
                 UserData user = roomInfo.Chairs[i].UserData;
                 if (user == null) continue;
                 roomInfo.Chairs[i].Identity = Identity.GetIdentity(identityList[i]);
-                CSConnect connect = user.CSConnect;
-
-                var sendData = new LoginServer.Game.Identity_S2C();
-                sendData.Identity = identityList[i];
-                ProtosManager.Instance.Unicast(connect, CmdConfig.Identity_S2C, sendData);
+                SendIdentityChoose(identityList[i], user.CSConnect);
             }
-            roomInfo.GameStage = GameStage.WaitCharacterChoose;
         }
 
-        private void SendCharacterChoose(RoomInfo roomInfo)
+        /// <summary>
+        /// 发送身份选择
+        /// </summary>
+        private void SendIdentityChoose(IdentityType identity, CSConnect connect)
+        {
+            var sendData = new LoginServer.Game.Identity_S2C();
+            sendData.Identity = identity;
+            ProtosManager.Instance.Unicast(connect, CmdConfig.Identity_S2C, sendData);
+        }
+
+        /// <summary>
+        /// 选择角色
+        /// </summary>
+        private void CharacterChoose(RoomInfo roomInfo)
         {
             for (int i = 0; i < roomInfo.GetChairCount(); i++)
             {
                 UserData user = roomInfo.Chairs[i].UserData;
                 if (user == null) continue;
-                CSConnect connect = user.CSConnect;
-
-                var sendData = new LoginServer.Game.CharacterChooseList_S2C();
-                sendData.Characters.AddRange(roomInfo.GetCharacterChooseList());
-                ProtosManager.Instance.Unicast(connect, CmdConfig.CharacterChooseList_S2C, sendData);
+                SendCharacterChoose(roomInfo.GetCharacterChooseList(), user.CSConnect);
             }
         }
 
+        /// <summary>
+        /// 发送角色选择
+        /// </summary>
+        private void SendCharacterChoose(List<CharacterType> characters, CSConnect connect)
+        {
+            var sendData = new LoginServer.Game.CharacterChooseList_S2C();
+            sendData.Characters.AddRange(characters);
+            ProtosManager.Instance.Unicast(connect, CmdConfig.CharacterChooseList_S2C, sendData);
+        }
+
+        /// <summary>
+        /// 起始手牌
+        /// </summary>
         private void SendInitialDealCards(RoomInfo roomInfo, List<UserData> userList, List<CSConnect> connectList)
         {
             var sendData = new LoginServer.Game.DealCards_S2C();
@@ -124,19 +142,21 @@ namespace FengShengServer
             sendData.RemainGameCardCount = roomInfo.CardList.Count;
             sendData.DisCardCount = roomInfo.DisCardList.Count;
             ProtosManager.Instance.Multicast(connectList, CmdConfig.DealCards_S2C, sendData);
-            roomInfo.GameStage = GameStage.WaitGameTurn;
         }
 
+        /// <summary>
+        /// 轮到某人的回合
+        /// </summary>
         private void SendGameTurn(string userName, RoomInfo roomInfo, List<CSConnect> connectList)
         {
             var sendData = new LoginServer.Game.GameTurn_S2C();
             sendData.UserName = userName;
             ProtosManager.Instance.Multicast(connectList, CmdConfig.GameTurn_S2C, sendData);
-            roomInfo.CurrentGameTurnPlayerName = userName;
-            roomInfo.GameStage = GameStage.WaitGameTurnStart;
-            roomInfo.InformationStage = InformationStage.WaitInformationDeclaration;
         }
 
+        /// <summary>
+        /// 某人的回合开始
+        /// </summary>
         private void SendGameTurnStart(RoomInfo roomInfo)
         {
             var userList = roomInfo.GetAllUserData();
@@ -144,36 +164,21 @@ namespace FengShengServer
             var sendData = new LoginServer.Game.GameTurnStart_S2C();
             sendData.UserName = roomInfo.CurrentGameTurnPlayerName;
             ProtosManager.Instance.Multicast(connectList, CmdConfig.GameTurnStart_S2C, sendData);
-            roomInfo.GameStage = GameStage.WaitDealCards;
         }
 
-        private void SendGameTurnDealCards(RoomInfo roomInfo, List<UserData> userList, List<CSConnect> connectList, int dealCardsCount)
-        {
-            for (int i = 0; i < roomInfo.GetChairCount(); i++)
-            {
-                UserData user = roomInfo.Chairs[i].UserData;
-                if (user == null || user.Name != roomInfo.CurrentGameTurnPlayerName) continue;
-                var sendData = new LoginServer.Game.DealCards_S2C();
-                var dealCard = new LoginServer.Game.DealCards();
-                dealCard.UserName = roomInfo.CurrentGameTurnPlayerName;
-                dealCard.Cards.AddRange(roomInfo.DrawCards(roomInfo.CurrentGameTurnPlayerName, dealCardsCount));
-                sendData.DealCards.Add(dealCard);
-                sendData.RemainGameCardCount = roomInfo.CardList.Count;
-                sendData.DisCardCount = roomInfo.DisCardList.Count;
-                ProtosManager.Instance.Multicast(connectList, CmdConfig.DealCards_S2C, sendData);
-                roomInfo.GameStage = GameStage.WaitGameTurnOpertateEnd;
-                break;
-            }
-        }
-
+        /// <summary>
+        /// 操作结束
+        /// </summary>
         private void SendGameTurnOpertateEnd(RoomInfo roomInfo, List<CSConnect> connectList)
         {
             var sendData = new LoginServer.Game.GameTurnOpertateEnd_S2C();
             sendData.UserName = roomInfo.CurrentGameTurnPlayerName;
             ProtosManager.Instance.Multicast(connectList, CmdConfig.GameTurnOpertateEnd_S2C, sendData);
-            roomInfo.GameStage = GameStage.WaitGameTurnDisCard;
         }
 
+        /// <summary>
+        /// 弃牌
+        /// </summary>
         private void SendGameTurnDisCard(RoomInfo roomInfo, RepeatedField<CardType> cards, RepeatedField<int> indexs, List<CSConnect> connectList)
         {
             var sendData = new LoginServer.Game.GameTurnDisCard_S2C();
@@ -189,16 +194,20 @@ namespace FengShengServer
             }
             sendData.DisCardCount = roomInfo.DisCardList.Count;
             ProtosManager.Instance.Multicast(connectList, CmdConfig.GameTurnDisCard_S2C, sendData);
-            roomInfo.GameStage = GameStage.WaitGameTurnEnd;
         }
 
+        /// <summary>
+        /// 回合结束
+        /// </summary>
         private void SendGameTurnEnd(RoomInfo roomInfo, List<CSConnect> connectList)
         {
             var sendData = new LoginServer.Game.GameTurnEnd_S2C();
             ProtosManager.Instance.Multicast(connectList, CmdConfig.GameTurnEnd_S2C, sendData);
-            roomInfo.GameStage = GameStage.WaitGameTurn;
         }
 
+        /// <summary>
+        /// 手牌数量
+        /// </summary>
         private void SendHandCardCount(string userName, int handCardCount, List<CSConnect> connectList)
         {
             var sendData = new LoginServer.Game.HandCardCount_S2C();
@@ -207,16 +216,22 @@ namespace FengShengServer
             ProtosManager.Instance.Multicast(connectList, CmdConfig.HandCardCount_S2C, sendData);
         }
 
+        /// <summary>
+        /// 情报数量
+        /// </summary>
         private void SendInformationCount(RoomInfo roomInfo, List<UserData> userList, List<CSConnect> connectList)
         {
             var sendData = new LoginServer.Game.InformationCount_S2C();
-            for (int i = 0; i < userList.Count; i++) 
+            for (int i = 0; i < userList.Count; i++)
             {
                 var chair = roomInfo.GetChair(userList[i].Name);
                 SendInformationCount(roomInfo, chair, connectList);
             }
         }
 
+        /// <summary>
+        /// 情报数量
+        /// </summary>
         private void SendInformationCount(RoomInfo roomInfo, ChairInfo chair, List<CSConnect> connectList)
         {
             var sendData = new LoginServer.Game.InformationCount_S2C();
@@ -231,6 +246,9 @@ namespace FengShengServer
             ProtosManager.Instance.Multicast(connectList, CmdConfig.InformationCount_S2C, sendData);
         }
 
+        /// <summary>
+        /// 抽卡
+        /// </summary>
         private void SendDealCard(RoomInfo roomInfo, string userName, int dealCardsCount, List<CSConnect> connectList)
         {
             for (int i = 0; i < roomInfo.GetChairCount(); i++)
@@ -249,153 +267,86 @@ namespace FengShengServer
             }
         }
 
-        private void OnInformationReceiveSuccess(RoomInfo roomInfo, List<CSConnect> connectList)
-        {
-            var sendData = new LoginServer.Game.InformationReceiveSuccess_S2C();
-            sendData.UserName = roomInfo.CurrentAskInformationReceivedPlayerName;
-            sendData.Card = roomInfo.InformationCard.Card;
-            if (roomInfo.InformationStage == InformationStage.WaitInformationReceiveResponse)
-            {
-                roomInfo.InformationStage = InformationStage.WaitEnd;
-
-                var chair = roomInfo.GetChair(sendData.UserName);
-                chair.ReceiveInformation(roomInfo.InformationCard.Card);
-
-                ProtosManager.Instance.Multicast(connectList, CmdConfig.InformationReceiveSuccess_S2C, sendData);
-                SendInformationCount(roomInfo, chair, connectList);
-
-                if (chair.IsVictory(out VictoryType victoryType))
-                {
-                    SendGameComplete(sendData.UserName, roomInfo, victoryType, connectList);
-                }
-                else
-                {
-                    SendGameTurnOpertateEnd(roomInfo, connectList);
-                }
-            }
-        }
-
+        /// <summary>
+        /// 游戏结束
+        /// </summary>
         private void SendGameComplete(string userName, RoomInfo roomInfo, VictoryType victoryType, List<CSConnect> connectList)
         {
-            var gameCompleteData = new LoginServer.Game.GameComplete_S2C();
-            if (victoryType == VictoryType.JunQing)
+            var sendData = new LoginServer.Game.GameComplete_S2C();
+            if (victoryType == VictoryType.JunQing || victoryType == VictoryType.QianFu)
             {
-                for (int i = 0; i < roomInfo.Chairs.Count; i++)
+                IdentityType type = victoryType == VictoryType.JunQing ? IdentityType.JunQing : IdentityType.QianFu;
+                var list = roomInfo.Chairs.Where(c => c.UserData != null && !c.IsNull).ToList();
+                foreach(var chair in list)
                 {
-                    if (roomInfo.Chairs[i].UserData == null || roomInfo.Chairs[i].IsNull)
-                        continue;
-
-                    if (roomInfo.Chairs[i].Identity.GetIdentity() == IdentityType.JunQing)
+                    var item = new GameCompleteItem()
                     {
-                        gameCompleteData.VictoryList.Add(new GameCompleteItem()
-                        {
-                            UserName = roomInfo.Chairs[i].UserData.Name,
-                            Identity = roomInfo.Chairs[i].Identity.GetIdentity(),
-                        });
+                        UserName = chair.UserData.Name,
+                        Identity = chair.Identity.GetIdentity(),
+                    };
+                    if (item.Identity == type)
+                    {
+                        sendData.VictoryList.Add(item);
                     }
                     else
                     {
-                        gameCompleteData.DefeateList.Add(new GameCompleteItem()
-                        {
-                            UserName = roomInfo.Chairs[i].UserData.Name,
-                            Identity = roomInfo.Chairs[i].Identity.GetIdentity(),
-                        });
-                    }
-                }
-            }
-            else if (victoryType == VictoryType.QianFu)
-            {
-                for (int i = 0; i < roomInfo.Chairs.Count; i++)
-                {
-                    if (roomInfo.Chairs[i].UserData == null || roomInfo.Chairs[i].IsNull)
-                        continue;
-
-                    if (roomInfo.Chairs[i].Identity.GetIdentity() == IdentityType.QianFu)
-                    {
-                        gameCompleteData.VictoryList.Add(new GameCompleteItem()
-                        {
-                            UserName = roomInfo.Chairs[i].UserData.Name,
-                            Identity = roomInfo.Chairs[i].Identity.GetIdentity(),
-                        });
-                    }
-                    else
-                    {
-                        gameCompleteData.DefeateList.Add(new GameCompleteItem()
-                        {
-                            UserName = roomInfo.Chairs[i].UserData.Name,
-                            Identity = roomInfo.Chairs[i].Identity.GetIdentity(),
-                        });
+                        sendData.DefeateList.Add(item);
                     }
                 }
             }
             else if (victoryType == VictoryType.PartTeGong)
             {
-                for (int i = 0; i < roomInfo.Chairs.Count; i++)
+                var list = roomInfo.Chairs.Where(c => c.UserData != null && !c.IsNull).ToList();
+                foreach (var chair in list)
                 {
-                    if (roomInfo.Chairs[i].UserData == null || roomInfo.Chairs[i].IsNull)
-                        continue;
-
-                    if (roomInfo.Chairs[i].Identity.GetIdentity() == IdentityType.TeGong && roomInfo.Chairs[i].IsVictory(out _))
+                    var item = new GameCompleteItem()
                     {
-                        gameCompleteData.VictoryList.Add(new GameCompleteItem()
-                        {
-                            UserName = roomInfo.Chairs[i].UserData.Name,
-                            Identity = roomInfo.Chairs[i].Identity.GetIdentity(),
-                        });
+                        UserName = chair.UserData.Name,
+                        Identity = chair.Identity.GetIdentity(),
+                    };
+                    if (item.Identity == IdentityType.TeGong && chair.IsVictory(out _))
+                    {
+                        sendData.VictoryList.Add(item);
                     }
                     else
                     {
-                        gameCompleteData.DefeateList.Add(new GameCompleteItem()
-                        {
-                            UserName = roomInfo.Chairs[i].UserData.Name,
-                            Identity = roomInfo.Chairs[i].Identity.GetIdentity(),
-                        });
+                        sendData.DefeateList.Add(item);
                     }
                 }
             }
-            else if (victoryType == VictoryType.Single)
-            {
-                for (int i = 0; i < roomInfo.Chairs.Count; i++)
-                {
-                    if (roomInfo.Chairs[i].UserData == null || roomInfo.Chairs[i].IsNull)
-                        continue;
-
-                    if (roomInfo.Chairs[i].UserData.Name == userName)
-                    {
-                        gameCompleteData.VictoryList.Add(new GameCompleteItem()
-                        {
-                            UserName = roomInfo.Chairs[i].UserData.Name,
-                            Identity = roomInfo.Chairs[i].Identity.GetIdentity(),
-                        });
-                    }
-                    else
-                    {
-                        gameCompleteData.DefeateList.Add(new GameCompleteItem()
-                        {
-                            UserName = roomInfo.Chairs[i].UserData.Name,
-                            Identity = roomInfo.Chairs[i].Identity.GetIdentity(),
-                        });
-                    }
-                }
-            }
-            ProtosManager.Instance.Multicast(connectList, CmdConfig.GameComplete_S2C, gameCompleteData);
+            ProtosManager.Instance.Multicast(connectList, CmdConfig.GameComplete_S2C, sendData);
         }
 
-        private void OnReceiveGameStart(object obj)
+        /// <summary>
+        /// 通知玩家可以出牌
+        /// </summary>
+        private void SendAskPlayHandCard(RoomInfo roomInfo)
         {
-            var data = obj as LoginServer.Game.GameStart_C2S;
-            if (data == null)
-                return;
+            var sendData = new LoginServer.Game.AskPlayHandCard_S2C();
+            var connectList = new List<CSConnect>();
+            for (int i = 0; i < roomInfo.Chairs.Count; i++)
+            {
+                if (roomInfo.Chairs[i].IsSkip == false)
+                {
+                    sendData.UserName.Add(roomInfo.Chairs[i].UserData.Name);
+                    connectList.Add(roomInfo.Chairs[i].UserData.CSConnect);
+                }
+            }
+            ProtosManager.Instance.Multicast(connectList, CmdConfig.AskPlayHandCard_S2C, sendData);
+        }
 
+        /// <summary>
+        /// 游戏开始错误检测
+        /// </summary>
+        private bool TrySendGameStartError(RoomInfo roomInfo)
+        {
             var sendData = new LoginServer.Game.GameStart_S2C();
-
-            var roomInfo = RoomDataManager.Instance.GetRoomInfo(data.RoomNub);
             if (roomInfo == null)
             {
                 sendData.Code = LoginServer.Game.GameStart_S2C.Types.Ret_Code.Failed;
                 sendData.Msg = "房间信息不存在";
                 ProtosManager.Instance.Unicast(mCSConnect, CmdConfig.GameStart_S2C, sendData);
-                return;
+                return true;
             }
 
             if (roomInfo.GetUserCount() == 0)
@@ -403,7 +354,7 @@ namespace FengShengServer
                 sendData.Code = LoginServer.Game.GameStart_S2C.Types.Ret_Code.Failed;
                 sendData.Msg = "房间中无玩家";
                 ProtosManager.Instance.Unicast(mCSConnect, CmdConfig.GameStart_S2C, sendData);
-                return;
+                return true;
             }
 
             int chairCount = roomInfo.GetChairCount();
@@ -412,7 +363,7 @@ namespace FengShengServer
                 sendData.Code = LoginServer.Game.GameStart_S2C.Types.Ret_Code.Failed;
                 sendData.Msg = "房间未提供座位";
                 ProtosManager.Instance.Unicast(mCSConnect, CmdConfig.GameStart_S2C, sendData);
-                return;
+                return true;
             }
 
             if (!roomInfo.IsFull())
@@ -420,7 +371,7 @@ namespace FengShengServer
                 sendData.Code = LoginServer.Game.GameStart_S2C.Types.Ret_Code.Failed;
                 sendData.Msg = "房间未满员";
                 ProtosManager.Instance.Unicast(mCSConnect, CmdConfig.GameStart_S2C, sendData);
-                return;
+                return true;
             }
 
             for (int i = 0; i < chairCount; i++)
@@ -430,9 +381,27 @@ namespace FengShengServer
                     sendData.Code = LoginServer.Game.GameStart_S2C.Types.Ret_Code.Failed;
                     sendData.Msg = $"玩家{roomInfo.Chairs[i].UserData.Name}未准备";
                     ProtosManager.Instance.Unicast(mCSConnect, CmdConfig.GameStart_S2C, sendData);
-                    return;
+                    return true;
                 }
             }
+
+            return false;
+        }
+
+        /// <summary>
+        /// 收到游戏开始协议
+        /// </summary>
+        private void OnReceiveGameStart(object obj)
+        {
+            var data = obj as LoginServer.Game.GameStart_C2S;
+            if (data == null)
+                return;
+
+            var roomInfo = RoomDataManager.Instance.GetRoomInfo(data.RoomNub);
+            if (TrySendGameStartError(roomInfo)) return;
+
+            var sendData = new LoginServer.Game.GameStart_S2C();
+
             roomInfo.GameStart();
             roomInfo.GameStage = GameStage.WaitGameStart;
 
@@ -441,23 +410,27 @@ namespace FengShengServer
                 //获取多播连接列表
                 var connectList = roomInfo.GetAllUserData().Select(u => u.CSConnect).ToList();
                 SendGameStart(roomInfo, connectList);
+                roomInfo.GameStage = GameStage.WaitIdentityChoose;
             }
-
 
             //服务端为游戏玩家随机抽取身份
             if (roomInfo.GameStage == GameStage.WaitIdentityChoose)
             {
-                SendIdentityChoose(roomInfo);
+                IdentityChoose(roomInfo);
+                roomInfo.GameStage = GameStage.WaitCharacterChoose;
             }
 
             //服务端为游戏玩家随机抽取3张角色牌
             if (roomInfo.GameStage == GameStage.WaitCharacterChoose)
             {
-                SendCharacterChoose(roomInfo);
+                CharacterChoose(roomInfo);
             }
 
         }
 
+        /// <summary>
+        /// 收到角色选择协议
+        /// </summary>
         private void OnReceiveCharacterChoose(object obj)
         {
             lock (this)
@@ -489,6 +462,7 @@ namespace FengShengServer
                 if (roomInfo.GameStage == GameStage.WaitDealCards)
                 {
                     SendInitialDealCards(roomInfo, userList, connectList);
+                    roomInfo.GameStage = GameStage.WaitGameTurn;
                     for (int i = 0; i < userList.Count; i++)
                     {
                         SendHandCardCount(userList[i].Name, roomInfo.GetHandCount(userList[i].Name), connectList);
@@ -496,18 +470,24 @@ namespace FengShengServer
                     SendInformationCount(roomInfo, userList, connectList);
                 }
 
-                Random random = new Random();
-                int randomIndex = random.Next(0, userList.Count);
-                //int randomIndex = 0;
+                //Random random = new Random();
+                //int randomIndex = random.Next(0, userList.Count);
+                int randomIndex = 0;
                 string userName = userList[randomIndex].Name;
                 if (roomInfo.GameStage == GameStage.WaitGameTurn)
                 {
                     SendGameTurn(userName, roomInfo, connectList);
+                    roomInfo.CurrentGameTurnPlayerName = userName;
+                    roomInfo.GameStage = GameStage.WaitGameTurnStart;
+                    roomInfo.InformationStage = InformationStage.WaitInformationDeclaration;
                 }
             }
 
         }
 
+        /// <summary>
+        /// 收到玩家回合开始协议
+        /// </summary>
         private void OnReceiveGameTurnStart(object obj)
         {
             var data = obj as LoginServer.Game.GameTurnStart_C2S;
@@ -518,9 +498,15 @@ namespace FengShengServer
             if (roomInfo.CurrentGameTurnPlayerName == data.UserName && roomInfo.GameStage == GameStage.WaitGameTurnStart)
             {
                 SendGameTurnStart(roomInfo);
+                roomInfo.CurrentPlayHandCardPlayerName = string.Empty;
+                roomInfo.CurrentAskInformationReceivedPlayerName = string.Empty;
+                roomInfo.GameStage = GameStage.WaitDealCards;
             }
         }
 
+        /// <summary>
+        /// 收到抽牌协议
+        /// </summary>
         private void OnReceiveDealCards(object obj)
         {
             var data = obj as LoginServer.Game.DealCards_C2S;
@@ -528,15 +514,23 @@ namespace FengShengServer
                 return;
 
             var roomInfo = UserDataManager.Instance.GetUserData(data.UserName).RoomInfo;
-            if (roomInfo.CurrentGameTurnPlayerName == data.UserName && roomInfo.GameStage == GameStage.WaitDealCards)
+            if (roomInfo.CurrentGameTurnPlayerName == data.UserName)
             {
+                if (roomInfo.GameStage == GameStage.WaitDealCards)
+                {
+                    roomInfo.GameStage = GameStage.WaitGameTurnOpertateEnd;
+                }
+
                 var userList = roomInfo.GetAllUserData();
                 var connectList = userList.Select(u => u.CSConnect).ToList();
-                SendGameTurnDealCards(roomInfo, userList, connectList, data.Count);
+                SendDealCard(roomInfo, roomInfo.CurrentGameTurnPlayerName, data.Count, connectList);
                 SendHandCardCount(data.UserName, roomInfo.GetHandCount(data.UserName), connectList);
             }
         }
 
+        /// <summary>
+        /// 收到玩家回合操作结束协议
+        /// </summary>
         private void OnReceiveGameTurnOpertateEnd(object obj)
         {
             var data = obj as LoginServer.Game.GameTurnOpertateEnd_C2S;
@@ -549,14 +543,13 @@ namespace FengShengServer
                 var userList = roomInfo.GetAllUserData();
                 var connectList = userList.Select(u => u.CSConnect).ToList();
                 SendGameTurnOpertateEnd(roomInfo, connectList);
-
-                if (roomInfo.GetHandCount(roomInfo.CurrentGameTurnPlayerName) == 0)
-                {
-                    SendDealCard(roomInfo, roomInfo.CurrentGameTurnPlayerName, 1, connectList);
-                }
+                roomInfo.GameStage = GameStage.WaitGameTurnDisCard;
             }
         }
 
+        /// <summary>
+        /// 收到回合弃牌协议
+        /// </summary>
         private void OnReceiveGameTurnDisCard(object obj)
         {
             var data = obj as LoginServer.Game.GameTurnDisCard_C2S;
@@ -569,10 +562,14 @@ namespace FengShengServer
                 var userList = roomInfo.GetAllUserData();
                 var connectList = userList.Select(u => u.CSConnect).ToList();
                 SendGameTurnDisCard(roomInfo, data.Cards, data.Indexs, connectList);
+                roomInfo.GameStage = GameStage.WaitGameTurnEnd;
                 SendHandCardCount(data.UserName, roomInfo.GetChair(data.UserName).HandCard.Count, connectList);
             }
         }
 
+        /// <summary>
+        /// 收到玩家回合结束协议
+        /// </summary>
         private void OnReceiveGameTurnEnd(object obj)
         {
             var data = obj as LoginServer.Game.GameTurnEnd_C2S;
@@ -585,15 +582,33 @@ namespace FengShengServer
             if (roomInfo.GameStage == GameStage.WaitGameTurnEnd)
             {
                 SendGameTurnEnd(roomInfo, connectList);
+                roomInfo.GameStage = GameStage.WaitGameTurn;
             }
 
             string userName = roomInfo.GetNextUserData(data.UserName).Name;
             if (roomInfo.GameStage == GameStage.WaitGameTurn)
             {
                 SendGameTurn(userName, roomInfo, connectList);
+                roomInfo.CurrentGameTurnPlayerName = userName;
+                roomInfo.GameStage = GameStage.WaitGameTurnStart;
+                roomInfo.InformationStage = InformationStage.WaitInformationDeclaration;
             }
         }
 
+        /// <summary>
+        /// 开始情报宣言
+        /// </summary>
+        private void SendInformationDeclaration(string userName, RoomInfo roomInfo)
+        {
+            var connectList = roomInfo.GetAllUserData().Select(u => u.CSConnect).ToList();
+            var sendData = new LoginServer.Game.InformationDeclaration_S2C();
+            sendData.UserName = userName;
+            ProtosManager.Instance.Multicast(connectList, CmdConfig.InformationDeclaration_S2C, sendData);
+        }
+
+        /// <summary>
+        /// 收到情报宣言
+        /// </summary>
         private void OnReceiveInformationDeclaration(object obj)
         {
             var data = obj as LoginServer.Game.InformationDeclaration_C2S;
@@ -606,79 +621,179 @@ namespace FengShengServer
             {
                 for (int i = 0; i < roomInfo.Chairs.Count; i++)
                 {
-                    roomInfo.Chairs[i].IsSkip =
-                        (roomInfo.Chairs[i].UserData == null ||
-                        roomInfo.Chairs[i].IsNull ||
-                        roomInfo.Chairs[i].UserData.Name == roomInfo.CurrentGameTurnPlayerName);
+                    if (roomInfo.Chairs[i].UserData == null || roomInfo.Chairs[i].IsNull ||
+                        roomInfo.Chairs[i].UserData.Name == roomInfo.CurrentGameTurnPlayerName ||
+                        roomInfo.Chairs[i].HandCard.Count == 0)
+                    {
+                        roomInfo.Chairs[i].IsSkip = true;
+                    }
+                    else
+                    {
+                        roomInfo.Chairs[i].IsSkip = false;
+                    }
                 }
 
-                var connectList = roomInfo.GetAllUserData().Select(u => u.CSConnect).ToList();
-                var sendData = new LoginServer.Game.InformationDeclaration_S2C();
-                sendData.UserName = data.UserName;
-                ProtosManager.Instance.Multicast(connectList, CmdConfig.InformationDeclaration_S2C, sendData);
-                roomInfo.InformationStage = InformationStage.WaitInformationDeclarationResponse;
+                SendInformationDeclaration(data.UserName, roomInfo);
+                roomInfo.PlayCardStage = PlayCardStage.WaitPlayerRequestHandCard;
+                SendAskPlayHandCard(roomInfo);
             }
         }
 
-        private void OnReceiveInformationDeclarationResponse(object obj)
+        /// <summary>
+        /// 等待玩家出牌
+        /// </summary>
+        private void SendWaitPlayerPlayHandCard(string userName, RoomInfo roomInfo)
         {
-            var data = obj as LoginServer.Game.InformationDeclarationResponse_C2S;
+            var connectList = roomInfo.GetAllUserData().Select(u => u.CSConnect).ToList();
+            var sendData = new LoginServer.Game.PlayHandCardResponse_S2C();
+            sendData.UserName = userName;
+            sendData.IsSkip = false;
+            ProtosManager.Instance.Multicast(connectList, CmdConfig.PlayHandCardResponse_S2C, sendData);
+        }
+
+        /// <summary>
+        /// 通知情报可以开始传递
+        /// </summary>
+        private void SendInformationTransmit(RoomInfo roomInfo, List<CSConnect> connectList)
+        {
+            var sendData = new LoginServer.Game.WaitInformationTransmit_S2C();
+            sendData.UserName = roomInfo.CurrentGameTurnPlayerName;
+            ProtosManager.Instance.Multicast(connectList, CmdConfig.WaitInformationTransmit_S2C, sendData);
+        }
+
+        /// <summary>
+        /// 通知玩家情报接收成功
+        /// </summary>
+        private void SendReceiveInformationSuccess(RoomInfo roomInfo, List<CSConnect> connectList)
+        {
+            var sendData = new LoginServer.Game.InformationReceiveSuccess_S2C();
+            sendData.UserName = roomInfo.CurrentAskInformationReceivedPlayerName;
+            sendData.Card = roomInfo.InformationCard.Card;
+            ProtosManager.Instance.Multicast(connectList, CmdConfig.InformationReceiveSuccess_S2C, sendData);
+        }
+
+        /// <summary>
+        /// 通知某玩家出牌结束
+        /// </summary>
+        private void SendPlayerResponseHandCardLinkEnd(RoomInfo roomInfo)
+        {
+            var connectList = roomInfo.GetAllUserData().Select(u => u.CSConnect).ToList();
+            var sendData = new LoginServer.Game.PlayHandCardResponse_S2C();
+            sendData.UserName = roomInfo.CurrentPlayHandCardPlayerName;
+            sendData.IsSkip = true;
+            ProtosManager.Instance.Multicast(connectList, CmdConfig.PlayHandCardResponse_S2C, sendData);
+        }
+
+        /// <summary>
+        /// 收到玩家出牌需求回复协议
+        /// </summary>
+        private void OnReceivePlayHandCardResponse(object obj)
+        {
+            var data = obj as LoginServer.Game.PlayHandCardResponse_C2S;
             if (data == null)
                 return;
 
             var roomInfo = UserDataManager.Instance.GetUserData(data.UserName).RoomInfo;
-            if (roomInfo.GameStage == GameStage.WaitGameTurnOpertateEnd &&
-                roomInfo.InformationStage == InformationStage.WaitInformationDeclarationResponse)
+            if (roomInfo.GameStage == GameStage.WaitGameTurnOpertateEnd)
             {
+                //等待玩家请求出牌阶段时,玩家请求出牌,获得出牌机会
+                if (roomInfo.PlayCardStage == PlayCardStage.WaitPlayerRequestHandCard && data.IsSkip == false)
+                {
+                    roomInfo.PlayCardStage = PlayCardStage.WaitPlayerPlayHandCard;
+                    roomInfo.CurrentPlayHandCardPlayerName = data.UserName;
+                    SendWaitPlayerPlayHandCard(data.UserName, roomInfo);
+                    return;
+                }
+
+                if (roomInfo.CurrentPlayHandCardPlayerName == data.UserName && data.IsSkip == true)
+                {
+                    SendPlayerResponseHandCardLinkEnd(roomInfo);
+                    roomInfo.CurrentPlayHandCardPlayerName = string.Empty;
+                }
+
                 var chair = roomInfo.GetChair(data.UserName);
+                chair.IsSkip = true;
+                chair = roomInfo.Chairs.Find(c => c.IsSkip == false);
                 if (chair != null)
                 {
-                    chair.IsSkip = !data.IsResponse;
-                }
-
-                //所有玩家都已经跳过
-                chair = roomInfo.Chairs.Find(c => c.IsSkip == false);
-                if (chair == null)
-                {
-                    var connectList = roomInfo.GetAllUserData().Select(u => u.CSConnect).ToList();
-                    var sendData = new LoginServer.Game.WaitInformationTransmit_S2C();
-                    sendData.UserName = roomInfo.CurrentGameTurnPlayerName;
-                    if (roomInfo.InformationStage == InformationStage.WaitInformationDeclarationResponse)
+                    //获得出牌机会的玩家跳过、不出牌时,询问其他玩家是否需要出牌
+                    if (roomInfo.PlayCardStage == PlayCardStage.WaitPlayerPlayHandCard && data.IsSkip == true)
                     {
-                        roomInfo.InformationStage = InformationStage.WaitInformationTransmit;
-                        ProtosManager.Instance.Multicast(connectList, CmdConfig.WaitInformationTransmit_S2C, sendData);
+                        roomInfo.PlayCardStage = PlayCardStage.WaitPlayerRequestHandCard;
+                        SendAskPlayHandCard(roomInfo);
                     }
+                    else
+                    {
+                        Console.WriteLine(chair.UserData == null ? "null" : chair.UserData.Name);
+                    }
+                    return;
                 }
-                else
+
+                if (roomInfo.CurrentPlayHandCardPlayerName != string.Empty)
                 {
-                    Console.WriteLine(chair.UserData == null ? "null" : chair.UserData.Name);
+                    return;
                 }
-            }
 
-        }
-
-        private void OnReceiveInformationDeclarationResponseEnd(object obj)
-        {
-            var data = obj as LoginServer.Game.InformationDeclarationResponseEnd_C2S;
-            if (data == null)
-                return;
-
-            var roomInfo = RoomDataManager.Instance.GetRoomInfo(data.RoomNub);
-            if (roomInfo.GameStage == GameStage.WaitGameTurnOpertateEnd &&
-                roomInfo.InformationStage == InformationStage.WaitInformationDeclarationResponse)
-            {
                 var connectList = roomInfo.GetAllUserData().Select(u => u.CSConnect).ToList();
-                var sendData = new LoginServer.Game.WaitInformationTransmit_S2C();
-                sendData.UserName = roomInfo.CurrentGameTurnPlayerName;
-                if (roomInfo.InformationStage == InformationStage.WaitInformationDeclarationResponse)
+                //所有玩家都已经跳过
+                //情报宣言阶段 => 情报传递阶段
+                if (roomInfo.InformationStage == InformationStage.WaitInformationDeclaration)
                 {
                     roomInfo.InformationStage = InformationStage.WaitInformationTransmit;
-                    ProtosManager.Instance.Multicast(connectList, CmdConfig.WaitInformationTransmit_S2C, sendData);
+                    SendInformationTransmit(roomInfo, connectList);
+                }
+                //情报接收阶段 => 情报接收成功 => 结算/操作结束
+                else if (roomInfo.InformationStage == InformationStage.WaitInformationReceive)
+                {
+                    roomInfo.InformationStage = InformationStage.WaitEnd;
+
+                    var receiveInformationChair = roomInfo.GetChair(roomInfo.CurrentAskInformationReceivedPlayerName);
+                    receiveInformationChair.ReceiveInformation(roomInfo.InformationCard.Card);
+
+                    SendReceiveInformationSuccess(roomInfo, connectList);
+                    SendInformationCount(roomInfo, receiveInformationChair, connectList);
+                    if (receiveInformationChair.IsVictory(out VictoryType victoryType))
+                    {
+                        SendGameComplete(roomInfo.CurrentAskInformationReceivedPlayerName, roomInfo, victoryType, connectList);
+                    }
+                    else
+                    {
+                        SendGameTurnOpertateEnd(roomInfo, connectList);
+                        roomInfo.GameStage = GameStage.WaitGameTurnDisCard;
+                    }
                 }
             }
 
         }
 
+        /// <summary>
+        /// 通知要传递的情报的具体信息
+        /// </summary>
+        private void SendInformationTransmitInfo(string toUserName, RoomInfo roomInfo, InformationTransmit_C2S data, List<CSConnect> connectList)
+        {
+            var sendData = new LoginServer.Game.InformationTransmit_S2C();
+            sendData.FromUserName = data.FromUserName;
+            sendData.Card = data.Card;
+            sendData.HandCardIndex = data.HandCardIndex;
+            sendData.ToUserName = toUserName;
+            sendData.Transmit = data.Transmit;
+            sendData.Direction = data.Direction;
+            ProtosManager.Instance.Multicast(connectList, CmdConfig.InformationTransmit_S2C, sendData);
+        }
+
+        /// <summary>
+        /// 询问是否接收情报
+        /// </summary>
+        private void SendAskInformationReceive(string userName, List<CSConnect> connectList)
+        {
+            var sendData = new LoginServer.Game.WaitInformationReceive_S2C();
+            sendData.UserName = userName;
+            ProtosManager.Instance.Multicast(connectList, CmdConfig.WaitInformationReceive_S2C, sendData);
+        }
+
+        /// <summary>
+        /// 收到情报传递协议
+        /// </summary>
         private void OnReceiveInformationTransmit(object obj)
         {
             var data = obj as LoginServer.Game.InformationTransmit_C2S;
@@ -693,23 +808,27 @@ namespace FengShengServer
                 roomInfo.InformationTransmit(data.FromUserName, data);
 
                 var connectList = roomInfo.GetAllUserData().Select(u => u.CSConnect).ToList();
-                var sendInformationTransmitData = new LoginServer.Game.InformationTransmit_S2C();
                 var askUser = roomInfo.GetNextUserData(data.FromUserName, data.Transmit, data.Direction);
                 roomInfo.CurrentAskInformationReceivedPlayerName = askUser.Name;
-                sendInformationTransmitData.FromUserName = data.FromUserName;
-                sendInformationTransmitData.Card = data.Card;
-                sendInformationTransmitData.HandCardIndex = data.HandCardIndex;
-                sendInformationTransmitData.ToUserName = askUser.Name;
-                sendInformationTransmitData.Transmit = data.Transmit;
-                sendInformationTransmitData.Direction = data.Direction;
-                ProtosManager.Instance.Multicast(connectList, CmdConfig.InformationTransmit_S2C, sendInformationTransmitData);
 
-                var sendWaitInformationReceiveData = new LoginServer.Game.WaitInformationReceive_S2C();
-                sendWaitInformationReceiveData.UserName = askUser.Name;
-                ProtosManager.Instance.Multicast(connectList, CmdConfig.WaitInformationReceive_S2C, sendWaitInformationReceiveData);
+                SendInformationTransmitInfo(askUser.Name, roomInfo, data, connectList);
+                SendAskInformationReceive(askUser.Name, connectList);
             }
         }
 
+        /// <summary>
+        /// 玩家准备接收情报通知
+        /// </summary>
+        private void SendReceiveInformation(string userName, List<CSConnect> connectList)
+        {
+            var sendData = new LoginServer.Game.InformationReceive_S2C();
+            sendData.UserName = userName;
+            ProtosManager.Instance.Multicast(connectList, CmdConfig.InformationReceive_S2C, sendData);
+        }
+
+        /// <summary>
+        /// 收到等待情报接收协议
+        /// </summary>
         private void OnReceiveWaitInformationReceive(object obj)
         {
             var data = obj as LoginServer.Game.WaitInformationReceive_C2S;
@@ -723,72 +842,99 @@ namespace FengShengServer
                 var connectList = roomInfo.GetAllUserData().Select(u => u.CSConnect).ToList();
                 if (data.IsReceive)
                 {
-                    roomInfo.InformationStage = InformationStage.WaitInformationReceiveResponse;
                     for (int i = 0; i < roomInfo.Chairs.Count; i++)
                     {
-                        roomInfo.Chairs[i].IsSkip =
-                            (roomInfo.Chairs[i].UserData == null ||
-                            roomInfo.Chairs[i].IsNull ||
-                            roomInfo.Chairs[i].UserData.Name == roomInfo.CurrentAskInformationReceivedPlayerName);
+                        if (roomInfo.Chairs[i].UserData == null || roomInfo.Chairs[i].IsNull ||
+                            roomInfo.Chairs[i].UserData.Name == roomInfo.CurrentAskInformationReceivedPlayerName ||
+                            roomInfo.Chairs[i].HandCard.Count == 0)
+                        {
+                            roomInfo.Chairs[i].IsSkip = true;
+                        }
+                        else
+                        {
+                            roomInfo.Chairs[i].IsSkip = false;
+                        }
                     }
-
-                    var sendData = new LoginServer.Game.InformationReceive_S2C();
-                    sendData.UserName = data.UserName;
-                    ProtosManager.Instance.Multicast(connectList, CmdConfig.InformationReceive_S2C, sendData);
+                    SendReceiveInformation(data.UserName, connectList);
+                    roomInfo.PlayCardStage = PlayCardStage.WaitPlayerRequestHandCard;
+                    SendAskPlayHandCard(roomInfo);
                 }
                 else
                 {
-                    var sendData = new LoginServer.Game.WaitInformationReceive_S2C();
                     var askUser = roomInfo.GetNextUserData(data.UserName, roomInfo.InformationCard.Transmit, roomInfo.InformationCard.Direction);
                     roomInfo.CurrentAskInformationReceivedPlayerName = askUser.Name;
-                    sendData.UserName = askUser.Name;
-                    ProtosManager.Instance.Multicast(connectList, CmdConfig.WaitInformationReceive_S2C, sendData);
+                    SendAskInformationReceive(askUser.Name, connectList);
                 }
             }
         }
 
-        private void OnReceiveInformationReceiveResponse(object obj)
+        /// <summary>
+        /// 打出手牌失败
+        /// </summary>
+        private void SendPlayHandCardError(RoomInfo roomInfo, LoginServer.Game.PlayHandCard_C2S data)
         {
-            var data = obj as LoginServer.Game.InformationReceiveResponse_C2S;
-            if (data == null)
-                return;
-
-            var roomInfo = UserDataManager.Instance.GetUserData(data.UserName).RoomInfo;
-            if (roomInfo.GameStage == GameStage.WaitGameTurnOpertateEnd &&
-                roomInfo.InformationStage == InformationStage.WaitInformationReceiveResponse)
-            {
-                var chair = roomInfo.GetChair(data.UserName);
-                if (chair != null)
-                {
-                    chair.IsSkip = !data.IsResponse;
-                }
-
-                //所有玩家都已经跳过
-                chair = roomInfo.Chairs.Find(c => c.IsSkip == false);
-                if (chair == null)
-                {
-                    var connectList = roomInfo.GetAllUserData().Select(u => u.CSConnect).ToList();
-                    OnInformationReceiveSuccess(roomInfo, connectList);
-                }
-                else
-                {
-                    Console.WriteLine(chair.UserData == null ? "null" : chair.UserData.Name);
-                }
-            }
+            var userData = UserDataManager.Instance.GetUserData(data.UserName);
+            var sendData = new LoginServer.Game.PlayHandCard_S2C();
+            sendData.UserName = data.UserName;
+            sendData.Card = data.Card;
+            sendData.HandCardIndex = data.HandCardIndex;
+            sendData.Code = PlayHandCard_S2C.Types.Ret_Code.Failed;
+            sendData.Msg = "不存在的手牌";
+            ProtosManager.Instance.Unicast(userData.CSConnect, CmdConfig.PlayHandCard_S2C, sendData);
         }
 
-        private void OnReceiveInformationReceiveResponseEnd(object obj)
+        /// <summary>
+        /// 打出手牌成功回复
+        /// </summary>
+        private void SendPlayHandCard(RoomInfo roomInfo, LoginServer.Game.PlayHandCard_C2S data, List<CSConnect> connectList)
         {
-            var data = obj as LoginServer.Game.InformationReceiveResponseEnd_C2S;
+            var sendData = new LoginServer.Game.PlayHandCard_S2C();
+            sendData.UserName = data.UserName;
+            sendData.Card = data.Card;
+            sendData.HandCardIndex = data.HandCardIndex;
+            sendData.Code = PlayHandCard_S2C.Types.Ret_Code.Success;
+            sendData.Msg = string.Empty;
+            ProtosManager.Instance.Multicast(connectList, CmdConfig.PlayHandCard_S2C, sendData);
+        }
+
+        /// <summary>
+        /// 收到出牌协议
+        /// </summary>
+        private void OnReceivePlayHandCard(object obj)
+        {
+            var data = obj as LoginServer.Game.PlayHandCard_C2S;
             if (data == null)
                 return;
 
-            var roomInfo = RoomDataManager.Instance.GetRoomInfo(data.RoomNub);
-            if (roomInfo.GameStage == GameStage.WaitGameTurnOpertateEnd &&
-                roomInfo.InformationStage == InformationStage.WaitInformationReceiveResponse)
+            var userData = UserDataManager.Instance.GetUserData(data.UserName);
+            var roomInfo = userData.RoomInfo;
+            if (roomInfo.GameStage == GameStage.WaitGameTurnOpertateEnd)
             {
+                if (!roomInfo.UseCard(data.UserName, data.Card))
+                {
+                    SendPlayHandCardError(roomInfo, data);
+                    return;
+                }
+
+                roomInfo.CurrentPlayHandCardPlayerName = string.Empty;
+                for (int i = 0; i < roomInfo.Chairs.Count; i++)
+                {
+                    if (roomInfo.Chairs[i].IsNull == true || roomInfo.Chairs[i].UserData == null ||
+                        roomInfo.Chairs[i].UserData.Name == data.UserName ||
+                        roomInfo.Chairs[i].HandCard.Count == 0)
+                    {
+                        roomInfo.Chairs[i].IsSkip = true;
+                    }
+                    else
+                    {
+                        roomInfo.Chairs[i].IsSkip = false;
+                    }
+                }
                 var connectList = roomInfo.GetAllUserData().Select(u => u.CSConnect).ToList();
-                OnInformationReceiveSuccess(roomInfo, connectList);
+                SendPlayHandCard(roomInfo, data, connectList);
+                SendHandCardCount(data.UserName, roomInfo.GetHandCount(data.UserName), connectList);
+                roomInfo.PlayCardStage = PlayCardStage.WaitPlayerRequestHandCard;
+                SendAskPlayHandCard(roomInfo);
             }
         }
 

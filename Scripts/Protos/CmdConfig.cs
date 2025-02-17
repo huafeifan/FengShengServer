@@ -129,9 +129,10 @@ namespace FengShengServer
         public const uint InformationDeclaration_S2C = 0x020C;
 
         /// <summary>
-        /// 情报宣言响应协议号
+        /// 响应是否出牌协议号
         /// </summary>
-        public const uint InformationDeclarationResponse_C2S = 0x020D;
+        public const uint PlayHandCardResponse_C2S = 0x020D;
+        public const uint PlayHandCardResponse_S2C = 0x020D;
 
         /// <summary>
         /// 等待情报发出协议号
@@ -151,9 +152,10 @@ namespace FengShengServer
         public const uint WaitInformationReceive_S2C = 0x0210;
 
         /// <summary>
-        /// 跳过情报宣言响应协议号
+        /// 出牌协议号
         /// </summary>
-        public const uint InformationDeclarationResponseEnd_C2S = 0x0211;
+        public const uint PlayHandCard_C2S = 0x0211;
+        public const uint PlayHandCard_S2C = 0x0211;
 
         /// <summary>
         /// 情报接收通知协议号
@@ -161,19 +163,16 @@ namespace FengShengServer
         public const uint InformationReceive_S2C = 0x0212;
 
         /// <summary>
-        /// 情报接收响应协议号
+        /// 询问是否出牌协议号
         /// </summary>
-        public const uint InformationReceiveResponse_C2S = 0x0213;
+        public const uint AskPlayHandCard_S2C = 0x0213;
 
         /// <summary>
         /// 情报接收成功通知协议号
         /// </summary>
         public const uint InformationReceiveSuccess_S2C = 0x0214;
 
-        /// <summary>
-        /// 情报接收响应结束协议号
-        /// </summary>
-        public const uint InformationReceiveResponseEnd_C2S = 0x0215;
+        
 
         /// <summary>
         /// 情报数量广播协议号

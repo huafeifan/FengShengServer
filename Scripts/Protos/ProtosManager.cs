@@ -254,8 +254,8 @@ namespace FengShengServer
                     TriggerProtos(connectID, cmd, LoginServer.Game.InformationDeclaration_C2S.Parser.ParseFrom(bytes));
                     return;
 
-                case CmdConfig.InformationDeclarationResponse_C2S:
-                    TriggerProtos(connectID, cmd, LoginServer.Game.InformationDeclarationResponse_C2S.Parser.ParseFrom(bytes));
+                case CmdConfig.PlayHandCardResponse_C2S:
+                    TriggerProtos(connectID, cmd, LoginServer.Game.PlayHandCardResponse_C2S.Parser.ParseFrom(bytes));
                     return;
 
                 //case CmdConfig.WaitInformationTransmit_C2S:
@@ -270,25 +270,29 @@ namespace FengShengServer
                     TriggerProtos(connectID, cmd, LoginServer.Game.WaitInformationReceive_C2S.Parser.ParseFrom(bytes));
                     return;
 
-                case CmdConfig.InformationDeclarationResponseEnd_C2S:
-                    TriggerProtos(connectID, cmd, LoginServer.Game.InformationDeclarationResponseEnd_C2S.Parser.ParseFrom(bytes));
+                case CmdConfig.PlayHandCard_C2S:
+                    TriggerProtos(connectID, cmd, LoginServer.Game.PlayHandCard_C2S.Parser.ParseFrom(bytes));
                     return;
 
-                //case CmdConfig.InformationReceive_C2S:
-                //    TriggerProtos(connectID, cmd, LoginServer.Game.InformationReceive_C2S.Parser.ParseFrom(bytes));
-                //    return;
+                    //case CmdConfig.InformationReceive_C2S:
+                    //    TriggerProtos(connectID, cmd, LoginServer.Game.InformationReceive_C2S.Parser.ParseFrom(bytes));
+                    //    return;
 
-                case CmdConfig.InformationReceiveResponse_C2S:
-                    TriggerProtos(connectID, cmd, LoginServer.Game.InformationReceiveResponse_C2S.Parser.ParseFrom(bytes));
-                    return;
+                    //case CmdConfig.AskPlayHandCard_C2S:
+                    //    TriggerProtos(connectID, cmd, LoginServer.Game.AskPlayHandCard_C2S.Parser.ParseFrom(bytes));
+                    //    return;
 
-                //case CmdConfig.InformationReceiveSuccess_C2S:
-                //    TriggerProtos(connectID, cmd, LoginServer.Game.InformationReceiveSuccess_C2S.Parser.ParseFrom(bytes));
-                //    return;
+                    //case CmdConfig.InformationReceiveSuccess_C2S:
+                    //    TriggerProtos(connectID, cmd, LoginServer.Game.InformationReceiveSuccess_C2S.Parser.ParseFrom(bytes));
+                    //    return;
 
-                case CmdConfig.InformationReceiveResponseEnd_C2S:
-                    TriggerProtos(connectID, cmd, LoginServer.Game.InformationReceiveResponseEnd_C2S.Parser.ParseFrom(bytes));
-                    return;
+                    //case CmdConfig.InformationReceiveResponseEnd_C2S:
+                    //    TriggerProtos(connectID, cmd, LoginServer.Game.InformationReceiveResponseEnd_C2S.Parser.ParseFrom(bytes));
+                    //    return;
+
+                    //case CmdConfig.InformationCount_C2S:
+                    //    TriggerProtos(connectID, cmd, LoginServer.Game.InformationCount_C2S.Parser.ParseFrom(bytes));
+                    //    return;
             }
         }
         #endregion

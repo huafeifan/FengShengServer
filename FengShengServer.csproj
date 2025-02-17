@@ -75,6 +75,7 @@
     <Compile Include="Scripts\Game\Game.cs" />
     <Compile Include="Scripts\Game\GameCard.cs" />
     <Compile Include="Scripts\Game\GameStage.cs" />
+    <Compile Include="Scripts\Game\PlayCardStage.cs" />
     <Compile Include="Scripts\Identity\TeGong.cs" />
     <Compile Include="Scripts\Identity\QianFu.cs" />
     <Compile Include="Scripts\Identity\JunQing.cs" />
