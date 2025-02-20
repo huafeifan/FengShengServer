@@ -1490,21 +1490,29 @@ namespace FengShengServer
 
         public static List<CardType> CardConfigList = new List<CardType>()
         {
-            GongKaiWenBen1, GongKaiWenBen2, GongKaiWenBen3, GongKaiWenBen4, GongKaiWenBen5,
-            MiMiXiaDa1, MiMiXiaDa2, MiMiXiaDa3, MiMiXiaDa4, MiMiXiaDa5, MiMiXiaDa6, MiMiXiaDa7, MiMiXiaDa8, MiMiXiaDa9,
-            ShiTan1, ShiTan2, ShiTan3, ShiTan4, ShiTan5, ShiTan6, ShiTan7, ShiTan8, ShiTan9,
+            //GongKaiWenBen1, GongKaiWenBen2, GongKaiWenBen3, GongKaiWenBen4, GongKaiWenBen5,
+            //MiMiXiaDa1, MiMiXiaDa2, MiMiXiaDa3, MiMiXiaDa4, MiMiXiaDa5, MiMiXiaDa6, MiMiXiaDa7, MiMiXiaDa8, MiMiXiaDa9,
+            //ShiTan1, ShiTan2, ShiTan3, ShiTan4, ShiTan5, ShiTan6, ShiTan7, ShiTan8, ShiTan9,
+            //DiaoBao1, DiaoBao1, DiaoBao2, DiaoBao2, DiaoBao3,
+            //JieHuo1, JieHuo2, JieHuo3, JieHuo4, JieHuo5, JieHuo6,
+            //LiJian1, LiJian2, LiJian3, LiJian3, LiJian3,
+            //PoYi1, PoYi2, PoYi3, PoYi4, PoYi5, PoYi6,
+            //DiaoHuLiShan1, DiaoHuLiShan2, DiaoHuLiShan3, DiaoHuLiShan4, DiaoHuLiShan5, DiaoHuLiShan6,
+            //ZengYuan1, ZengYuan2, ZengYuan3,
+            //ShaoHui1, ShaoHui1, ShaoHui1, ShaoHui2, ShaoHui3,
+            //SuoDing1, SuoDing2, SuoDing3, SuoDing4, SuoDing5, SuoDing6, SuoDing7, SuoDing8, SuoDing9,
+            //WeiXianQinBao1, WeiXianQinBao1, WeiXianQinBao1, WeiXianQinBao2, WeiXianQinBao2,
+            //ShiPo1, ShiPo2, ShiPo3, ShiPo4, ShiPo5, ShiPo6,
+            //ZhuanYi1, ZhuanYi1, ZhuanYi1, ZhuanYi2, ZhuanYi3,
+            //JiMiWenJian1, JiMiWenJian1, JiMiWenJian1
             DiaoBao1, DiaoBao1, DiaoBao2, DiaoBao2, DiaoBao3,
-            JieHuo1, JieHuo2, JieHuo3, JieHuo4, JieHuo5, JieHuo6,
-            LiJian1, LiJian2, LiJian3, LiJian3, LiJian3,
-            PoYi1, PoYi2, PoYi3, PoYi4, PoYi5, PoYi6,
-            DiaoHuLiShan1, DiaoHuLiShan2, DiaoHuLiShan3, DiaoHuLiShan4, DiaoHuLiShan5, DiaoHuLiShan6,
-            ZengYuan1, ZengYuan2, ZengYuan3,
-            ShaoHui1, ShaoHui1, ShaoHui1, ShaoHui2, ShaoHui3,
-            SuoDing1, SuoDing2, SuoDing3, SuoDing4, SuoDing5, SuoDing6, SuoDing7, SuoDing8, SuoDing9,
-            WeiXianQinBao1, WeiXianQinBao1, WeiXianQinBao1, WeiXianQinBao2, WeiXianQinBao2,
+            DiaoBao1, DiaoBao1, DiaoBao2, DiaoBao2, DiaoBao3,
+            DiaoBao1, DiaoBao1, DiaoBao2, DiaoBao2, DiaoBao3,
+            DiaoBao1, DiaoBao1, DiaoBao2, DiaoBao2, DiaoBao3,
             ShiPo1, ShiPo2, ShiPo3, ShiPo4, ShiPo5, ShiPo6,
-            ZhuanYi1, ZhuanYi1, ZhuanYi1, ZhuanYi2, ZhuanYi3,
-            JiMiWenJian1, JiMiWenJian1, JiMiWenJian1
+            ShiPo1, ShiPo2, ShiPo3, ShiPo4, ShiPo5, ShiPo6,
+            ShiPo1, ShiPo2, ShiPo3, ShiPo4, ShiPo5, ShiPo6,
+            ShiPo1, ShiPo2, ShiPo3, ShiPo4, ShiPo5, ShiPo6,
         };
 
         public static List<CardType> GetNewCardList()
@@ -1512,6 +1520,16 @@ namespace FengShengServer
             var list = CardConfigList.ToList();
             list.FisherYatesShuffle();
             return list;
+        }
+
+        public static ICard GetCardXiaoGuo(Card_XiaoGuoType card)
+        {
+            switch (card)
+            {
+                case Card_XiaoGuoType.DiaoBao:
+                    return new DiaoBao();
+            }
+            return new DiaoBao();
         }
 
     }

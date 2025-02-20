@@ -29,17 +29,17 @@ namespace FengShengServer
                 mRoomList.Add(i, null);
             }
 
-            RoomInfo roomInfo;
-            TryAddRoom("2025.1.23", 4, out roomInfo);
-            roomInfo.AddUser(UserDataManager.Instance.GetUserData("test1"));
-            roomInfo.AddUser(UserDataManager.Instance.GetUserData("test2"));
-            roomInfo.AddUser(UserDataManager.Instance.GetUserData("test3"));
-            roomInfo.RemoveUser("test2");
-            TryAddRoom("哦还有", 5, out roomInfo);
-            roomInfo.AddUser(UserDataManager.Instance.GetUserData("test4"));
-            roomInfo.AddUser(UserDataManager.Instance.GetUserData("test5"));
-            roomInfo.AddUser(UserDataManager.Instance.GetUserData("test6"));
-            roomInfo.RemoveUser("test5");
+            //RoomInfo roomInfo;
+            //TryAddRoom("2025.1.23", 4, out roomInfo);
+            //roomInfo.AddUser(UserDataManager.Instance.GetUserData("test1"));
+            //roomInfo.AddUser(UserDataManager.Instance.GetUserData("test2"));
+            //roomInfo.AddUser(UserDataManager.Instance.GetUserData("test3"));
+            //roomInfo.RemoveUser("test2");
+            //TryAddRoom("哦还有", 5, out roomInfo);
+            //roomInfo.AddUser(UserDataManager.Instance.GetUserData("test4"));
+            //roomInfo.AddUser(UserDataManager.Instance.GetUserData("test5"));
+            //roomInfo.AddUser(UserDataManager.Instance.GetUserData("test6"));
+            //roomInfo.RemoveUser("test5");
             //TryAddRoom("nice", 6, out _);
             //TryAddRoom("hello", 4, out _);
 

@@ -142,8 +142,8 @@ namespace FengShengServer
         /// <summary>
         /// 情报传出协议号
         /// </summary>
-        public const uint InformationTransmit_C2S = 0x020F;
-        public const uint InformationTransmit_S2C = 0x020F;
+        public const uint InformationTransmitReady_C2S = 0x020F;
+        public const uint InformationTransmitReady_S2C = 0x020F;
 
         /// <summary>
         /// 等待情报接受协议号
@@ -172,11 +172,36 @@ namespace FengShengServer
         /// </summary>
         public const uint InformationReceiveSuccess_S2C = 0x0214;
 
-        
+        /// <summary>
+        /// 通知情报传回情报传出者协议号
+        /// </summary>
+        public const uint InformationTransmitSender_S2C = 0x0215;
 
         /// <summary>
         /// 情报数量广播协议号
         /// </summary>
         public const uint InformationCount_S2C = 0x0216;
+
+        /// <summary>
+        /// 等待卡牌效果触发结束协议号
+        /// </summary>
+        public const uint TriggerCardEnd_C2S = 0x0217;
+        public const uint TriggerCardEnd_S2C = 0x0217;
+
+        /// <summary>
+        /// 询问是否使用识破协议号
+        /// </summary>
+        public const uint AskUseShiPo_C2S = 0x0218;
+        public const uint AskUseShiPo_S2C = 0x0218;
+
+        /// <summary>
+        /// 卡牌效果触发结果协议号
+        /// </summary>
+        public const uint TriggerCardResult_S2C = 0x0219;
+
+        /// <summary>
+        /// 情报传递协议号
+        /// </summary>
+        public const uint InformationTransmit_S2C = 0x021A;
     }
 }

@@ -10,18 +10,22 @@ namespace FengShengServer
         /// <summary>
         /// 等待情报宣言
         /// </summary>
-        WaitInformationDeclaration,
+        InformationDeclaration,
         /// <summary>
         /// 等待发出情报
         /// </summary>
         WaitInformationTransmit,
         /// <summary>
+        /// 发出情报
+        /// </summary>
+        InformationTransmit,
+        /// <summary>
         /// 等待玩家接收情报
         /// </summary>
         WaitInformationReceive,
         /// <summary>
-        /// 等待情报传递结束
+        /// 玩家接收情报
         /// </summary>
-        WaitEnd,
+        InformationReceive,
     }
 }

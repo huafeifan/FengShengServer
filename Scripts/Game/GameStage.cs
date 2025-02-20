@@ -8,40 +8,40 @@ namespace FengShengServer
     {
         None,
         /// <summary>
-        /// 等待游戏开始
+        /// 游戏开始
         /// </summary>
-        WaitGameStart,
+        GameStart,
         /// <summary>
         /// 等待身份选择
         /// </summary>
-        WaitIdentityChoose,
+        IdentityChoose,
         /// <summary>
         /// 等待身份选择
         /// </summary>
-        WaitCharacterChoose,
+        CharacterChoose,
         /// <summary>
         /// 等待发牌
         /// </summary>
-        WaitDealCards,
+        DealCards,
         /// <summary>
         /// 等待轮到某人
         /// </summary>
-        WaitGameTurn,
+        GameTurn,
         /// <summary>
         /// 等待回合开始
         /// </summary>
-        WaitGameTurnStart,
+        GameTurnStart,
         /// <summary>
         /// 等待回合操作结束
         /// </summary>
-        WaitGameTurnOpertateEnd,
+        GameTurnOpertateEnd,
         /// <summary>
         /// 等待回合弃牌
         /// </summary>
-        WaitGameTurnDisCard,
+        GameTurnDisCard,
         /// <summary>
         /// 等待回合结束
         /// </summary>
-        WaitGameTurnEnd,
+        GameTurnEnd,
     }
 }

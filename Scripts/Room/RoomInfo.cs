@@ -48,7 +48,12 @@ namespace FengShengServer
         /// <summary>
         /// 当前正在传递的情报牌
         /// </summary>
-        public InformationTransmit_C2S InformationCard { get; set; }
+        public InformationTransmitReady_C2S InformationCard { get; set; }
+
+        /// <summary>
+        /// 等待触发的卡牌效果
+        /// </summary>
+        public WaitTriggerCard WaitTriggerCard { get; set; }
 
         /// <summary>
         /// 游戏阶段
@@ -56,14 +61,36 @@ namespace FengShengServer
         public GameStage GameStage { get; set; }
 
         /// <summary>
+        /// 游戏阶段队列
+        /// </summary>
+        public Queue<Func<bool>> GameStageQueue { get; set; }
+
+        /// <summary>
         /// 情报阶段
         /// </summary>
         public InformationStage InformationStage { get; set; }
 
         /// <summary>
-        /// 出牌链
+        /// 情报阶段队列
         /// </summary>
-        public PlayCardStage PlayCardStage { get; set; }
+        public Queue<Func<bool>> InformationStageQueue { get; set; }
+
+        /// <summary>
+        /// 出牌阶段队列
+        /// </summary>
+        public Queue<Func<bool>> PlayCardStageQueue { get; set; }
+
+        /// <summary>
+        /// 协议数据
+        /// </summary>
+        public GameProtoData Data { get; set; }
+
+        /// <summary>
+        /// 缓存数据
+        /// </summary>
+        public List<ChairInfo> ChairListCache { get; set; }
+        public List<UserData> UserListCache { get; set; }
+        public List<CSConnect> ConnectListCache { get; set; }
 
         public RoomInfo()
         {
@@ -72,13 +99,16 @@ namespace FengShengServer
             RoomNub = -1;
             IsOpen = false;
             DisCardList = new List<CardType>();
+            GameStageQueue = new Queue<Func<bool>>();
+            InformationStageQueue = new Queue<Func<bool>>();
+            PlayCardStageQueue = new Queue<Func<bool>>();
         }
 
         public int GetChairCount()
         {
             return Chairs.Count;
         }
-
+        
         public int GetUserCount()
         {
             int count = 0;
@@ -263,6 +293,7 @@ namespace FengShengServer
         {
             CharacterList = Character.GetNewCharacterList();
             CardList = GameCard.GetNewCardList();
+            Data = new GameProtoData();
             DisCardList.Clear();
             CurrentGameTurnPlayerName = string.Empty;
             CurrentAskInformationReceivedPlayerName = string.Empty;
@@ -276,6 +307,19 @@ namespace FengShengServer
                 Chairs[i].InformationCard.Clear();
                 Chairs[i].IsReady = false;
             }
+
+            GameStage = GameStage.None;
+            GameStageQueue.Clear();
+            InformationStage = InformationStage.None;
+            InformationStageQueue.Clear();
+            PlayCardStageQueue.Clear();
+        }
+
+        public void GameComplete()
+        {
+            GameStageQueue.Clear();
+            InformationStageQueue.Clear();
+            PlayCardStageQueue.Clear();
         }
 
         public List<CharacterType> GetCharacterChooseList()
@@ -358,7 +402,7 @@ namespace FengShengServer
         /// </summary>
         /// <param name="userName"></param>
         /// <param name="card"></param>
-        public bool InformationTransmit(string userName, InformationTransmit_C2S card)
+        public bool InformationTransmit(string userName, InformationTransmitReady_C2S card)
         {
             var chair = GetChair(userName);
             bool isSuccess = chair.DisCard(card.Card.CardName);
@@ -375,6 +419,15 @@ namespace FengShengServer
                 Chairs[i].Clear();
             }
             DisCardList.Clear();
+            CurrentGameTurnPlayerName = string.Empty;
+            CurrentAskInformationReceivedPlayerName = string.Empty;
+            CurrentPlayHandCardPlayerName = string.Empty;
+            InformationCard = null;
+            GameStage = GameStage.None;
+            GameStageQueue.Clear();
+            InformationStage = InformationStage.None;
+            InformationStageQueue.Clear();
+            PlayCardStageQueue.Clear();
         }
 
     }

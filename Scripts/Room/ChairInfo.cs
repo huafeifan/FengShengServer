@@ -24,7 +24,15 @@ namespace FengShengServer
 
         public bool IsNull { get; set; }
 
+        /// <summary>
+        /// 是否跳过出牌
+        /// </summary>
         public bool IsSkip { get; set; }
+
+        /// <summary>
+        /// 是否使用识破效果
+        /// </summary>
+        public bool IsUseShiPo { get; set; }
 
         public void Clear()
         {
@@ -40,6 +48,7 @@ namespace FengShengServer
             IsRobot = false;
             IsNull = true;
             IsSkip = false;
+            IsUseShiPo = false;
             InformationCard.Clear();
             HandCard.Clear();
         }
@@ -68,6 +77,12 @@ namespace FengShengServer
         public void DealCard(CardType card)
         {
             HandCard.Add(card);
+        }
+
+        public bool CanUseShiPo()
+        {
+            var card = HandCard.Find(c => c.Xiaoguo == Card_XiaoGuoType.ShiPo);
+            return card != null;
         }
 
         public void ReceiveInformation(CardType card)
