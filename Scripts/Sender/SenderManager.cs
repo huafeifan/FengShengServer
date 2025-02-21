@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Threading;
 using System.IO;
-using System.Runtime.CompilerServices;
+using Google.Protobuf;
 
 namespace FengShengServer
 {
@@ -53,6 +53,11 @@ namespace FengShengServer
             mSenderList.Enqueue(GetSenderPackage(connect, cmd, bytes, isLog));
         }
 
+        public void AddSendMessage(CSConnect connect, uint cmd, IMessage sendData, bool isLog)
+        {
+            mSenderList.Enqueue(GetSenderPackage(connect, cmd, sendData, isLog));
+        }
+
         private SenderPackage GetSenderPackage(CSConnect connect, uint cmd, byte[] bytes, bool isLog)
         {
             if (mSenderPool.Count == 0)
@@ -67,6 +72,23 @@ namespace FengShengServer
             }
 
             result.SetData(connect, cmd, bytes, isLog);
+            return result;
+        }
+
+        private SenderPackage GetSenderPackage(CSConnect connect, uint cmd, IMessage sendData, bool isLog)
+        {
+            if (mSenderPool.Count == 0)
+            {
+                return new SenderPackage(connect, cmd, sendData, isLog);
+            }
+
+            var result = mSenderPool.Dequeue();
+            if (result == null)
+            {
+                return GetSenderPackage(connect, cmd, sendData, isLog);
+            }
+
+            result.SetData(connect, cmd, sendData, isLog);
             return result;
         }
 

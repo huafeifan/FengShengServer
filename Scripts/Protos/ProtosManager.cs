@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
+using System.Text;
 using Google.Protobuf;
 
 namespace FengShengServer
@@ -22,6 +24,7 @@ namespace FengShengServer
         /// 协议监听  连接ID号，监听器
         /// </summary>
         private Dictionary<int, ProtosListener> mProtosListeners = new Dictionary<int, ProtosListener>();
+        private bool mIsDebug = true;
 
         public void Start()
         {
@@ -91,6 +94,22 @@ namespace FengShengServer
         }
 
         /// <summary>
+        /// 添加协议监听
+        /// </summary>
+        /// <param name="connectID">连接ID</param>
+        /// <param name="cmd">协议号</param>
+        /// <param name="callBack"></param>
+        /// <param name="listeneCount">监听次数</param>
+        public void AddProtosListener(int connectID, uint cmd, Action<object> callBack, int listeneCount)
+        {
+            var listener = GetProtosListener(connectID);
+            if (listener != null)
+            {
+                listener.AddListener(cmd, callBack, listeneCount);
+            }
+        }
+
+        /// <summary>
         /// 移除协议监听
         /// </summary>
         /// <param name="connectID">连接ID</param>
@@ -118,6 +137,20 @@ namespace FengShengServer
             {
                 listener.TriggerEvent(cmd, data);
             }
+            if (mIsDebug)
+            {
+                var user = UserDataManager.Instance.GetUserDataByConnectID(connectID);
+                if (user == null) return;
+
+                Type type = data.GetType();
+                var properties = type.GetProperties(BindingFlags.Public | BindingFlags.Instance);
+                StringBuilder sb = new StringBuilder($"用户名:{user.Name}");
+                foreach (var property in properties)
+                {
+                    sb.Append($"   {property.Name}:{property.GetValue(data)}");
+                }
+                Console.WriteLine(sb.ToString());
+            }
         }
 
         /// <summary>
@@ -129,7 +162,7 @@ namespace FengShengServer
         public void Unicast(CSConnect connect, uint cmd, IMessage sendData)
         {
             if (connect == null) return;
-            SenderManager.Instance.AddSendMessage(connect, cmd, sendData.ToByteArray(), true);
+            SenderManager.Instance.AddSendMessage(connect, cmd, sendData, mIsDebug);
         }
 
         /// <summary>
@@ -194,10 +227,6 @@ namespace FengShengServer
                     TriggerProtos(connectID, cmd, LoginServer.Room.ExitRoom_C2S.Parser.ParseFrom(bytes));
                     return;
 
-                //case CmdConfig.RoomInfoChange_C2S:
-                //    TriggerProtos(connectID, cmd, LoginServer.Room.RoomInfoChange_C2S.Parser.ParseFrom(bytes));
-                //    return;
-
                 case CmdConfig.RequestRoomInfo_C2S:
                     TriggerProtos(connectID, cmd, LoginServer.Room.RequestRoomInfo_C2S.Parser.ParseFrom(bytes));
                     return;
@@ -210,25 +239,13 @@ namespace FengShengServer
                     TriggerProtos(connectID, cmd, LoginServer.Game.GameStart_C2S.Parser.ParseFrom(bytes));
                     return;
 
-                //case CmdConfig.Identity_C2S:
-                //    TriggerProtos(connectID, cmd, LoginServer.Game.Identity_C2S.Parser.ParseFrom(bytes));
-                //    return;
-
                 case CmdConfig.CharacterChoose_C2S:
                     TriggerProtos(connectID, cmd, LoginServer.Game.CharacterChoose_C2S.Parser.ParseFrom(bytes));
                     return;
 
-                //case CmdConfig.GameComplete_C2S:
-                //    TriggerProtos(connectID, cmd, LoginServer.Game.GameComplete_C2S.Parser.ParseFrom(bytes));
-                //    return;
-
                 case CmdConfig.DealCards_C2S:
                     TriggerProtos(connectID, cmd, LoginServer.Game.DealCards_C2S.Parser.ParseFrom(bytes));
                     return;
-
-                //case CmdConfig.GameTurn_C2S:
-                //    TriggerProtos(connectID, cmd, LoginServer.Game.GameTurn_C2S.Parser.ParseFrom(bytes));
-                //    return;
 
                 case CmdConfig.GameTurnEnd_C2S:
                     TriggerProtos(connectID, cmd, LoginServer.Game.GameTurnEnd_C2S.Parser.ParseFrom(bytes));
@@ -246,10 +263,6 @@ namespace FengShengServer
                     TriggerProtos(connectID, cmd, LoginServer.Game.GameTurnDisCard_C2S.Parser.ParseFrom(bytes));
                     return;
 
-                //case CmdConfig.HandCardCount_C2S:
-                //    TriggerProtos(connectID, cmd, LoginServer.Game.HandCardCount_C2S.Parser.ParseFrom(bytes));
-                //    return;
-
                 case CmdConfig.InformationDeclaration_C2S:
                     TriggerProtos(connectID, cmd, LoginServer.Game.InformationDeclaration_C2S.Parser.ParseFrom(bytes));
                     return;
@@ -257,10 +270,6 @@ namespace FengShengServer
                 case CmdConfig.PlayHandCardResponse_C2S:
                     TriggerProtos(connectID, cmd, LoginServer.Game.PlayHandCardResponse_C2S.Parser.ParseFrom(bytes));
                     return;
-
-                //case CmdConfig.WaitInformationTransmit_C2S:
-                //    TriggerProtos(connectID, cmd, LoginServer.Game.WaitInformationTransmit_C2S.Parser.ParseFrom(bytes));
-                //    return;
 
                 case CmdConfig.InformationTransmitReady_C2S:
                     TriggerProtos(connectID, cmd, LoginServer.Game.InformationTransmitReady_C2S.Parser.ParseFrom(bytes));
@@ -274,41 +283,14 @@ namespace FengShengServer
                     TriggerProtos(connectID, cmd, LoginServer.Game.PlayHandCard_C2S.Parser.ParseFrom(bytes));
                     return;
 
-                //case CmdConfig.InformationReceive_C2S:
-                //    TriggerProtos(connectID, cmd, LoginServer.Game.InformationReceive_C2S.Parser.ParseFrom(bytes));
-                //    return;
-
-                //case CmdConfig.AskPlayHandCard_C2S:
-                //    TriggerProtos(connectID, cmd, LoginServer.Game.AskPlayHandCard_C2S.Parser.ParseFrom(bytes));
-                //    return;
-
-                //case CmdConfig.InformationReceiveSuccess_C2S:
-                //    TriggerProtos(connectID, cmd, LoginServer.Game.InformationReceiveSuccess_C2S.Parser.ParseFrom(bytes));
-                //    return;
-
-                //case CmdConfig.InformationTransmitSender_C2S:
-                //    TriggerProtos(connectID, cmd, LoginServer.Game.InformationTransmitSender_C2S.Parser.ParseFrom(bytes));
-                //    return;
-
-                //case CmdConfig.InformationCount_C2S:
-                //    TriggerProtos(connectID, cmd, LoginServer.Game.InformationCount_C2S.Parser.ParseFrom(bytes));
-                //    return;
-
-                case CmdConfig.TriggerCardEnd_C2S:
-                    TriggerProtos(connectID, cmd, LoginServer.Game.TriggerCardEnd_C2S.Parser.ParseFrom(bytes));
-                    return;
-
                 case CmdConfig.AskUseShiPo_C2S:
                     TriggerProtos(connectID, cmd, LoginServer.Game.AskUseShiPo_C2S.Parser.ParseFrom(bytes));
                     return;
 
-                //case CmdConfig.TriggerCardResult_C2S:
-                //    TriggerProtos(connectID, cmd, LoginServer.Game.TriggerCardResult_C2S.Parser.ParseFrom(bytes));
-                //    return;
+                case CmdConfig.UseDiaoBao_C2S:
+                    TriggerProtos(connectID, cmd, LoginServer.Game.UseDiaoBao_C2S.Parser.ParseFrom(bytes));
+                    return;
 
-                //case CmdConfig.InformationTransmit_C2S:
-                //    TriggerProtos(connectID, cmd, LoginServer.Game.InformationTransmit_C2S.Parser.ParseFrom(bytes));
-                //    return;
             }
         }
         #endregion

@@ -1,5 +1,8 @@
 using System;
+using Google.Protobuf;
 using System.Threading.Tasks;
+using System.Reflection;
+using System.Text;
 
 namespace FengShengServer
 {
@@ -7,7 +10,8 @@ namespace FengShengServer
     {
         private CSConnect mCSConnect;
         private uint mCmd;
-        private byte[] mSendData;
+        private byte[] mSendDataBytes;
+        private IMessage mSendData;
 
         public bool IsLog;
 
@@ -16,11 +20,26 @@ namespace FengShengServer
             SetData(connect, cmd, bytes, isLog);
         }
 
+        public SenderPackage(CSConnect connect, uint cmd, IMessage sendData, bool isLog)
+        {
+            SetData(connect, cmd, sendData, isLog);
+        }
+
         public void SetData(CSConnect connect, uint cmd, byte[] bytes, bool isLog)
         {
             mCSConnect = connect;
             mCmd = cmd;
-            mSendData = bytes;
+            mSendDataBytes = bytes;
+            mSendData = null;
+            IsLog = isLog;
+        }
+
+        public void SetData(CSConnect connect, uint cmd, IMessage sendData, bool isLog)
+        {
+            mCSConnect = connect;
+            mCmd = cmd;
+            mSendDataBytes = null;
+            mSendData = sendData;
             IsLog = isLog;
         }
 
@@ -30,7 +49,11 @@ namespace FengShengServer
             {
                 if (mCSConnect != null && mCSConnect.TcpClient != null && mCSConnect.TcpClient.Connected)
                 {
-                    int len = mSendData.Length + 4;
+                    if (mSendData != null)
+                    {
+                        mSendDataBytes = mSendData.ToByteArray();
+                    }
+                    int len = mSendDataBytes.Length + 4;
                     byte b1 = (byte)((uint)len >> 8 & 0xFFu);
                     byte b2 = (byte)((uint)len & 0xFFu);
                     byte b3 = (byte)(mCmd >> 8 & 0xFFu);
@@ -41,7 +64,7 @@ namespace FengShengServer
                     bytes[1] = b2;
                     bytes[2] = b3;
                     bytes[3] = b4;
-                    mSendData.CopyTo(bytes, 4);
+                    mSendDataBytes.CopyTo(bytes, 4);
 
                     var steam = mCSConnect.TcpClient.GetStream();
                     return steam.WriteAsync(bytes, 0, bytes.Length);
@@ -61,7 +84,25 @@ namespace FengShengServer
 
         public string GetLog()
         {
-             return $"客户端ID:{mCSConnect.ID} RemoteEndPoint:{mCSConnect.RemoteEndPoint} Send 0x{mCmd:x4}, Length {mSendData.Length + 4}";
+            var user = UserDataManager.Instance.GetUserDataByConnectID(mCSConnect.ID);
+            if (user == null)
+            {
+                return $"客户端ID:{mCSConnect.ID} RemoteEndPoint:{mCSConnect.RemoteEndPoint} Send 0x{mCmd:x4}, Length {mSendDataBytes.Length + 4}";
+            }
+
+            if (mSendData == null)
+            {
+                return $"用户名:{user.Name} Send 0x{mCmd:x4}, Length {mSendDataBytes.Length + 4}";
+            }
+            
+            Type type = mSendData.GetType();
+            var properties = type.GetProperties(BindingFlags.Public | BindingFlags.Instance);
+            StringBuilder sb = new StringBuilder($"用户名:{user.Name} Send 0x{mCmd:x4}, Length {mSendDataBytes.Length + 4}");
+            foreach (var property in properties) 
+            {
+                sb.Append($"   {property.Name}:{property.GetValue(mSendData)}");
+            }
+            return sb.ToString();
         }
 
     }

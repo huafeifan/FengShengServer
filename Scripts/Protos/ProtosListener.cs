@@ -5,17 +5,35 @@ namespace FengShengServer
 {
     public class ProtosListener
     {
-        private Dictionary<uint, Action<object>> mProtosListeners = new Dictionary<uint, Action<object>>();
+        private Dictionary<uint, ProtosListenerObject> mProtosListeners = new Dictionary<uint, ProtosListenerObject>();
 
         public void AddListener(uint cmd, Action<object> callBack)
         {
             if (mProtosListeners.ContainsKey(cmd))
             {
-                mProtosListeners[cmd] += callBack;
+                mProtosListeners[cmd].Action += callBack;
             }
             else
             {
-                mProtosListeners.Add(cmd, callBack);
+                var listener = new ProtosListenerObject();
+                listener.RemainCount = int.MaxValue;
+                listener.Action = callBack;
+                mProtosListeners.Add(cmd, listener);
+            }
+        }
+
+        public void AddListener(uint cmd, Action<object> callBack, int listenerCount)
+        {
+            if (mProtosListeners.ContainsKey(cmd))
+            {
+                mProtosListeners[cmd].Action += callBack;
+            }
+            else
+            {
+                var listener = new ProtosListenerObject();
+                listener.RemainCount = listenerCount;
+                listener.Action = callBack;
+                mProtosListeners.Add(cmd, listener);
             }
         }
 
@@ -23,8 +41,8 @@ namespace FengShengServer
         {
             if (mProtosListeners.ContainsKey(cmd))
             {
-                mProtosListeners[cmd] -= callBack;
-                if (mProtosListeners[cmd] == null)
+                mProtosListeners[cmd].Action -= callBack;
+                if (mProtosListeners[cmd].Action == null)
                 {
                     mProtosListeners.Remove(cmd);
                 }
@@ -35,7 +53,12 @@ namespace FengShengServer
         {
             if (mProtosListeners.ContainsKey(cmd))
             {
-                Action<object> callBack = (Action<object>)mProtosListeners[cmd].Clone();
+                Action<object> callBack = (Action<object>)mProtosListeners[cmd].Action.Clone();
+                mProtosListeners[cmd].RemainCount--;
+                if (mProtosListeners[cmd].RemainCount <= 0)
+                {
+                    mProtosListeners.Remove(cmd);
+                }
                 callBack.Invoke(data);
             }
         }

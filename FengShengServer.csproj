@@ -90,6 +90,7 @@
     <Compile Include="Scripts\Protos\Protocols\LoginServerGame.cs" />
     <Compile Include="Scripts\Protos\Protocols\LoginServerLogin.cs" />
     <Compile Include="Scripts\Protos\Protocols\LoginServerRoom.cs" />
+    <Compile Include="Scripts\Protos\ProtosListenerObject.cs" />
     <Compile Include="Scripts\Protos\ProtosManager.cs" />
     <Compile Include="Scripts\Protos\ProtosListener.cs" />
     <Compile Include="Scripts\Room\ChairInfo.cs" />

@@ -67,7 +67,7 @@ namespace FengShengServer
 
             //游戏模块托管初始化
             Game.SetCSConnect(this);
-            Game.SetDebug(false);
+            Game.SetDebug(true);
 
             //消息接收器初始化
             Receiver.SetCSConnect(this);
