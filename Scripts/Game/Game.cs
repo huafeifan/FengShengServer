@@ -13,7 +13,9 @@ namespace FengShengServer
     public class Game
     {
         private CSConnect mCSConnect;
+        public CSConnect GetCSConnect() => mCSConnect;
         private RoomInfo mRoomInfo;
+        public RoomInfo GetRoomInfo() => mRoomInfo;
         private List<ChairInfo> mChairList;
         private List<UserData> mUserList;
         private List<CSConnect> mConnectList;
@@ -51,7 +53,6 @@ namespace FengShengServer
             ProtosManager.Instance.AddProtosListener(mCSConnect.ID, CmdConfig.InformationTransmitReady_C2S, OnReceiveInformationTransmitReady);
             ProtosManager.Instance.AddProtosListener(mCSConnect.ID, CmdConfig.WaitInformationReceive_C2S, OnReceiveWaitInformationReceive);
             ProtosManager.Instance.AddProtosListener(mCSConnect.ID, CmdConfig.PlayHandCard_C2S, OnReceivePlayHandCard);
-            ProtosManager.Instance.AddProtosListener(mCSConnect.ID, CmdConfig.TriggerCardEnd_C2S, OnReceiveTriggerCardEnd);
             ProtosManager.Instance.AddProtosListener(mCSConnect.ID, CmdConfig.AskUseShiPo_C2S, OnReceiveAskUseShiPo);
         }
 
@@ -69,7 +70,6 @@ namespace FengShengServer
             ProtosManager.Instance.RemoveProtosListener(mCSConnect.ID, CmdConfig.InformationTransmitReady_C2S, OnReceiveInformationTransmitReady);
             ProtosManager.Instance.RemoveProtosListener(mCSConnect.ID, CmdConfig.WaitInformationReceive_C2S, OnReceiveWaitInformationReceive);
             ProtosManager.Instance.RemoveProtosListener(mCSConnect.ID, CmdConfig.PlayHandCard_C2S, OnReceivePlayHandCard);
-            ProtosManager.Instance.RemoveProtosListener(mCSConnect.ID, CmdConfig.TriggerCardEnd_C2S, OnReceiveTriggerCardEnd);
             ProtosManager.Instance.RemoveProtosListener(mCSConnect.ID, CmdConfig.AskUseShiPo_C2S, OnReceiveAskUseShiPo);
         }
 
@@ -308,12 +308,14 @@ namespace FengShengServer
         private bool GameStage10()
         {
             mRoomInfo.GameStage = GameStage.DealCards;
+            mRoomInfo.InformationStage = InformationStage.WaitInformationDeclaration;
             mRoomInfo.Data.GameTurnOpertateEnd_C2S = null;
             var data = mRoomInfo.Data.DealCards_C2S;
             SendDealCard(data.UserName, data.Count);
             SendHandCardCount(data.UserName, mRoomInfo.GetHandCount(data.UserName));
             mRoomInfo.Data.PlayHandCard_C2S = null;
-            mRoomInfo.InformationStageQueue.Enqueue(InformationStage9);
+            mRoomInfo.Data.InformationDeclaration_C2S = null;
+            mRoomInfo.PlayCardStageQueue.Enqueue(PlayCardStage6);
             mRoomInfo.GameStageQueue.Enqueue(GameStage11);
             return true;
         }
@@ -344,7 +346,7 @@ namespace FengShengServer
             mRoomInfo.GameStageQueue.Enqueue(GameStage13);
             return true;
         }
-        
+
         /// <summary>
         /// 等待玩家回合结束前弃牌
         /// </summary>
@@ -684,8 +686,6 @@ namespace FengShengServer
         private void OnReceiveInformationDeclaration(object obj)
         {
             mRoomInfo.Data.InformationDeclaration_C2S = obj as LoginServer.Game.InformationDeclaration_C2S;
-
-            mRoomInfo.InformationStageQueue.Enqueue(InformationStage1);
         }
 
         /// <summary>
@@ -698,6 +698,7 @@ namespace FengShengServer
             SendInformationDeclaration(data.UserName);
             mRoomInfo.PlayCardStageQueue.Enqueue(PlayCardStage1);
             mRoomInfo.InformationStageQueue.Enqueue(InformationStage2);
+            mRoomInfo.Data.InformationDeclaration_C2S = null;
             mRoomInfo.Data.PlayHandCard_C2S = null;
             return true;
         }
@@ -806,26 +807,6 @@ namespace FengShengServer
                 SendGameTurnOpertateEnd();
             }
             return true;
-        }
-
-        /// <summary>
-        /// 回合中等待出牌或者情报宣言的阶段
-        /// </summary>
-        private bool InformationStage9()
-        {
-            if (mRoomInfo.Data.InformationDeclaration_C2S != null)
-            {
-                return true;
-            }
-
-            if (mRoomInfo.Data.PlayHandCard_C2S != null)
-            {
-                mRoomInfo.PlayCardStageQueue.Enqueue(PlayCardStage7);
-                mRoomInfo.InformationStageQueue.Enqueue(InformationStage9);
-                return true;
-            }
-
-            return false;
         }
 
         /// <summary>
@@ -1005,8 +986,8 @@ namespace FengShengServer
         {
             for (int i = 0; i < mChairList.Count; i++)
             {
-                mRoomInfo.Chairs[i].IsSkip = 
-                    mRoomInfo.Chairs[i].HandCard.Count == 0 || 
+                mRoomInfo.Chairs[i].IsSkip =
+                    mRoomInfo.Chairs[i].HandCard.Count == 0 ||
                     mRoomInfo.Chairs[i].UserData.Name == mRoomInfo.CurrentGameTurnPlayerName;
             }
             mRoomInfo.PlayCardStageQueue.Enqueue(PlayCardStage2);
@@ -1078,15 +1059,22 @@ namespace FengShengServer
         }
 
         /// <summary>
-        /// 等待出牌结果
+        /// 等待情报宣言或者出牌结果
         /// </summary>
         private bool PlayCardStage6()
         {
+            if (mRoomInfo.Data.InformationDeclaration_C2S != null)
+            {
+                mRoomInfo.InformationStageQueue.Enqueue(InformationStage1);
+                return true;
+            }
+
             if (mRoomInfo.Data.PlayHandCard_C2S != null)
             {
                 mRoomInfo.PlayCardStageQueue.Enqueue(PlayCardStage7);
                 return true;
             }
+
             return false;
         }
 
@@ -1254,13 +1242,14 @@ namespace FengShengServer
             if (mRoomInfo.WaitTriggerCard.IsShiPo)
             {
                 mRoomInfo.WaitTriggerCard = null;
+                mRoomInfo.Data.PlayHandCard_C2S = null;
+                mRoomInfo.PlayCardStageQueue.Enqueue(PlayCardStage6);
                 return true;
             }
 
-            mRoomInfo.WaitTriggerCard.CardXiaoGuo.Trigger();
-            SendTriggerCardResult();
-            mRoomInfo.Data.TriggerCardEnd_C2S = null;
+            mRoomInfo.WaitTriggerCard.CardXiaoGuo.Trigger(this);
             mRoomInfo.PlayCardStageQueue.Enqueue(PlayCardStage14);
+
             return true;
         }
 
@@ -1269,7 +1258,13 @@ namespace FengShengServer
         /// </summary>
         private bool PlayCardStage14()
         {
-            return mRoomInfo.Data.TriggerCardEnd_C2S != null;
+            if (mRoomInfo.WaitTriggerCard.CardXiaoGuo.IsComplete())
+            {
+                mRoomInfo.Data.PlayHandCard_C2S = null;
+                mRoomInfo.PlayCardStageQueue.Enqueue(PlayCardStage6);
+                return true;
+            }
+            return false;
         }
 
         /// <summary>
@@ -1421,14 +1416,6 @@ namespace FengShengServer
                 return;
 
             mRoomInfo.Data.AskUseShiPo_C2SQueue.Enqueue(data);
-        }
-
-        /// <summary>
-        /// 收到卡牌触发效果结束协议
-        /// </summary>
-        private void OnReceiveTriggerCardEnd(object obj)
-        {
-            mRoomInfo.Data.TriggerCardEnd_C2S = obj as LoginServer.Game.TriggerCardEnd_C2S;
         }
 
         /// <summary>

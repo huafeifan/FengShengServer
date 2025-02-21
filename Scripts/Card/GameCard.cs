@@ -1528,6 +1528,8 @@ namespace FengShengServer
             {
                 case Card_XiaoGuoType.DiaoBao:
                     return new DiaoBao();
+                case Card_XiaoGuoType.ShiPo:
+                    return new ShiPo();
             }
             return new DiaoBao();
         }

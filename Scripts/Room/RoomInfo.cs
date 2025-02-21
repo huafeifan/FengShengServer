@@ -63,7 +63,7 @@ namespace FengShengServer
         /// <summary>
         /// 游戏阶段队列
         /// </summary>
-        public Queue<Func<bool>> GameStageQueue { get; set; }
+        public CustomQueue<Func<bool>> GameStageQueue { get; set; }
 
         /// <summary>
         /// 情报阶段
@@ -73,12 +73,12 @@ namespace FengShengServer
         /// <summary>
         /// 情报阶段队列
         /// </summary>
-        public Queue<Func<bool>> InformationStageQueue { get; set; }
+        public CustomQueue<Func<bool>> InformationStageQueue { get; set; }
 
         /// <summary>
         /// 出牌阶段队列
         /// </summary>
-        public Queue<Func<bool>> PlayCardStageQueue { get; set; }
+        public CustomQueue<Func<bool>> PlayCardStageQueue { get; set; }
 
         /// <summary>
         /// 协议数据
@@ -99,9 +99,9 @@ namespace FengShengServer
             RoomNub = -1;
             IsOpen = false;
             DisCardList = new List<CardType>();
-            GameStageQueue = new Queue<Func<bool>>();
-            InformationStageQueue = new Queue<Func<bool>>();
-            PlayCardStageQueue = new Queue<Func<bool>>();
+            GameStageQueue = new CustomQueue<Func<bool>>();
+            InformationStageQueue = new CustomQueue<Func<bool>>();
+            PlayCardStageQueue = new CustomQueue<Func<bool>>();
         }
 
         public int GetChairCount()
@@ -400,14 +400,32 @@ namespace FengShengServer
         /// <summary>
         /// 发出情报
         /// </summary>
-        /// <param name="userName"></param>
-        /// <param name="card"></param>
         public bool InformationTransmit(string userName, InformationTransmitReady_C2S card)
         {
             var chair = GetChair(userName);
             bool isSuccess = chair.DisCard(card.Card.CardName);
             InformationCard = card;
             return isSuccess;
+        }
+
+        /// <summary>
+        /// 发出情报
+        /// </summary>
+        public bool InformationTransmit(string userName, UseDiaoBao_C2S card)
+        {
+            var chair = GetChair(userName);
+            bool isSuccess = chair.DisCard(card.Card.CardName);
+            InformationTransmit(card);
+            return isSuccess;
+        }
+
+        public void InformationTransmit(UseDiaoBao_C2S card)
+        {
+            InformationCard.FromUserName = card.FromUserName;
+            InformationCard.Card = card.Card;
+            InformationCard.ToUserName = card.ToUserName;
+            InformationCard.Transmit = card.Transmit;
+            InformationCard.Direction = card.Direction;
         }
 
         public void Close()

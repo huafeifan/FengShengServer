@@ -64,11 +64,13 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Scripts\Card\DiaoBao.cs" />
     <Compile Include="Scripts\Card\ICard.cs" />
+    <Compile Include="Scripts\Card\ShiPo.cs" />
     <Compile Include="Scripts\Card\WaitTriggerCard.cs" />
     <Compile Include="Scripts\Character\EmeiFeng.cs" />
     <Compile Include="Scripts\Character\ICharacter.cs" />
     <Compile Include="Scripts\Character\DaMeiNv.cs" />
     <Compile Include="Scripts\Character\LaoJin.cs" />
+    <Compile Include="Scripts\CustomQueue.cs" />
     <Compile Include="Scripts\Data\RoomDataManager.cs" />
     <Compile Include="Scripts\Data\UserData.cs" />
     <Compile Include="Scripts\Data\UserDataManager.cs" />

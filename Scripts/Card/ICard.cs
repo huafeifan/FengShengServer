@@ -11,6 +11,8 @@ namespace FengShengServer
         Card_XiaoGuoType GetCardXiaoGuoType();
         bool CheckUseCondition(RoomInfo roomInfo, out string errorMsg);
 
-        void Trigger();
+        void Trigger(Game game, params object[] args);
+
+        bool IsComplete();
     }
 }

@@ -10,6 +10,10 @@ namespace FengShengServer
         /// <summary>
         /// 等待情报宣言
         /// </summary>
+        WaitInformationDeclaration,
+        /// <summary>
+        /// 情报宣言
+        /// </summary>
         InformationDeclaration,
         /// <summary>
         /// 等待发出情报

@@ -19,8 +19,6 @@ namespace FengShengServer
         public Queue<PlayHandCardResponse_C2S> PlayHandCardResponse_C2SQueue { get; set; }
         public PlayHandCard_C2S PlayHandCard_C2S { get; set; }
         public Queue<AskUseShiPo_C2S> AskUseShiPo_C2SQueue { get; set; }
-        public TriggerCardEnd_C2S TriggerCardEnd_C2S { get; set; }
-
         public void Clear()
         {
             GameTurnStart_C2S = null;
@@ -34,7 +32,6 @@ namespace FengShengServer
             PlayHandCardResponse_C2SQueue?.Clear();
             PlayHandCard_C2S = null;
             AskUseShiPo_C2SQueue?.Clear();
-            TriggerCardEnd_C2S = null;
         }
     }
 }
