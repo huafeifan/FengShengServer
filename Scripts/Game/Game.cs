@@ -6,6 +6,7 @@ using LoginServer.Game;
 using System;
 using System.Threading.Tasks;
 using LoginServer.Room;
+using System.Reflection;
 
 namespace FengShengServer
 {
@@ -20,6 +21,7 @@ namespace FengShengServer
         private Task mGameTask;
 
         private bool mIsDebug;
+        private string[] mDebugs;
 
         public void SetCSConnect(CSConnect cSConnect)
         {
@@ -87,28 +89,52 @@ namespace FengShengServer
                     {
                         mRoomInfo.PlayCardStageQueue.Dequeue();
                     }
-                    continue;
                 }
-
-                if (mRoomInfo.InformationStageQueue.Count > 0)
+                else if (mRoomInfo.InformationStageQueue.Count > 0)
                 {
                     mUpdateCache = mRoomInfo.InformationStageQueue.Peek();
                     if (mUpdateCache.Invoke())
                     {
                         mRoomInfo.InformationStageQueue.Dequeue();
                     }
-                    continue;
                 }
-
-                if (mRoomInfo.GameStageQueue.Count > 0)
+                else if (mRoomInfo.GameStageQueue.Count > 0)
                 {
                     mUpdateCache = mRoomInfo.GameStageQueue.Peek();
                     if (mUpdateCache.Invoke())
                     {
                         mRoomInfo.GameStageQueue.Dequeue();
                     }
-                    continue;
                 }
+                else
+                {
+                    mUpdateCache = null;
+                    Console.WriteLine("Game Update End");
+                }
+                if (mIsDebug && mUpdateCache != null)
+                {
+                    UpdateDebug();   
+                }
+            }
+        }
+
+        private void UpdateDebug()
+        {
+            if (mDebugs == null)
+            {
+                mDebugs = new string[2];
+                mDebugs[0] = string.Empty;
+                mDebugs[1] = string.Empty;
+            }
+            mDebugs[0] = mDebugs[1];
+            mDebugs[1] = mUpdateCache.GetMethodInfo().Name;
+            if (mDebugs[0] == mDebugs[1])
+            {
+                return;
+            }
+            else
+            {
+                Console.WriteLine(mDebugs[1]);
             }
         }
 
