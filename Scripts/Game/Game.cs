@@ -232,7 +232,6 @@ namespace FengShengServer
             mRoomInfo.Data.GameTurnStart_C2S = null;
             ChooseRandomPlayerGameTurn();
             mRoomInfo.GameStageQueue.Enqueue(GameStage7);
-            mRoomInfo.GameStageQueue.Enqueue(GameStage8);
             return true;
         }
 
@@ -241,7 +240,12 @@ namespace FengShengServer
         /// </summary>
         private bool GameStage7()
         {
-            return mRoomInfo.Data.GameTurnStart_C2S != null && mRoomInfo.CurrentGameTurnPlayerName == mRoomInfo.Data.GameTurnStart_C2S.UserName;
+            if (mRoomInfo.Data.GameTurnStart_C2S != null && mRoomInfo.CurrentGameTurnPlayerName == mRoomInfo.Data.GameTurnStart_C2S.UserName)
+            {
+                mRoomInfo.GameStageQueue.Enqueue(GameStage8);
+                return true;
+            }
+            return false;
         }
 
         /// <summary>
@@ -256,7 +260,6 @@ namespace FengShengServer
             mRoomInfo.Data.IsGameTurnOpertateEnd = false;
             SendGameTurnStart();
             mRoomInfo.GameStageQueue.Enqueue(GameStage9);
-            mRoomInfo.GameStageQueue.Enqueue(GameStage10);
             return true;
         }
 
@@ -265,7 +268,12 @@ namespace FengShengServer
         /// </summary>
         private bool GameStage9()
         {
-            return mRoomInfo.Data.DealCards_C2S != null && mRoomInfo.CurrentGameTurnPlayerName == mRoomInfo.Data.DealCards_C2S.UserName;
+            if (mRoomInfo.Data.DealCards_C2S != null && mRoomInfo.CurrentGameTurnPlayerName == mRoomInfo.Data.DealCards_C2S.UserName)
+            {
+                mRoomInfo.GameStageQueue.Enqueue(GameStage10);
+                return true;
+            }
+            return false;
         }
 
         /// <summary>
@@ -281,7 +289,6 @@ namespace FengShengServer
             mRoomInfo.Data.PlayHandCard_C2S = null;
             mRoomInfo.InformationStageQueue.Enqueue(InformationStage9);
             mRoomInfo.GameStageQueue.Enqueue(GameStage11);
-            mRoomInfo.GameStageQueue.Enqueue(GameStage12);
             return true;
         }
 
@@ -290,8 +297,13 @@ namespace FengShengServer
         /// </summary>
         private bool GameStage11()
         {
-            return mRoomInfo.Data.IsGameTurnOpertateEnd || (mRoomInfo.Data.GameTurnOpertateEnd_C2S != null &&
-                mRoomInfo.CurrentGameTurnPlayerName == mRoomInfo.Data.GameTurnOpertateEnd_C2S.UserName);
+            if (mRoomInfo.Data.IsGameTurnOpertateEnd || (mRoomInfo.Data.GameTurnOpertateEnd_C2S != null &&
+                mRoomInfo.CurrentGameTurnPlayerName == mRoomInfo.Data.GameTurnOpertateEnd_C2S.UserName))
+            {
+                mRoomInfo.GameStageQueue.Enqueue(GameStage12);
+                return true;
+            }
+            return false;
         }
 
         /// <summary>
@@ -304,7 +316,6 @@ namespace FengShengServer
             mRoomInfo.Data.GameTurnDisCard_C2S = null;
             SendGameTurnOpertateEnd();
             mRoomInfo.GameStageQueue.Enqueue(GameStage13);
-            mRoomInfo.GameStageQueue.Enqueue(GameStage14);
             return true;
         }
         
@@ -313,7 +324,12 @@ namespace FengShengServer
         /// </summary>
         private bool GameStage13()
         {
-            return mRoomInfo.Data.GameTurnDisCard_C2S != null && mRoomInfo.CurrentGameTurnPlayerName == mRoomInfo.Data.GameTurnDisCard_C2S.UserName;
+            if (mRoomInfo.Data.GameTurnDisCard_C2S != null && mRoomInfo.CurrentGameTurnPlayerName == mRoomInfo.Data.GameTurnDisCard_C2S.UserName)
+            {
+                mRoomInfo.GameStageQueue.Enqueue(GameStage14);
+                return true;
+            }
+            return false;
         }
 
         /// <summary>
@@ -327,7 +343,6 @@ namespace FengShengServer
             var data = mRoomInfo.Data.GameTurnDisCard_C2S;
             SendHandCardCount(data.UserName, mRoomInfo.GetChair(data.UserName).HandCard.Count);
             mRoomInfo.GameStageQueue.Enqueue(GameStage15);
-            mRoomInfo.GameStageQueue.Enqueue(GameStage16);
             return true;
         }
 
@@ -336,7 +351,12 @@ namespace FengShengServer
         /// </summary>
         private bool GameStage15()
         {
-            return mRoomInfo.Data.GameTurnEnd_C2S != null && mRoomInfo.CurrentGameTurnPlayerName == mRoomInfo.Data.GameTurnEnd_C2S.UserName;
+            if (mRoomInfo.Data.GameTurnEnd_C2S != null && mRoomInfo.CurrentGameTurnPlayerName == mRoomInfo.Data.GameTurnEnd_C2S.UserName)
+            {
+                mRoomInfo.GameStageQueue.Enqueue(GameStage16);
+                return true;
+            }
+            return false;
         }
 
         /// <summary>
@@ -360,7 +380,6 @@ namespace FengShengServer
             mRoomInfo.CurrentGameTurnPlayerName = userName;
             SendGameTurn(userName);
             mRoomInfo.GameStageQueue.Enqueue(GameStage7);
-            mRoomInfo.GameStageQueue.Enqueue(GameStage8);
             return true;
         }
 
@@ -652,7 +671,6 @@ namespace FengShengServer
             var data = mRoomInfo.Data.InformationDeclaration_C2S;
             SendInformationDeclaration(data.UserName);
             mRoomInfo.PlayCardStageQueue.Enqueue(PlayCardStage1);
-            mRoomInfo.PlayCardStageQueue.Enqueue(PlayCardStage2);
             mRoomInfo.InformationStageQueue.Enqueue(InformationStage2);
             mRoomInfo.Data.PlayHandCard_C2S = null;
             return true;
@@ -667,8 +685,6 @@ namespace FengShengServer
             mRoomInfo.Data.InformationTransmitReady_C2S = null;
             SendWaitInformationTransmit();
             mRoomInfo.InformationStageQueue.Enqueue(InformationStage3);
-            mRoomInfo.InformationStageQueue.Enqueue(InformationStage4);
-            mRoomInfo.InformationStageQueue.Enqueue(InformationStage5);
             return true;
         }
 
@@ -677,7 +693,12 @@ namespace FengShengServer
         /// </summary>
         private bool InformationStage3()
         {
-            return mRoomInfo.Data.InformationTransmitReady_C2S != null;
+            if (mRoomInfo.Data.InformationTransmitReady_C2S != null)
+            {
+                mRoomInfo.InformationStageQueue.Enqueue(InformationStage4);
+                return true;
+            }
+            return false;
         }
 
         /// <summary>
@@ -685,13 +706,14 @@ namespace FengShengServer
         /// </summary>
         private bool InformationStage4()
         {
-            mRoomInfo.InformationStage = InformationStage.InformationTransmit;
+            mRoomInfo.InformationStage = InformationStage.WaitInformationTransmit;
             var data = mRoomInfo.Data.InformationTransmitReady_C2S;
             mRoomInfo.InformationTransmit(data.FromUserName, data);
             var askUser = mRoomInfo.GetNextUserData(data.FromUserName, data.Transmit, data.Direction);
             mRoomInfo.CurrentAskInformationReceivedPlayerName = askUser.Name;
             SendInformationTransmitInfo(askUser.Name);
             SendHandCardCount(data.FromUserName, mRoomInfo.GetChair(data.FromUserName).HandCard.Count);
+            mRoomInfo.InformationStageQueue.Enqueue(InformationStage5);
             return true;
         }
 
@@ -700,14 +722,11 @@ namespace FengShengServer
         /// </summary>
         private bool InformationStage5()
         {
-            mRoomInfo.InformationStage = InformationStage.WaitInformationReceive;
+            mRoomInfo.InformationStage = InformationStage.InformationTransmit;
             mRoomInfo.Data.WaitInformationReceive_C2S = null;
             SendInformationTransmit(mRoomInfo.CurrentAskInformationReceivedPlayerName);
             mRoomInfo.PlayCardStageQueue.Enqueue(PlayCardStage15);
-            mRoomInfo.PlayCardStageQueue.Enqueue(PlayCardStage2);
             mRoomInfo.InformationStageQueue.Enqueue(InformationStage10);
-            mRoomInfo.InformationStageQueue.Enqueue(InformationStage6);
-            mRoomInfo.InformationStageQueue.Enqueue(InformationStage7);
             return true;
         }
 
@@ -716,7 +735,12 @@ namespace FengShengServer
         /// </summary>
         private bool InformationStage6()
         {
-            return mRoomInfo.Data.WaitInformationReceive_C2S != null;
+            if (mRoomInfo.Data.WaitInformationReceive_C2S != null)
+            {
+                mRoomInfo.InformationStageQueue.Enqueue(InformationStage7);
+                return true;
+            }
+            return false;
         }
 
         /// <summary>
@@ -727,10 +751,9 @@ namespace FengShengServer
             var data = mRoomInfo.Data.WaitInformationReceive_C2S;
             if (data.IsReceive)
             {
-                mRoomInfo.InformationStage = InformationStage.InformationReceive;
+                mRoomInfo.InformationStage = InformationStage.WaitInformationReceive;
                 SendReceiveInformation(data.UserName);
                 mRoomInfo.PlayCardStageQueue.Enqueue(PlayCardStage16);
-                mRoomInfo.PlayCardStageQueue.Enqueue(PlayCardStage2);
                 mRoomInfo.InformationStageQueue.Enqueue(InformationStage8);
             }
             else
@@ -785,13 +808,14 @@ namespace FengShengServer
         private bool InformationStage10()
         {
             SendAskInformationReceive(mRoomInfo.CurrentAskInformationReceivedPlayerName);
+            mRoomInfo.InformationStageQueue.Enqueue(InformationStage6);
             return true;
         }
 
         /// <summary>
         /// 通知全桌情报传递到哪了
         /// </summary>
-        private void SendInformationTransmit(string userName)
+        public void SendInformationTransmit(string userName)
         {
             var sendData = new LoginServer.Game.InformationTransmit_S2C();
             sendData.UserName = userName;
@@ -959,13 +983,14 @@ namespace FengShengServer
                     mRoomInfo.Chairs[i].HandCard.Count == 0 || 
                     mRoomInfo.Chairs[i].UserData.Name == mRoomInfo.CurrentGameTurnPlayerName;
             }
+            mRoomInfo.PlayCardStageQueue.Enqueue(PlayCardStage2);
             return true;
         }
 
         /// <summary>
         /// 若所有人都不出牌，则直接跳过。若有人未做选择则询问
         /// </summary>
-        private bool PlayCardStage2()
+        public bool PlayCardStage2()
         {
             if (mChairList.Find(c => c.IsSkip == false) == null)
             {
@@ -976,7 +1001,6 @@ namespace FengShengServer
             SendAskPlayHandCard();
             mRoomInfo.Data.PlayHandCardResponse_C2SQueue = new Queue<PlayHandCardResponse_C2S>();
             mRoomInfo.PlayCardStageQueue.Enqueue(PlayCardStage3);
-            mRoomInfo.PlayCardStageQueue.Enqueue(PlayCardStage4);
             return true;
         }
 
@@ -985,7 +1009,12 @@ namespace FengShengServer
         /// </summary>
         private bool PlayCardStage3()
         {
-            return mRoomInfo.Data.PlayHandCardResponse_C2SQueue.Count > 0;
+            if (mRoomInfo.Data.PlayHandCardResponse_C2SQueue.Count > 0)
+            {
+                mRoomInfo.PlayCardStageQueue.Enqueue(PlayCardStage4);
+                return true;
+            }
+            return false;
         }
 
         /// <summary>
@@ -1000,7 +1029,6 @@ namespace FengShengServer
                 mRoomInfo.Data.PlayHandCard_C2S = null;
                 SendWaitPlayerPlayHandCard(data.UserName);
                 mRoomInfo.PlayCardStageQueue.Enqueue(PlayCardStage6);
-                mRoomInfo.PlayCardStageQueue.Enqueue(PlayCardStage7);
                 return true;
             }
 
@@ -1020,7 +1048,6 @@ namespace FengShengServer
             }
 
             mRoomInfo.PlayCardStageQueue.Enqueue(PlayCardStage3);
-            mRoomInfo.PlayCardStageQueue.Enqueue(PlayCardStage4);
             return true;
         }
 
@@ -1029,7 +1056,12 @@ namespace FengShengServer
         /// </summary>
         private bool PlayCardStage6()
         {
-            return mRoomInfo.Data.PlayHandCard_C2S != null;
+            if (mRoomInfo.Data.PlayHandCard_C2S != null)
+            {
+                mRoomInfo.PlayCardStageQueue.Enqueue(PlayCardStage7);
+                return true;
+            }
+            return false;
         }
 
         /// <summary>
@@ -1052,6 +1084,7 @@ namespace FengShengServer
             {
                 SendPlayHandCardError("未配置的效果牌");
                 mRoomInfo.Data.PlayHandCard_C2S = null;
+                mRoomInfo.PlayCardStageQueue.Enqueue(PlayCardStage6);
                 return true;
             }
 
@@ -1059,6 +1092,7 @@ namespace FengShengServer
             {
                 SendPlayHandCardError(errorMsg);
                 mRoomInfo.Data.PlayHandCard_C2S = null;
+                mRoomInfo.PlayCardStageQueue.Enqueue(PlayCardStage6);
                 return true;
             }
 
@@ -1066,6 +1100,7 @@ namespace FengShengServer
             {
                 SendPlayHandCardError("不存在的手牌");
                 mRoomInfo.Data.PlayHandCard_C2S = null;
+                mRoomInfo.PlayCardStageQueue.Enqueue(PlayCardStage6);
                 return true;
             }
 
@@ -1081,7 +1116,6 @@ namespace FengShengServer
             SendHandCardCount(data.UserName, mRoomInfo.GetHandCount(data.UserName));
             mRoomInfo.CurrentPlayHandCardPlayerName = data.UserName;
             mRoomInfo.PlayCardStageQueue.Enqueue(PlayCardStage8);
-            mRoomInfo.PlayCardStageQueue.Enqueue(PlayCardStage9);
             mRoomInfo.Data.PlayHandCard_C2S = null;
             return true;
         }
@@ -1103,6 +1137,7 @@ namespace FengShengServer
                     mChairList[i].IsUseShiPo = true;
                 }
             }
+            mRoomInfo.PlayCardStageQueue.Enqueue(PlayCardStage9);
             return true;
         }
 
@@ -1120,7 +1155,6 @@ namespace FengShengServer
             SendAskShiPo();
             mRoomInfo.Data.AskUseShiPo_C2SQueue = new Queue<AskUseShiPo_C2S>();
             mRoomInfo.PlayCardStageQueue.Enqueue(PlayCardStage10);
-            mRoomInfo.PlayCardStageQueue.Enqueue(PlayCardStage11);
             return true;
         }
 
@@ -1129,7 +1163,12 @@ namespace FengShengServer
         /// </summary>
         private bool PlayCardStage10()
         {
-            return mRoomInfo.Data.AskUseShiPo_C2SQueue.Count > 0;
+            if (mRoomInfo.Data.AskUseShiPo_C2SQueue.Count > 0)
+            {
+                mRoomInfo.PlayCardStageQueue.Enqueue(PlayCardStage11);
+                return true;
+            }
+            return false;
         }
 
         /// <summary>
@@ -1148,7 +1187,6 @@ namespace FengShengServer
                     SendPlayHandCard(data.UserName, data.Card, data.HandCardIndex);
                     SendHandCardCount(data.UserName, mRoomInfo.GetHandCount(data.UserName));
                     mRoomInfo.PlayCardStageQueue.Enqueue(PlayCardStage8);
-                    mRoomInfo.PlayCardStageQueue.Enqueue(PlayCardStage9);
                     return true;
                 }
                 else
@@ -1178,7 +1216,6 @@ namespace FengShengServer
             }
 
             mRoomInfo.PlayCardStageQueue.Enqueue(PlayCardStage10);
-            mRoomInfo.PlayCardStageQueue.Enqueue(PlayCardStage11);
             return true;
         }
 
@@ -1187,9 +1224,9 @@ namespace FengShengServer
         /// </summary>
         private bool PlayCardStage13()
         {
+            SendTriggerCardResult();
             if (mRoomInfo.WaitTriggerCard.IsShiPo)
             {
-                SendTriggerCardResult();
                 mRoomInfo.WaitTriggerCard = null;
                 return true;
             }
@@ -1212,12 +1249,13 @@ namespace FengShengServer
         /// <summary>
         /// 除了没有手牌的玩家,其他人可以出牌
         /// </summary>
-        private bool PlayCardStage15()
+        public bool PlayCardStage15()
         {
             for (int i = 0; i < mChairList.Count; i++)
             {
                 mRoomInfo.Chairs[i].IsSkip = mRoomInfo.Chairs[i].HandCard.Count == 0;
             }
+            mRoomInfo.PlayCardStageQueue.Enqueue(PlayCardStage2);
             return true;
         }
 
@@ -1232,6 +1270,7 @@ namespace FengShengServer
                     mRoomInfo.Chairs[i].HandCard.Count == 0 ||
                     mRoomInfo.Chairs[i].UserData.Name == mRoomInfo.CurrentAskInformationReceivedPlayerName;
             }
+            mRoomInfo.PlayCardStageQueue.Enqueue(PlayCardStage2);
             return true;
         }
 
