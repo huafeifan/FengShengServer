@@ -97,10 +97,10 @@ namespace FengShengServer
             
             Type type = mSendData.GetType();
             var properties = type.GetProperties(BindingFlags.Public | BindingFlags.Instance);
-            StringBuilder sb = new StringBuilder($"用户名:{user.Name} Send 0x{mCmd:x4}, Length {mSendDataBytes.Length + 4}");
+            StringBuilder sb = new StringBuilder($"用户名:{user.Name} Send 0x{mCmd:x4}, Length {mSendDataBytes.Length + 4}\r\n");
             foreach (var property in properties) 
             {
-                sb.Append($"   {property.Name}:{property.GetValue(mSendData)}");
+                sb.AppendLine($"{property.Name}:{property.GetValue(mSendData)}");
             }
             return sb.ToString();
         }

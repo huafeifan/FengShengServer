@@ -144,12 +144,14 @@ namespace FengShengServer
 
                 Type type = data.GetType();
                 var properties = type.GetProperties(BindingFlags.Public | BindingFlags.Instance);
-                StringBuilder sb = new StringBuilder($"用户名:{user.Name}");
+                StringBuilder sb = new StringBuilder($"用户名:{user.Name}\r\n");
                 foreach (var property in properties)
                 {
-                    sb.Append($"   {property.Name}:{property.GetValue(data)}");
+                    sb.AppendLine($"{property.Name}:{property.GetValue(data)}");
                 }
+                Console.ForegroundColor = ConsoleColor.Green;
                 Console.WriteLine(sb.ToString());
+                Console.ResetColor();
             }
         }
 

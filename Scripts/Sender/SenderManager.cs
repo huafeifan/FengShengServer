@@ -121,7 +121,9 @@ namespace FengShengServer
                         await wait;
                         if (sendPackage.IsLog)
                         {
+                            Console.ForegroundColor = ConsoleColor.Red;
                             Console.WriteLine(sendPackage.GetLog());
+                            Console.ResetColor();
                         }
                         mSenderPool.Enqueue(sendPackage);
                     }
