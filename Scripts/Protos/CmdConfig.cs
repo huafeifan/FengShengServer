@@ -211,9 +211,15 @@ namespace FengShengServer
         public const uint UsePoYi_S2C = 0x021C;
 
         /// <summary>
-        /// shaohui效果协议号
+        /// 烧毁效果协议号
         /// </summary>
         public const uint UseShaoHui_C2S = 0x021D;
         public const uint UseShaoHui_S2C = 0x021D;
+
+        /// <summary>
+        /// 增援效果协议号
+        /// </summary>
+        public const uint UseZengYuan_C2S = 0x021E;
+        public const uint UseZengYuan_S2C = 0x021E;
     }
 }

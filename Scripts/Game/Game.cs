@@ -548,7 +548,7 @@ namespace FengShengServer
         /// <summary>
         /// 抽卡
         /// </summary>
-        private void SendDealCard(string userName, int dealCardsCount)
+        public void SendDealCard(string userName, int dealCardsCount)
         {
             var chair = mChairList.Find(c => c.UserData != null && c.UserData.Name == userName);
             if (chair != null)
@@ -797,6 +797,7 @@ namespace FengShengServer
             var data = mRoomInfo.Data.WaitInformationReceive_C2S;
             var chair = mRoomInfo.GetChair(mRoomInfo.CurrentAskInformationReceivedPlayerName);
             chair.ReceiveInformation(mRoomInfo.InformationCard.Card);
+            mRoomInfo.InformationCard = null;
             SendReceiveInformationSuccess();
             SendInformationCount(chair);
             if (!GameComplete(chair))

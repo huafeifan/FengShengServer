@@ -1532,8 +1532,12 @@ namespace FengShengServer
                     return new ShiPo();
                 case Card_XiaoGuoType.PoYi:
                     return new PoYi();
+                case Card_XiaoGuoType.ShaoHui:
+                    return new ShaoHui();
+                case Card_XiaoGuoType.ZengYuan:
+                    return new ZengYuan();
             }
-            return new DiaoBao();
+            return null;
         }
 
     }
