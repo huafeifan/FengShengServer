@@ -693,6 +693,11 @@ namespace FengShengServer
             mRoomInfo.InformationStage = InformationStage.InformationDeclaration;
             var data = mRoomInfo.Data.InformationDeclaration_C2S;
             SendInformationDeclaration(data.UserName);
+            for (int i = 0; i < mChairList.Count; i++)
+            {
+                mChairList[i].CanReceive = true;
+                mChairList[i].CanRefuse = mChairList[i].UserData.Name != mRoomInfo.CurrentGameTurnPlayerName;
+            }
             mRoomInfo.PlayCardStageQueue.Enqueue(PlayCardStage1);
             mRoomInfo.InformationStageQueue.Enqueue(InformationStage2);
             mRoomInfo.Data.InformationDeclaration_C2S = null;
@@ -870,6 +875,9 @@ namespace FengShengServer
         {
             var sendData = new LoginServer.Game.WaitInformationReceive_S2C();
             sendData.UserName = userName;
+            var chair = mRoomInfo.GetChair(userName);
+            sendData.CanReceive = chair.CanReceive;
+            sendData.CanRefuse = chair.CanRefuse;
             ProtosManager.Instance.Multicast(mConnectList, CmdConfig.WaitInformationReceive_S2C, sendData);
         }
 

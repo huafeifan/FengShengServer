@@ -34,6 +34,16 @@ namespace FengShengServer
         /// </summary>
         public bool IsUseShiPo { get; set; }
 
+        /// <summary>
+        /// 是否允许接收情报
+        /// </summary>
+        public bool CanReceive { get; set; }
+
+        /// <summary>
+        /// 是否允许拒绝情报
+        /// </summary>
+        public bool CanRefuse { get; set; }
+
         public void Clear()
         {
             if (UserData != null)

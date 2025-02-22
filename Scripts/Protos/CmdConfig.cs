@@ -227,5 +227,11 @@ namespace FengShengServer
         /// </summary>
         public const uint UseJiMiWenJian_C2S = 0x021F;
         public const uint UseJiMiWenJian_S2C = 0x021F;
+
+        /// <summary>
+        /// 锁定效果协议号
+        /// </summary>
+        public const uint UseSuoDing_C2S = 0x0220;
+        public const uint UseSuoDing_S2C = 0x0220;
     }
 }
