@@ -85,6 +85,17 @@ namespace FengShengServer
             return card != null;
         }
 
+        public bool RemoveInformation(Card_ColorType color)
+        {
+            var information = InformationCard.Find(infor => infor.Color == color);
+            if (information != null)
+            {
+                InformationCard.Remove(information);
+                return true;
+            }
+            return false;
+        }
+
         public void ReceiveInformation(CardType card)
         {
             InformationCard.Add(card);

@@ -65,6 +65,7 @@
     <Compile Include="Scripts\Card\DiaoBao.cs" />
     <Compile Include="Scripts\Card\ICard.cs" />
     <Compile Include="Scripts\Card\PoYi.cs" />
+    <Compile Include="Scripts\Card\ShaoHui.cs" />
     <Compile Include="Scripts\Card\ShiPo.cs" />
     <Compile Include="Scripts\Card\WaitTriggerCard.cs" />
     <Compile Include="Scripts\Character\EmeiFeng.cs" />

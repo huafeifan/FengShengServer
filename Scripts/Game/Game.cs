@@ -519,7 +519,7 @@ namespace FengShengServer
         /// <summary>
         /// 情报数量
         /// </summary>
-        private void SendInformationCount()
+        public void SendInformationCount()
         {
             var sendData = new LoginServer.Game.InformationCount_S2C();
             for (int i = 0; i < mChairList.Count; i++)
