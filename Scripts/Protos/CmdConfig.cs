@@ -203,5 +203,11 @@ namespace FengShengServer
         /// </summary>
         public const uint UseDiaoBao_C2S = 0x021B;
         public const uint UseDiaoBao_S2C = 0x021B;
+
+        /// <summary>
+        /// 破译效果协议号
+        /// </summary>
+        public const uint UsePoYi_C2S = 0x021C;
+        public const uint UsePoYi_S2C = 0x021C;
     }
 }

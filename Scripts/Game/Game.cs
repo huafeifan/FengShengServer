@@ -197,14 +197,12 @@ namespace FengShengServer
         {
             mRoomInfo.GameStage = GameStage.IdentityChoose;
             List<IdentityType> identityList = Identity.GetIdentityList(mRoomInfo);
-            for (int i = 0; i < mRoomInfo.GetChairCount(); i++)
+            for (int i = 0; i < mChairList.Count; i++)
             {
-                UserData user = mRoomInfo.Chairs[i].UserData;
-                if (user == null) continue;
-                mRoomInfo.Chairs[i].Identity = Identity.GetIdentity(identityList[i]);
+                mChairList[i].Identity = Identity.GetIdentity(identityList[i]);
                 var sendData = new LoginServer.Game.Identity_S2C();
                 sendData.Identity = identityList[i];
-                ProtosManager.Instance.Unicast(user.CSConnect, CmdConfig.Identity_S2C, sendData);
+                ProtosManager.Instance.Unicast(mChairList[i].UserData.CSConnect, CmdConfig.Identity_S2C, sendData);
             }
             return true;
         }
@@ -215,13 +213,11 @@ namespace FengShengServer
         private bool GameStage3()
         {
             mRoomInfo.GameStage = GameStage.CharacterChoose;
-            for (int i = 0; i < mRoomInfo.GetChairCount(); i++)
+            for (int i = 0; i < mChairList.Count; i++)
             {
-                UserData user = mRoomInfo.Chairs[i].UserData;
-                if (user == null) continue;
                 var sendData = new LoginServer.Game.CharacterChooseList_S2C();
                 sendData.Characters.AddRange(mRoomInfo.GetCharacterChooseList());
-                ProtosManager.Instance.Unicast(user.CSConnect, CmdConfig.CharacterChooseList_S2C, sendData);
+                ProtosManager.Instance.Unicast(mChairList[i].UserData.CSConnect, CmdConfig.CharacterChooseList_S2C, sendData);
             }
             return true;
         }
@@ -241,10 +237,7 @@ namespace FengShengServer
         {
             mRoomInfo.GameStage = GameStage.DealCards;
             SendInitialDealCards();
-            for (int i = 0; i < mUserList.Count; i++)
-            {
-                SendHandCardCount(mUserList[i].Name, mRoomInfo.GetHandCount(mUserList[i].Name));
-            }
+            SendHandCardCount();
             SendInformationCount();
             return true;
         }
@@ -312,7 +305,7 @@ namespace FengShengServer
             mRoomInfo.Data.GameTurnOpertateEnd_C2S = null;
             var data = mRoomInfo.Data.DealCards_C2S;
             SendDealCard(data.UserName, data.Count);
-            SendHandCardCount(data.UserName, mRoomInfo.GetHandCount(data.UserName));
+            SendHandCardCount();
             mRoomInfo.Data.PlayHandCard_C2S = null;
             mRoomInfo.Data.InformationDeclaration_C2S = null;
             mRoomInfo.PlayCardStageQueue.Enqueue(PlayCardStage6);
@@ -369,7 +362,7 @@ namespace FengShengServer
             mRoomInfo.Data.GameTurnEnd_C2S = null;
             SendGameTurnDisCard();
             var data = mRoomInfo.Data.GameTurnDisCard_C2S;
-            SendHandCardCount(data.UserName, mRoomInfo.GetChair(data.UserName).HandCard.Count);
+            SendHandCardCount();
             mRoomInfo.GameStageQueue.Enqueue(GameStage15);
             return true;
         }
@@ -434,7 +427,7 @@ namespace FengShengServer
             {
                 var dealCard = new LoginServer.Game.DealCards();
                 dealCard.UserName = mUserList[i].Name;
-                //dealCard.Cards.AddRange(roomInfo.DrawCards(userList[i].Name, 2));
+                //dealCard.Cards.AddRange(mRoomInfo.DrawCards(mUserList[i].Name, 2));
                 dealCard.Cards.AddRange(mRoomInfo.DrawCards(mUserList[i].Name, 6));
                 sendData.DealCards.Add(dealCard);
             }
@@ -509,11 +502,17 @@ namespace FengShengServer
         /// <summary>
         /// 手牌数量
         /// </summary>
-        private void SendHandCardCount(string userName, int handCardCount)
+        private void SendHandCardCount()
         {
             var sendData = new LoginServer.Game.HandCardCount_S2C();
-            sendData.UserName = userName;
-            sendData.Count = handCardCount;
+            for (int i = 0; i < mChairList.Count; i++)
+            {
+                sendData.Infos.Add(new HandCardCount_S2C.Types.HandCardCount()
+                {
+                    UserName = mChairList[i].UserData.Name,
+                    Count = mChairList[i].HandCard.Count,
+                });
+            }
             ProtosManager.Instance.Multicast(mConnectList, CmdConfig.HandCardCount_S2C, sendData);
         }
 
@@ -535,7 +534,7 @@ namespace FengShengServer
         private void SendInformationCount(ChairInfo chair)
         {
             var sendData = new LoginServer.Game.InformationCount_S2C();
-            sendData.Infos.Add(new InformationCount()
+            sendData.Infos.Add(new InformationCount_S2C.Types.InformationCount()
             {
                 UserName = chair.UserData.Name,
                 RedCount = chair.GetInformationCount(Card_ColorType.Red),
@@ -551,10 +550,9 @@ namespace FengShengServer
         /// </summary>
         private void SendDealCard(string userName, int dealCardsCount)
         {
-            for (int i = 0; i < mRoomInfo.GetChairCount(); i++)
+            var chair = mChairList.Find(c => c.UserData != null && c.UserData.Name == userName);
+            if (chair != null)
             {
-                UserData user = mRoomInfo.Chairs[i].UserData;
-                if (user == null || user.Name != mRoomInfo.CurrentGameTurnPlayerName) continue;
                 var sendData = new LoginServer.Game.DealCards_S2C();
                 var dealCard = new LoginServer.Game.DealCards();
                 dealCard.UserName = userName;
@@ -563,7 +561,6 @@ namespace FengShengServer
                 sendData.RemainGameCardCount = mRoomInfo.CardList.Count;
                 sendData.DisCardCount = mRoomInfo.DisCardList.Count;
                 ProtosManager.Instance.Multicast(mConnectList, CmdConfig.DealCards_S2C, sendData);
-                break;
             }
         }
 
@@ -739,7 +736,7 @@ namespace FengShengServer
             var askUser = mRoomInfo.GetNextUserData(data.FromUserName, data.Transmit, data.Direction);
             mRoomInfo.CurrentAskInformationReceivedPlayerName = askUser.Name;
             SendInformationTransmitInfo(askUser.Name);
-            SendHandCardCount(data.FromUserName, mRoomInfo.GetChair(data.FromUserName).HandCard.Count);
+            SendHandCardCount();
             mRoomInfo.InformationStageQueue.Enqueue(InformationStage5);
             return true;
         }
@@ -1127,7 +1124,7 @@ namespace FengShengServer
             };
 
             SendPlayHandCard(data.UserName, data.Card, data.HandCardIndex);
-            SendHandCardCount(data.UserName, mRoomInfo.GetHandCount(data.UserName));
+            SendHandCardCount();
             mRoomInfo.CurrentPlayHandCardPlayerName = data.UserName;
             mRoomInfo.PlayCardStageQueue.Enqueue(PlayCardStage8);
             mRoomInfo.Data.PlayHandCard_C2S = null;
@@ -1199,7 +1196,7 @@ namespace FengShengServer
                     mRoomInfo.CurrentPlayHandCardPlayerName = data.UserName;
                     mRoomInfo.WaitTriggerCard.IsShiPo = !mRoomInfo.WaitTriggerCard.IsShiPo;
                     SendPlayHandCard(data.UserName, data.Card, data.HandCardIndex);
-                    SendHandCardCount(data.UserName, mRoomInfo.GetHandCount(data.UserName));
+                    SendHandCardCount();
                     mRoomInfo.PlayCardStageQueue.Enqueue(PlayCardStage8);
                     return true;
                 }
@@ -1398,7 +1395,7 @@ namespace FengShengServer
             var sendData = new LoginServer.Game.AskUseShiPo_S2C();
             for (int i = 0; i < mChairList.Count; i++)
             {
-                if (mChairList[i].CanUseShiPo() && mChairList[i].IsUseShiPo)
+                if (/*mChairList[i].CanUseShiPo() && */mChairList[i].IsUseShiPo)
                 {
                     sendData.UserName.Add(mChairList[i].UserData.Name);
                 }

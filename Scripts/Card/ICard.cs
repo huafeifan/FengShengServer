@@ -9,6 +9,7 @@ namespace FengShengServer
     public interface ICard
     {
         Card_XiaoGuoType GetCardXiaoGuoType();
+
         bool CheckUseCondition(RoomInfo roomInfo, out string errorMsg);
 
         void Trigger(Game game, params object[] args);

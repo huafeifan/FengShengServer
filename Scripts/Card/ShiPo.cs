@@ -11,6 +11,7 @@ public class ShiPo : ICard
 
     public bool CheckUseCondition(RoomInfo roomInfo, out string errorMsg)
     {
+        //触发使用,不能主动打出
         errorMsg = "只能在玩家打出效果牌后使用";
         return false;
     }
