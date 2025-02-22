@@ -1536,6 +1536,8 @@ namespace FengShengServer
                     return new ShaoHui();
                 case Card_XiaoGuoType.ZengYuan:
                     return new ZengYuan();
+                case Card_XiaoGuoType.JiMiWenJian:
+                    return new JiMiWenJian();
             }
             return null;
         }
