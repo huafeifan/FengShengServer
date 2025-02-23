@@ -66,7 +66,7 @@ public class JiMiWenJian : ICard
             count += mRoomInfo.ChairListCache[i].GetInformationCount(Card_ColorType.RedBlue);
         }
         mGame.SendDealCard(mUserName, count > 7 ? 3 : 2);
-
+        mGame.SendHandCardCount();
         CSConnect connect = mRoomInfo.UserListCache.Find(user => user.Name == mUserName).CSConnect;
         ProtosManager.Instance.AddProtosListener(connect.ID, CmdConfig.UseJiMiWenJian_C2S, OnReceiveUseJiMiWenJian, 1);
     }

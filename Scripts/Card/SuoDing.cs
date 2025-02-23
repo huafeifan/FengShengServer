@@ -23,6 +23,19 @@ public class SuoDing : ICard
             return false;
         }
 
+        var data = roomInfo.Data.PlayHandCard_C2S;
+        if (data.TargetUserName == data.UserName)
+        {
+            errorMsg = "锁定不能以自己为目标";
+            return false;
+        }
+
+        if (roomInfo.GetChair(data.TargetUserName).CanRefuse == false)
+        {
+            errorMsg = "玩家已被锁定,无法重复锁定";
+            return false;
+        }
+
         errorMsg = string.Empty;
         return true;
     }
@@ -33,6 +46,7 @@ public class SuoDing : ICard
         mUserName = mRoomInfo.WaitTriggerCard.UserName;
         sendData.UserName = mUserName;
         sendData.Card = mRoomInfo.WaitTriggerCard.CardInfo;
+        sendData.TargetUserName = mRoomInfo.WaitTriggerCard.TargetUserName;
         ProtosManager.Instance.Multicast(mRoomInfo.ConnectListCache, CmdConfig.UseSuoDing_S2C, sendData);
     }
 
@@ -46,7 +60,7 @@ public class SuoDing : ICard
         var chair = mRoomInfo.GetChair(mRoomInfo.CurrentAskInformationReceivedPlayerName);
         chair.CanRefuse = false;
         CSConnect connect = mRoomInfo.UserListCache.Find(user => user.Name == mUserName).CSConnect;
-        ProtosManager.Instance.AddProtosListener(connect.ID, CmdConfig.UseZengYuan_C2S, OnReceiveUseZengYuan, 1);
+        ProtosManager.Instance.AddProtosListener(connect.ID, CmdConfig.UseSuoDing_C2S, OnReceiveUseSuoDing, 1);
     }
 
     public bool IsComplete()
@@ -54,7 +68,7 @@ public class SuoDing : ICard
         return mIsComplete;
     }
 
-    private void OnReceiveUseZengYuan(object obj)
+    private void OnReceiveUseSuoDing(object obj)
     {
         UseSuoDing_C2S = obj as UseSuoDing_C2S;
         mIsComplete = true;

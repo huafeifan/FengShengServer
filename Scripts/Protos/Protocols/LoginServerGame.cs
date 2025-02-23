@@ -89,110 +89,111 @@ namespace LoginServer.Game {
             "cmRfRGlyZWN0aW9uVHlwZSJVChpXYWl0SW5mb3JtYXRpb25SZWNlaXZlX1My",
             "QxIQCgh1c2VyTmFtZRgBIAEoCRISCgpjYW5SZWNlaXZlGAIgASgIEhEKCWNh",
             "blJlZnVzZRgDIAEoCCJBChpXYWl0SW5mb3JtYXRpb25SZWNlaXZlX0MyUxIQ",
-            "Cgh1c2VyTmFtZRgBIAEoCRIRCglpc1JlY2VpdmUYAiABKAgifQoQUGxheUhh",
-            "bmRDYXJkX0MyUxIQCgh1c2VyTmFtZRgBIAEoCRIWCg5pc1BsYXlIYW5kQ2Fy",
-            "ZBgCIAEoCBIoCgRjYXJkGAMgASgLMhoubG9naW5TZXJ2ZXIuZ2FtZS5DYXJk",
-            "VHlwZRIVCg1oYW5kQ2FyZEluZGV4GAQgASgFItIBChBQbGF5SGFuZENhcmRf",
-            "UzJDEhAKCHVzZXJOYW1lGAEgASgJEigKBGNhcmQYAiABKAsyGi5sb2dpblNl",
-            "cnZlci5nYW1lLkNhcmRUeXBlEhUKDWhhbmRDYXJkSW5kZXgYAyABKAUSOQoE",
-            "Y29kZRgEIAEoDjIrLmxvZ2luU2VydmVyLmdhbWUuUGxheUhhbmRDYXJkX1My",
-            "Qy5SZXRfQ29kZRILCgNtc2cYBSABKAkiIwoIUmV0X0NvZGUSCwoHU3VjY2Vz",
-            "cxAAEgoKBkZhaWxlZBABIioKFkluZm9ybWF0aW9uUmVjZWl2ZV9TMkMSEAoI",
-            "dXNlck5hbWUYASABKAkiJwoTQXNrUGxheUhhbmRDYXJkX1MyQxIQCgh1c2Vy",
-            "TmFtZRgBIAMoCSJbCh1JbmZvcm1hdGlvblJlY2VpdmVTdWNjZXNzX1MyQxIQ",
-            "Cgh1c2VyTmFtZRgBIAEoCRIoCgRjYXJkGAIgASgLMhoubG9naW5TZXJ2ZXIu",
-            "Z2FtZS5DYXJkVHlwZSIxCh1JbmZvcm1hdGlvblRyYW5zbWl0U2VuZGVyX1My",
-            "QxIQCgh1c2VyTmFtZRgBIAEoCSLSAQoUSW5mb3JtYXRpb25Db3VudF9TMkMS",
-            "RgoFaW5mb3MYASADKAsyNy5sb2dpblNlcnZlci5nYW1lLkluZm9ybWF0aW9u",
-            "Q291bnRfUzJDLkluZm9ybWF0aW9uQ291bnQacgoQSW5mb3JtYXRpb25Db3Vu",
-            "dBIQCgh1c2VyTmFtZRgBIAEoCRIQCghyZWRDb3VudBgCIAEoBRIRCglibHVl",
-            "Q291bnQYAyABKAUSEQoJZ3JheUNvdW50GAQgASgFEhQKDHJlZEJsdWVDb3Vu",
-            "dBgFIAEoBSJzCg9Bc2tVc2VTaGlQb19DMlMSEAoIdXNlck5hbWUYASABKAkS",
-            "DQoFaXNVc2UYAiABKAgSKAoEY2FyZBgDIAEoCzIaLmxvZ2luU2VydmVyLmdh",
-            "bWUuQ2FyZFR5cGUSFQoNaGFuZENhcmRJbmRleBgEIAEoBSIjCg9Bc2tVc2VT",
-            "aGlQb19TMkMSEAoIdXNlck5hbWUYASADKAkiPAoVVHJpZ2dlckNhcmRSZXN1",
-            "bHRfUzJDEhAKCHVzZXJOYW1lGAEgASgJEhEKCWlzVHJpZ2dlchgCIAEoCCIr",
-            "ChdJbmZvcm1hdGlvblRyYW5zbWl0X1MyQxIQCgh1c2VyTmFtZRgBIAEoCSJM",
-            "Cg5Vc2VEaWFvQmFvX1MyQxIQCgh1c2VyTmFtZRgBIAEoCRIoCgRjYXJkGAIg",
-            "ASgLMhoubG9naW5TZXJ2ZXIuZ2FtZS5DYXJkVHlwZSLUAQoOVXNlRGlhb0Jh",
-            "b19DMlMSFAoMZnJvbVVzZXJOYW1lGAEgASgJEigKBGNhcmQYAiABKAsyGi5s",
-            "b2dpblNlcnZlci5nYW1lLkNhcmRUeXBlEhIKCnRvVXNlck5hbWUYAyABKAkS",
-            "NQoIdHJhbnNtaXQYBCABKA4yIy5sb2dpblNlcnZlci5nYW1lLkNhcmRfVHJh",
-            "bnNtaXRUeXBlEjcKCWRpcmVjdGlvbhgFIAEoDjIkLmxvZ2luU2VydmVyLmdh",
-            "bWUuQ2FyZF9EaXJlY3Rpb25UeXBlIkkKC1VzZVBvWWlfUzJDEhAKCHVzZXJO",
-            "YW1lGAEgASgJEigKBGNhcmQYAiABKAsyGi5sb2dpblNlcnZlci5nYW1lLkNh",
-            "cmRUeXBlIh8KC1VzZVBvWWlfQzJTEhAKCHVzZXJOYW1lGAEgASgJIkwKDlVz",
-            "ZVNoYW9IdWlfUzJDEhAKCHVzZXJOYW1lGAEgASgJEigKBGNhcmQYAiABKAsy",
-            "Gi5sb2dpblNlcnZlci5nYW1lLkNhcmRUeXBlIiIKDlVzZVNoYW9IdWlfQzJT",
-            "EhAKCHVzZXJOYW1lGAEgASgJIk0KD1VzZVplbmdZdWFuX1MyQxIQCgh1c2Vy",
+            "Cgh1c2VyTmFtZRgBIAEoCRIRCglpc1JlY2VpdmUYAiABKAgilQEKEFBsYXlI",
+            "YW5kQ2FyZF9DMlMSEAoIdXNlck5hbWUYASABKAkSFgoOaXNQbGF5SGFuZENh",
+            "cmQYAiABKAgSKAoEY2FyZBgDIAEoCzIaLmxvZ2luU2VydmVyLmdhbWUuQ2Fy",
+            "ZFR5cGUSFQoNaGFuZENhcmRJbmRleBgEIAEoBRIWCg50YXJnZXRVc2VyTmFt",
+            "ZRgFIAEoCSLSAQoQUGxheUhhbmRDYXJkX1MyQxIQCgh1c2VyTmFtZRgBIAEo",
+            "CRIoCgRjYXJkGAIgASgLMhoubG9naW5TZXJ2ZXIuZ2FtZS5DYXJkVHlwZRIV",
+            "Cg1oYW5kQ2FyZEluZGV4GAMgASgFEjkKBGNvZGUYBCABKA4yKy5sb2dpblNl",
+            "cnZlci5nYW1lLlBsYXlIYW5kQ2FyZF9TMkMuUmV0X0NvZGUSCwoDbXNnGAUg",
+            "ASgJIiMKCFJldF9Db2RlEgsKB1N1Y2Nlc3MQABIKCgZGYWlsZWQQASIqChZJ",
+            "bmZvcm1hdGlvblJlY2VpdmVfUzJDEhAKCHVzZXJOYW1lGAEgASgJIicKE0Fz",
+            "a1BsYXlIYW5kQ2FyZF9TMkMSEAoIdXNlck5hbWUYASADKAkiWwodSW5mb3Jt",
+            "YXRpb25SZWNlaXZlU3VjY2Vzc19TMkMSEAoIdXNlck5hbWUYASABKAkSKAoE",
+            "Y2FyZBgCIAEoCzIaLmxvZ2luU2VydmVyLmdhbWUuQ2FyZFR5cGUiMQodSW5m",
+            "b3JtYXRpb25UcmFuc21pdFNlbmRlcl9TMkMSEAoIdXNlck5hbWUYASABKAki",
+            "0gEKFEluZm9ybWF0aW9uQ291bnRfUzJDEkYKBWluZm9zGAEgAygLMjcubG9n",
+            "aW5TZXJ2ZXIuZ2FtZS5JbmZvcm1hdGlvbkNvdW50X1MyQy5JbmZvcm1hdGlv",
+            "bkNvdW50GnIKEEluZm9ybWF0aW9uQ291bnQSEAoIdXNlck5hbWUYASABKAkS",
+            "EAoIcmVkQ291bnQYAiABKAUSEQoJYmx1ZUNvdW50GAMgASgFEhEKCWdyYXlD",
+            "b3VudBgEIAEoBRIUCgxyZWRCbHVlQ291bnQYBSABKAUicwoPQXNrVXNlU2hp",
+            "UG9fQzJTEhAKCHVzZXJOYW1lGAEgASgJEg0KBWlzVXNlGAIgASgIEigKBGNh",
+            "cmQYAyABKAsyGi5sb2dpblNlcnZlci5nYW1lLkNhcmRUeXBlEhUKDWhhbmRD",
+            "YXJkSW5kZXgYBCABKAUiIwoPQXNrVXNlU2hpUG9fUzJDEhAKCHVzZXJOYW1l",
+            "GAEgAygJIjwKFVRyaWdnZXJDYXJkUmVzdWx0X1MyQxIQCgh1c2VyTmFtZRgB",
+            "IAEoCRIRCglpc1RyaWdnZXIYAiABKAgiKwoXSW5mb3JtYXRpb25UcmFuc21p",
+            "dF9TMkMSEAoIdXNlck5hbWUYASABKAkiTAoOVXNlRGlhb0Jhb19TMkMSEAoI",
+            "dXNlck5hbWUYASABKAkSKAoEY2FyZBgCIAEoCzIaLmxvZ2luU2VydmVyLmdh",
+            "bWUuQ2FyZFR5cGUi1AEKDlVzZURpYW9CYW9fQzJTEhQKDGZyb21Vc2VyTmFt",
+            "ZRgBIAEoCRIoCgRjYXJkGAIgASgLMhoubG9naW5TZXJ2ZXIuZ2FtZS5DYXJk",
+            "VHlwZRISCgp0b1VzZXJOYW1lGAMgASgJEjUKCHRyYW5zbWl0GAQgASgOMiMu",
+            "bG9naW5TZXJ2ZXIuZ2FtZS5DYXJkX1RyYW5zbWl0VHlwZRI3CglkaXJlY3Rp",
+            "b24YBSABKA4yJC5sb2dpblNlcnZlci5nYW1lLkNhcmRfRGlyZWN0aW9uVHlw",
+            "ZSJJCgtVc2VQb1lpX1MyQxIQCgh1c2VyTmFtZRgBIAEoCRIoCgRjYXJkGAIg",
+            "ASgLMhoubG9naW5TZXJ2ZXIuZ2FtZS5DYXJkVHlwZSIfCgtVc2VQb1lpX0My",
+            "UxIQCgh1c2VyTmFtZRgBIAEoCSJMCg5Vc2VTaGFvSHVpX1MyQxIQCgh1c2Vy",
             "TmFtZRgBIAEoCRIoCgRjYXJkGAIgASgLMhoubG9naW5TZXJ2ZXIuZ2FtZS5D",
-            "YXJkVHlwZSIjCg9Vc2VaZW5nWXVhbl9DMlMSEAoIdXNlck5hbWUYASABKAki",
-            "UAoSVXNlSmlNaVdlbkppYW5fUzJDEhAKCHVzZXJOYW1lGAEgASgJEigKBGNh",
-            "cmQYAiABKAsyGi5sb2dpblNlcnZlci5nYW1lLkNhcmRUeXBlIiYKElVzZUpp",
-            "TWlXZW5KaWFuX0MyUxIQCgh1c2VyTmFtZRgBIAEoCSJMCg5Vc2VTdW9EaW5n",
-            "X1MyQxIQCgh1c2VyTmFtZRgBIAEoCRIoCgRjYXJkGAIgASgLMhoubG9naW5T",
-            "ZXJ2ZXIuZ2FtZS5DYXJkVHlwZSIiCg5Vc2VTdW9EaW5nX0MyUxIQCgh1c2Vy",
-            "TmFtZRgBIAEoCSpxCgxJZGVudGl0eVR5cGUSFQoRSWRlbnRpdHlUeXBlX05v",
-            "bmUQABIXChNJZGVudGl0eVR5cGVfVGVHb25nEAESGAoUSWRlbnRpdHlUeXBl",
-            "X0p1blFpbmcQAhIXChNJZGVudGl0eVR5cGVfUWlhbkZ1EAMq8gUKDUNoYXJh",
-            "Y3RlclR5cGUSFgoSQ2hhcmFjdGVyVHlwZV9Ob25lEAASGAoUQ2hhcmFjdGVy",
-            "VHlwZV9MYW9KaW4QARIZChVDaGFyYWN0ZXJUeXBlX0RhTWVpTnYQAhIaChZD",
-            "aGFyYWN0ZXJUeXBlX0VNZWlGZW5nEAMSGwoXQ2hhcmFjdGVyVHlwZV9CZWlM",
-            "ZWlNYW8QBBIZChVDaGFyYWN0ZXJUeXBlX0Rhb0ZlbmcQBRIXChNDaGFyYWN0",
-            "ZXJUeXBlX0RhaUxpEAYSGgoWQ2hhcmFjdGVyVHlwZV9IdWFuZ1F1ZRAHEhkK",
-            "FUNoYXJhY3RlclR5cGVfU2hhbkxpbhAIEhcKE0NoYXJhY3RlclR5cGVfRnVT",
-            "aGUQCRIcChhDaGFyYWN0ZXJUeXBlX1lpRGlhbll1YW4QChIYChRDaGFyYWN0",
-            "ZXJUeXBlX0xpdUppZRALEhgKFENoYXJhY3RlclR5cGVfRnVQaW5nEAwSIQod",
-            "Q2hhcmFjdGVyVHlwZV9RaW5nQmFvQ2h1WmhhbmcQDRIhCh1DaGFyYWN0ZXJU",
-            "eXBlX1poaU1pblhpYW5nU2h1aRAOEh8KG0NoYXJhY3RlclR5cGVfR3VhaURh",
-            "b0ppdUppdRAPEh8KG0NoYXJhY3RlclR5cGVfR2FuZ1RpZVRlR29uZxAQEh4K",
-            "GkNoYXJhY3RlclR5cGVfTGlGdU1lbmdNaWFuEBESGgoWQ2hhcmFjdGVyVHlw",
-            "ZV9GdUVyTW9TaRASEhkKFUNoYXJhY3RlclR5cGVfWGlhb0JhaRATEhoKFkNo",
-            "YXJhY3RlclR5cGVfWGlhb01hR2UQFBIeChpDaGFyYWN0ZXJUeXBlX1poaVll",
-            "U2hhU2hvdRAVEhgKFENoYXJhY3RlclR5cGVfTGFvR3VpEBYSFwoTQ2hhcmFj",
-            "dGVyVHlwZV9RaUJhaRAXEhoKFkNoYXJhY3RlclR5cGVfTGFvUWlhbmcQGBIb",
-            "ChdDaGFyYWN0ZXJUeXBlX0hlaU1laUd1aRAZKqYBChFDYXJkX1RyYW5zbWl0",
-            "VHlwZRIaChZDYXJkX1RyYW5zbWl0VHlwZV9Ob25lEAASGwoXQ2FyZF9UcmFu",
-            "c21pdFR5cGVfWmhpRGEQARIcChhDYXJkX1RyYW5zbWl0VHlwZV9NaURpYW4Q",
-            "AhIcChhDYXJkX1RyYW5zbWl0VHlwZV9XZW5CZW4QAxIcChhDYXJkX1RyYW5z",
-            "bWl0VHlwZV9DaG9vc2UQBCqIAQoSQ2FyZF9EaXJlY3Rpb25UeXBlEhsKF0Nh",
-            "cmRfRGlyZWN0aW9uVHlwZV9Ob25lEAASGwoXQ2FyZF9EaXJlY3Rpb25UeXBl",
-            "X1NodW4QARIZChVDYXJkX0RpcmVjdGlvblR5cGVfTmkQAhIdChlDYXJkX0Rp",
-            "cmVjdGlvblR5cGVfQ2hvb3NlEAMqjwEKDkNhcmRfQ29sb3JUeXBlEhcKE0Nh",
-            "cmRfQ29sb3JUeXBlX05vbmUQABIXChNDYXJkX0NvbG9yVHlwZV9HcmF5EAES",
-            "FgoSQ2FyZF9Db2xvclR5cGVfUmVkEAISFwoTQ2FyZF9Db2xvclR5cGVfQmx1",
-            "ZRADEhoKFkNhcmRfQ29sb3JUeXBlX1JlZEJsdWUQBCpZCg1DYXJkX0xvY2tU",
-            "eXBlEhYKEkNhcmRfTG9ja1R5cGVfTm9uZRAAEhYKEkNhcmRfTG9ja1R5cGVf",
-            "TG9jaxABEhgKFENhcmRfTG9ja1R5cGVfVW5sb2NrEAIq7AEKFkNhcmRfR29u",
-            "Z0thaVdlbkJlblR5cGUSHwobQ2FyZF9Hb25nS2FpV2VuQmVuVHlwZV9Ob25l",
-            "EAASIgoeQ2FyZF9Hb25nS2FpV2VuQmVuVHlwZV9CbHVlU3ViEAESIQodQ2Fy",
-            "ZF9Hb25nS2FpV2VuQmVuVHlwZV9SZWRTdWIQAhIiCh5DYXJkX0dvbmdLYWlX",
-            "ZW5CZW5UeXBlX0JsdWVBZGQQAxIhCh1DYXJkX0dvbmdLYWlXZW5CZW5UeXBl",
-            "X1JlZEFkZBAEEiMKH0NhcmRfR29uZ0thaVdlbkJlblR5cGVfR3JlZW5BZGQQ",
-            "BSqdAQoSQ2FyZF9NaU1pWGlhRGFUeXBlEhsKF0NhcmRfTWlNaVhpYURhVHlw",
-            "ZV9Ob25lEAASIgoeQ2FyZF9NaU1pWGlhRGFUeXBlX0dyYXlSZWRCdWxlEAES",
-            "IgoeQ2FyZF9NaU1pWGlhRGFUeXBlX0JsdWVHcmF5UmVkEAISIgoeQ2FyZF9N",
-            "aU1pWGlhRGFUeXBlX1JlZEJsdWVHcmF5EAMq5AEKD0NhcmRfU2hpVGFuVHlw",
-            "ZRIYChRDYXJkX1NoaVRhblR5cGVfTm9uZRAAEhsKF0NhcmRfU2hpVGFuVHlw",
-            "ZV9CbHVlQWRkEAESGgoWQ2FyZF9TaGlUYW5UeXBlX1JlZEFkZBACEhwKGENh",
-            "cmRfU2hpVGFuVHlwZV9HcmVlbkFkZBADEh8KG0NhcmRfU2hpVGFuVHlwZV9H",
-            "dWVzc0hhb1JlbhAEEh0KGUNhcmRfU2hpVGFuVHlwZV9HdWVzc1dvRGkQBRIg",
-            "ChxDYXJkX1NoaVRhblR5cGVfR3Vlc3NKaWFuRGllEAYq/wMKEENhcmRfWGlh",
-            "b0d1b1R5cGUSGQoVQ2FyZF9YaWFvR3VvVHlwZV9Ob25lEAASIgoeQ2FyZF9Y",
-            "aWFvR3VvVHlwZV9Hb25nS2FpV2VuQmVuEAESHgoaQ2FyZF9YaWFvR3VvVHlw",
-            "ZV9NaU1pWGlhRGEQAhIbChdDYXJkX1hpYW9HdW9UeXBlX1NoaVRhbhADEhwK",
-            "GENhcmRfWGlhb0d1b1R5cGVfRGlhb0JhbxAEEhsKF0NhcmRfWGlhb0d1b1R5",
-            "cGVfSmllSHVvEAUSGwoXQ2FyZF9YaWFvR3VvVHlwZV9MaUppYW4QBhIZChVD",
-            "YXJkX1hpYW9HdW9UeXBlX1BvWWkQBxIhCh1DYXJkX1hpYW9HdW9UeXBlX0Rp",
-            "YW9IdUxpU2hhbhAIEh0KGUNhcmRfWGlhb0d1b1R5cGVfWmVuZ1l1YW4QCRIc",
-            "ChhDYXJkX1hpYW9HdW9UeXBlX1NoYW9IdWkQChIcChhDYXJkX1hpYW9HdW9U",
-            "eXBlX1N1b0RpbmcQCxIiCh5DYXJkX1hpYW9HdW9UeXBlX1dlaVhpYW5RaW5C",
-            "YW8QDBIaChZDYXJkX1hpYW9HdW9UeXBlX1NoaVBvEA0SHAoYQ2FyZF9YaWFv",
-            "R3VvVHlwZV9aaHVhbllpEA4SIAocQ2FyZF9YaWFvR3VvVHlwZV9KaU1pV2Vu",
-            "SmlhbhAPKogBCgtWaWN0b3J5VHlwZRIUChBWaWN0b3J5VHlwZV9Ob25lEAAS",
-            "FwoTVmljdG9yeVR5cGVfSnVuUWluZxABEhYKElZpY3RvcnlUeXBlX1FpYW5G",
-            "dRACEhoKFlZpY3RvcnlUeXBlX1BhcnRUZUdvbmcQAxIWChJWaWN0b3J5VHlw",
-            "ZV9TaW5nbGUQBGIGcHJvdG8z"));
+            "YXJkVHlwZSIiCg5Vc2VTaGFvSHVpX0MyUxIQCgh1c2VyTmFtZRgBIAEoCSJN",
+            "Cg9Vc2VaZW5nWXVhbl9TMkMSEAoIdXNlck5hbWUYASABKAkSKAoEY2FyZBgC",
+            "IAEoCzIaLmxvZ2luU2VydmVyLmdhbWUuQ2FyZFR5cGUiIwoPVXNlWmVuZ1l1",
+            "YW5fQzJTEhAKCHVzZXJOYW1lGAEgASgJIlAKElVzZUppTWlXZW5KaWFuX1My",
+            "QxIQCgh1c2VyTmFtZRgBIAEoCRIoCgRjYXJkGAIgASgLMhoubG9naW5TZXJ2",
+            "ZXIuZ2FtZS5DYXJkVHlwZSImChJVc2VKaU1pV2VuSmlhbl9DMlMSEAoIdXNl",
+            "ck5hbWUYASABKAkiZAoOVXNlU3VvRGluZ19TMkMSEAoIdXNlck5hbWUYASAB",
+            "KAkSKAoEY2FyZBgCIAEoCzIaLmxvZ2luU2VydmVyLmdhbWUuQ2FyZFR5cGUS",
+            "FgoOdGFyZ2V0VXNlck5hbWUYAyABKAkiIgoOVXNlU3VvRGluZ19DMlMSEAoI",
+            "dXNlck5hbWUYASABKAkqcQoMSWRlbnRpdHlUeXBlEhUKEUlkZW50aXR5VHlw",
+            "ZV9Ob25lEAASFwoTSWRlbnRpdHlUeXBlX1RlR29uZxABEhgKFElkZW50aXR5",
+            "VHlwZV9KdW5RaW5nEAISFwoTSWRlbnRpdHlUeXBlX1FpYW5GdRADKvIFCg1D",
+            "aGFyYWN0ZXJUeXBlEhYKEkNoYXJhY3RlclR5cGVfTm9uZRAAEhgKFENoYXJh",
+            "Y3RlclR5cGVfTGFvSmluEAESGQoVQ2hhcmFjdGVyVHlwZV9EYU1laU52EAIS",
+            "GgoWQ2hhcmFjdGVyVHlwZV9FTWVpRmVuZxADEhsKF0NoYXJhY3RlclR5cGVf",
+            "QmVpTGVpTWFvEAQSGQoVQ2hhcmFjdGVyVHlwZV9EYW9GZW5nEAUSFwoTQ2hh",
+            "cmFjdGVyVHlwZV9EYWlMaRAGEhoKFkNoYXJhY3RlclR5cGVfSHVhbmdRdWUQ",
+            "BxIZChVDaGFyYWN0ZXJUeXBlX1NoYW5MaW4QCBIXChNDaGFyYWN0ZXJUeXBl",
+            "X0Z1U2hlEAkSHAoYQ2hhcmFjdGVyVHlwZV9ZaURpYW5ZdWFuEAoSGAoUQ2hh",
+            "cmFjdGVyVHlwZV9MaXVKaWUQCxIYChRDaGFyYWN0ZXJUeXBlX0Z1UGluZxAM",
+            "EiEKHUNoYXJhY3RlclR5cGVfUWluZ0Jhb0NodVpoYW5nEA0SIQodQ2hhcmFj",
+            "dGVyVHlwZV9aaGlNaW5YaWFuZ1NodWkQDhIfChtDaGFyYWN0ZXJUeXBlX0d1",
+            "YWlEYW9KaXVKaXUQDxIfChtDaGFyYWN0ZXJUeXBlX0dhbmdUaWVUZUdvbmcQ",
+            "EBIeChpDaGFyYWN0ZXJUeXBlX0xpRnVNZW5nTWlhbhAREhoKFkNoYXJhY3Rl",
+            "clR5cGVfRnVFck1vU2kQEhIZChVDaGFyYWN0ZXJUeXBlX1hpYW9CYWkQExIa",
+            "ChZDaGFyYWN0ZXJUeXBlX1hpYW9NYUdlEBQSHgoaQ2hhcmFjdGVyVHlwZV9a",
+            "aGlZZVNoYVNob3UQFRIYChRDaGFyYWN0ZXJUeXBlX0xhb0d1aRAWEhcKE0No",
+            "YXJhY3RlclR5cGVfUWlCYWkQFxIaChZDaGFyYWN0ZXJUeXBlX0xhb1FpYW5n",
+            "EBgSGwoXQ2hhcmFjdGVyVHlwZV9IZWlNZWlHdWkQGSqmAQoRQ2FyZF9UcmFu",
+            "c21pdFR5cGUSGgoWQ2FyZF9UcmFuc21pdFR5cGVfTm9uZRAAEhsKF0NhcmRf",
+            "VHJhbnNtaXRUeXBlX1poaURhEAESHAoYQ2FyZF9UcmFuc21pdFR5cGVfTWlE",
+            "aWFuEAISHAoYQ2FyZF9UcmFuc21pdFR5cGVfV2VuQmVuEAMSHAoYQ2FyZF9U",
+            "cmFuc21pdFR5cGVfQ2hvb3NlEAQqiAEKEkNhcmRfRGlyZWN0aW9uVHlwZRIb",
+            "ChdDYXJkX0RpcmVjdGlvblR5cGVfTm9uZRAAEhsKF0NhcmRfRGlyZWN0aW9u",
+            "VHlwZV9TaHVuEAESGQoVQ2FyZF9EaXJlY3Rpb25UeXBlX05pEAISHQoZQ2Fy",
+            "ZF9EaXJlY3Rpb25UeXBlX0Nob29zZRADKo8BCg5DYXJkX0NvbG9yVHlwZRIX",
+            "ChNDYXJkX0NvbG9yVHlwZV9Ob25lEAASFwoTQ2FyZF9Db2xvclR5cGVfR3Jh",
+            "eRABEhYKEkNhcmRfQ29sb3JUeXBlX1JlZBACEhcKE0NhcmRfQ29sb3JUeXBl",
+            "X0JsdWUQAxIaChZDYXJkX0NvbG9yVHlwZV9SZWRCbHVlEAQqWQoNQ2FyZF9M",
+            "b2NrVHlwZRIWChJDYXJkX0xvY2tUeXBlX05vbmUQABIWChJDYXJkX0xvY2tU",
+            "eXBlX0xvY2sQARIYChRDYXJkX0xvY2tUeXBlX1VubG9jaxACKuwBChZDYXJk",
+            "X0dvbmdLYWlXZW5CZW5UeXBlEh8KG0NhcmRfR29uZ0thaVdlbkJlblR5cGVf",
+            "Tm9uZRAAEiIKHkNhcmRfR29uZ0thaVdlbkJlblR5cGVfQmx1ZVN1YhABEiEK",
+            "HUNhcmRfR29uZ0thaVdlbkJlblR5cGVfUmVkU3ViEAISIgoeQ2FyZF9Hb25n",
+            "S2FpV2VuQmVuVHlwZV9CbHVlQWRkEAMSIQodQ2FyZF9Hb25nS2FpV2VuQmVu",
+            "VHlwZV9SZWRBZGQQBBIjCh9DYXJkX0dvbmdLYWlXZW5CZW5UeXBlX0dyZWVu",
+            "QWRkEAUqnQEKEkNhcmRfTWlNaVhpYURhVHlwZRIbChdDYXJkX01pTWlYaWFE",
+            "YVR5cGVfTm9uZRAAEiIKHkNhcmRfTWlNaVhpYURhVHlwZV9HcmF5UmVkQnVs",
+            "ZRABEiIKHkNhcmRfTWlNaVhpYURhVHlwZV9CbHVlR3JheVJlZBACEiIKHkNh",
+            "cmRfTWlNaVhpYURhVHlwZV9SZWRCbHVlR3JheRADKuQBCg9DYXJkX1NoaVRh",
+            "blR5cGUSGAoUQ2FyZF9TaGlUYW5UeXBlX05vbmUQABIbChdDYXJkX1NoaVRh",
+            "blR5cGVfQmx1ZUFkZBABEhoKFkNhcmRfU2hpVGFuVHlwZV9SZWRBZGQQAhIc",
+            "ChhDYXJkX1NoaVRhblR5cGVfR3JlZW5BZGQQAxIfChtDYXJkX1NoaVRhblR5",
+            "cGVfR3Vlc3NIYW9SZW4QBBIdChlDYXJkX1NoaVRhblR5cGVfR3Vlc3NXb0Rp",
+            "EAUSIAocQ2FyZF9TaGlUYW5UeXBlX0d1ZXNzSmlhbkRpZRAGKv8DChBDYXJk",
+            "X1hpYW9HdW9UeXBlEhkKFUNhcmRfWGlhb0d1b1R5cGVfTm9uZRAAEiIKHkNh",
+            "cmRfWGlhb0d1b1R5cGVfR29uZ0thaVdlbkJlbhABEh4KGkNhcmRfWGlhb0d1",
+            "b1R5cGVfTWlNaVhpYURhEAISGwoXQ2FyZF9YaWFvR3VvVHlwZV9TaGlUYW4Q",
+            "AxIcChhDYXJkX1hpYW9HdW9UeXBlX0RpYW9CYW8QBBIbChdDYXJkX1hpYW9H",
+            "dW9UeXBlX0ppZUh1bxAFEhsKF0NhcmRfWGlhb0d1b1R5cGVfTGlKaWFuEAYS",
+            "GQoVQ2FyZF9YaWFvR3VvVHlwZV9Qb1lpEAcSIQodQ2FyZF9YaWFvR3VvVHlw",
+            "ZV9EaWFvSHVMaVNoYW4QCBIdChlDYXJkX1hpYW9HdW9UeXBlX1plbmdZdWFu",
+            "EAkSHAoYQ2FyZF9YaWFvR3VvVHlwZV9TaGFvSHVpEAoSHAoYQ2FyZF9YaWFv",
+            "R3VvVHlwZV9TdW9EaW5nEAsSIgoeQ2FyZF9YaWFvR3VvVHlwZV9XZWlYaWFu",
+            "UWluQmFvEAwSGgoWQ2FyZF9YaWFvR3VvVHlwZV9TaGlQbxANEhwKGENhcmRf",
+            "WGlhb0d1b1R5cGVfWmh1YW5ZaRAOEiAKHENhcmRfWGlhb0d1b1R5cGVfSmlN",
+            "aVdlbkppYW4QDyqIAQoLVmljdG9yeVR5cGUSFAoQVmljdG9yeVR5cGVfTm9u",
+            "ZRAAEhcKE1ZpY3RvcnlUeXBlX0p1blFpbmcQARIWChJWaWN0b3J5VHlwZV9R",
+            "aWFuRnUQAhIaChZWaWN0b3J5VHlwZV9QYXJ0VGVHb25nEAMSFgoSVmljdG9y",
+            "eVR5cGVfU2luZ2xlEARiBnByb3RvMw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(new[] {typeof(global::LoginServer.Game.IdentityType), typeof(global::LoginServer.Game.CharacterType), typeof(global::LoginServer.Game.Card_TransmitType), typeof(global::LoginServer.Game.Card_DirectionType), typeof(global::LoginServer.Game.Card_ColorType), typeof(global::LoginServer.Game.Card_LockType), typeof(global::LoginServer.Game.Card_GongKaiWenBenType), typeof(global::LoginServer.Game.Card_MiMiXiaDaType), typeof(global::LoginServer.Game.Card_ShiTanType), typeof(global::LoginServer.Game.Card_XiaoGuoType), typeof(global::LoginServer.Game.VictoryType), }, null, new pbr::GeneratedClrTypeInfo[] {
@@ -226,7 +227,7 @@ namespace LoginServer.Game {
             new pbr::GeneratedClrTypeInfo(typeof(global::LoginServer.Game.InformationTransmitReady_S2C), global::LoginServer.Game.InformationTransmitReady_S2C.Parser, new[]{ "FromUserName", "Card", "HandCardIndex", "ToUserName", "Transmit", "Direction" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LoginServer.Game.WaitInformationReceive_S2C), global::LoginServer.Game.WaitInformationReceive_S2C.Parser, new[]{ "UserName", "CanReceive", "CanRefuse" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LoginServer.Game.WaitInformationReceive_C2S), global::LoginServer.Game.WaitInformationReceive_C2S.Parser, new[]{ "UserName", "IsReceive" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::LoginServer.Game.PlayHandCard_C2S), global::LoginServer.Game.PlayHandCard_C2S.Parser, new[]{ "UserName", "IsPlayHandCard", "Card", "HandCardIndex" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::LoginServer.Game.PlayHandCard_C2S), global::LoginServer.Game.PlayHandCard_C2S.Parser, new[]{ "UserName", "IsPlayHandCard", "Card", "HandCardIndex", "TargetUserName" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LoginServer.Game.PlayHandCard_S2C), global::LoginServer.Game.PlayHandCard_S2C.Parser, new[]{ "UserName", "Card", "HandCardIndex", "Code", "Msg" }, null, new[]{ typeof(global::LoginServer.Game.PlayHandCard_S2C.Types.Ret_Code) }, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LoginServer.Game.InformationReceive_S2C), global::LoginServer.Game.InformationReceive_S2C.Parser, new[]{ "UserName" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LoginServer.Game.AskPlayHandCard_S2C), global::LoginServer.Game.AskPlayHandCard_S2C.Parser, new[]{ "UserName" }, null, null, null, null),
@@ -247,7 +248,7 @@ namespace LoginServer.Game {
             new pbr::GeneratedClrTypeInfo(typeof(global::LoginServer.Game.UseZengYuan_C2S), global::LoginServer.Game.UseZengYuan_C2S.Parser, new[]{ "UserName" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LoginServer.Game.UseJiMiWenJian_S2C), global::LoginServer.Game.UseJiMiWenJian_S2C.Parser, new[]{ "UserName", "Card" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LoginServer.Game.UseJiMiWenJian_C2S), global::LoginServer.Game.UseJiMiWenJian_C2S.Parser, new[]{ "UserName" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::LoginServer.Game.UseSuoDing_S2C), global::LoginServer.Game.UseSuoDing_S2C.Parser, new[]{ "UserName", "Card" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::LoginServer.Game.UseSuoDing_S2C), global::LoginServer.Game.UseSuoDing_S2C.Parser, new[]{ "UserName", "Card", "TargetUserName" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::LoginServer.Game.UseSuoDing_C2S), global::LoginServer.Game.UseSuoDing_C2S.Parser, new[]{ "UserName" }, null, null, null, null)
           }));
     }
@@ -8038,6 +8039,7 @@ namespace LoginServer.Game {
       isPlayHandCard_ = other.isPlayHandCard_;
       card_ = other.card_ != null ? other.card_.Clone() : null;
       handCardIndex_ = other.handCardIndex_;
+      targetUserName_ = other.targetUserName_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -8050,6 +8052,9 @@ namespace LoginServer.Game {
     /// <summary>Field number for the "userName" field.</summary>
     public const int UserNameFieldNumber = 1;
     private string userName_ = "";
+    /// <summary>
+    ///出牌的玩家
+    /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public string UserName {
@@ -8062,6 +8067,9 @@ namespace LoginServer.Game {
     /// <summary>Field number for the "isPlayHandCard" field.</summary>
     public const int IsPlayHandCardFieldNumber = 2;
     private bool isPlayHandCard_;
+    /// <summary>
+    ///是否出牌
+    /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public bool IsPlayHandCard {
@@ -8074,6 +8082,9 @@ namespace LoginServer.Game {
     /// <summary>Field number for the "card" field.</summary>
     public const int CardFieldNumber = 3;
     private global::LoginServer.Game.CardType card_;
+    /// <summary>
+    ///牌面详情
+    /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public global::LoginServer.Game.CardType Card {
@@ -8086,12 +8097,30 @@ namespace LoginServer.Game {
     /// <summary>Field number for the "handCardIndex" field.</summary>
     public const int HandCardIndexFieldNumber = 4;
     private int handCardIndex_;
+    /// <summary>
+    ///手牌索引
+    /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public int HandCardIndex {
       get { return handCardIndex_; }
       set {
         handCardIndex_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "targetUserName" field.</summary>
+    public const int TargetUserNameFieldNumber = 5;
+    private string targetUserName_ = "";
+    /// <summary>
+    ///目标玩家
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public string TargetUserName {
+      get { return targetUserName_; }
+      set {
+        targetUserName_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
       }
     }
 
@@ -8114,6 +8143,7 @@ namespace LoginServer.Game {
       if (IsPlayHandCard != other.IsPlayHandCard) return false;
       if (!object.Equals(Card, other.Card)) return false;
       if (HandCardIndex != other.HandCardIndex) return false;
+      if (TargetUserName != other.TargetUserName) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -8125,6 +8155,7 @@ namespace LoginServer.Game {
       if (IsPlayHandCard != false) hash ^= IsPlayHandCard.GetHashCode();
       if (card_ != null) hash ^= Card.GetHashCode();
       if (HandCardIndex != 0) hash ^= HandCardIndex.GetHashCode();
+      if (TargetUserName.Length != 0) hash ^= TargetUserName.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -8159,6 +8190,10 @@ namespace LoginServer.Game {
         output.WriteRawTag(32);
         output.WriteInt32(HandCardIndex);
       }
+      if (TargetUserName.Length != 0) {
+        output.WriteRawTag(42);
+        output.WriteString(TargetUserName);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -8185,6 +8220,10 @@ namespace LoginServer.Game {
         output.WriteRawTag(32);
         output.WriteInt32(HandCardIndex);
       }
+      if (TargetUserName.Length != 0) {
+        output.WriteRawTag(42);
+        output.WriteString(TargetUserName);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
       }
@@ -8206,6 +8245,9 @@ namespace LoginServer.Game {
       }
       if (HandCardIndex != 0) {
         size += 1 + pb::CodedOutputStream.ComputeInt32Size(HandCardIndex);
+      }
+      if (TargetUserName.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(TargetUserName);
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -8233,6 +8275,9 @@ namespace LoginServer.Game {
       }
       if (other.HandCardIndex != 0) {
         HandCardIndex = other.HandCardIndex;
+      }
+      if (other.TargetUserName.Length != 0) {
+        TargetUserName = other.TargetUserName;
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
@@ -8272,6 +8317,10 @@ namespace LoginServer.Game {
             HandCardIndex = input.ReadInt32();
             break;
           }
+          case 42: {
+            TargetUserName = input.ReadString();
+            break;
+          }
         }
       }
     #endif
@@ -8308,6 +8357,10 @@ namespace LoginServer.Game {
           }
           case 32: {
             HandCardIndex = input.ReadInt32();
+            break;
+          }
+          case 42: {
+            TargetUserName = input.ReadString();
             break;
           }
         }
@@ -13458,6 +13511,7 @@ namespace LoginServer.Game {
     public UseSuoDing_S2C(UseSuoDing_S2C other) : this() {
       userName_ = other.userName_;
       card_ = other.card_ != null ? other.card_.Clone() : null;
+      targetUserName_ = other.targetUserName_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -13491,6 +13545,18 @@ namespace LoginServer.Game {
       }
     }
 
+    /// <summary>Field number for the "targetUserName" field.</summary>
+    public const int TargetUserNameFieldNumber = 3;
+    private string targetUserName_ = "";
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public string TargetUserName {
+      get { return targetUserName_; }
+      set {
+        targetUserName_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override bool Equals(object other) {
@@ -13508,6 +13574,7 @@ namespace LoginServer.Game {
       }
       if (UserName != other.UserName) return false;
       if (!object.Equals(Card, other.Card)) return false;
+      if (TargetUserName != other.TargetUserName) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -13517,6 +13584,7 @@ namespace LoginServer.Game {
       int hash = 1;
       if (UserName.Length != 0) hash ^= UserName.GetHashCode();
       if (card_ != null) hash ^= Card.GetHashCode();
+      if (TargetUserName.Length != 0) hash ^= TargetUserName.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -13543,6 +13611,10 @@ namespace LoginServer.Game {
         output.WriteRawTag(18);
         output.WriteMessage(Card);
       }
+      if (TargetUserName.Length != 0) {
+        output.WriteRawTag(26);
+        output.WriteString(TargetUserName);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -13561,6 +13633,10 @@ namespace LoginServer.Game {
         output.WriteRawTag(18);
         output.WriteMessage(Card);
       }
+      if (TargetUserName.Length != 0) {
+        output.WriteRawTag(26);
+        output.WriteString(TargetUserName);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
       }
@@ -13576,6 +13652,9 @@ namespace LoginServer.Game {
       }
       if (card_ != null) {
         size += 1 + pb::CodedOutputStream.ComputeMessageSize(Card);
+      }
+      if (TargetUserName.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(TargetUserName);
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -13597,6 +13676,9 @@ namespace LoginServer.Game {
           Card = new global::LoginServer.Game.CardType();
         }
         Card.MergeFrom(other.Card);
+      }
+      if (other.TargetUserName.Length != 0) {
+        TargetUserName = other.TargetUserName;
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
@@ -13628,6 +13710,10 @@ namespace LoginServer.Game {
             input.ReadMessage(Card);
             break;
           }
+          case 26: {
+            TargetUserName = input.ReadString();
+            break;
+          }
         }
       }
     #endif
@@ -13656,6 +13742,10 @@ namespace LoginServer.Game {
               Card = new global::LoginServer.Game.CardType();
             }
             input.ReadMessage(Card);
+            break;
+          }
+          case 26: {
+            TargetUserName = input.ReadString();
             break;
           }
         }

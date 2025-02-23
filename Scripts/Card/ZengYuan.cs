@@ -46,6 +46,7 @@ public class ZengYuan : ICard
         SendZengYuan();
         int count = 1 + mRoomInfo.GetChair(mUserName).GetInformationCount(Card_ColorType.Gray);
         mGame.SendDealCard(mUserName, count);
+        mGame.SendHandCardCount();
         CSConnect connect = mRoomInfo.UserListCache.Find(user => user.Name == mUserName).CSConnect;
         ProtosManager.Instance.AddProtosListener(connect.ID, CmdConfig.UseZengYuan_C2S, OnReceiveUseZengYuan, 1);
     }

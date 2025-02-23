@@ -15,6 +15,7 @@ namespace FengShengServer
         /// 是否被识破
         /// </summary>
         public bool IsShiPo { get; set; }
+        public string TargetUserName { get; set; }
     }
 
 }

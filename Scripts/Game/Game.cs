@@ -334,7 +334,6 @@ namespace FengShengServer
         private bool GameStage12()
         {
             mRoomInfo.GameStage = GameStage.GameTurnOpertateEnd;
-            mRoomInfo.Data.GameTurnDisCard_C2S = null;
             SendGameTurnOpertateEnd();
             mRoomInfo.GameStageQueue.Enqueue(GameStage13);
             return true;
@@ -463,6 +462,7 @@ namespace FengShengServer
         {
             if (mRoomInfo.Data.IsGameTurnOpertateEnd) return;
             mRoomInfo.Data.IsGameTurnOpertateEnd = true;
+            mRoomInfo.Data.GameTurnDisCard_C2S = null;
             var sendData = new LoginServer.Game.GameTurnOpertateEnd_S2C();
             sendData.UserName = mRoomInfo.CurrentGameTurnPlayerName;
             ProtosManager.Instance.Multicast(mConnectList, CmdConfig.GameTurnOpertateEnd_S2C, sendData);
@@ -502,7 +502,7 @@ namespace FengShengServer
         /// <summary>
         /// 手牌数量
         /// </summary>
-        private void SendHandCardCount()
+        public void SendHandCardCount()
         {
             var sendData = new LoginServer.Game.HandCardCount_S2C();
             for (int i = 0; i < mChairList.Count; i++)
@@ -802,13 +802,13 @@ namespace FengShengServer
             var data = mRoomInfo.Data.WaitInformationReceive_C2S;
             var chair = mRoomInfo.GetChair(mRoomInfo.CurrentAskInformationReceivedPlayerName);
             chair.ReceiveInformation(mRoomInfo.InformationCard.Card);
-            mRoomInfo.InformationCard = null;
             SendReceiveInformationSuccess();
             SendInformationCount(chair);
             if (!GameComplete(chair))
             {
                 SendGameTurnOpertateEnd();
             }
+            mRoomInfo.InformationCard = null;
             return true;
         }
 
@@ -1130,6 +1130,7 @@ namespace FengShengServer
                 CardXiaoGuo = cardXiaoGuo,
                 CardInfo = data.Card,
                 IsShiPo = false,
+                TargetUserName = data.TargetUserName,
             };
 
             SendPlayHandCard(data.UserName, data.Card, data.HandCardIndex);

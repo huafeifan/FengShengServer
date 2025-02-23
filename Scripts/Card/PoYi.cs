@@ -29,6 +29,12 @@ public class PoYi : ICard
             return false;
         }
 
+        if (roomInfo.CurrentGameTurnPlayerName == roomInfo.Data.PlayHandCard_C2S.UserName)
+        {
+            errorMsg = "不需要对自己发出的情报使用";
+            return false;
+        }
+
         errorMsg = string.Empty;
         return true;
     }
