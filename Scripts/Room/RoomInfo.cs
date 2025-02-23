@@ -408,24 +408,13 @@ namespace FengShengServer
             return isSuccess;
         }
 
-        /// <summary>
-        /// 发出情报
-        /// </summary>
-        public bool InformationTransmit(string userName, UseDiaoBao_C2S card)
+        public void InformationTransmit(string fromUserName, CardType card, string toUserName, Card_TransmitType transmit, Card_DirectionType direction)
         {
-            var chair = GetChair(userName);
-            bool isSuccess = chair.DisCard(card.Card.CardName);
-            InformationTransmit(card);
-            return isSuccess;
-        }
-
-        public void InformationTransmit(UseDiaoBao_C2S card)
-        {
-            InformationCard.FromUserName = card.FromUserName;
-            InformationCard.Card = card.Card;
-            InformationCard.ToUserName = card.ToUserName;
-            InformationCard.Transmit = card.Transmit;
-            InformationCard.Direction = card.Direction;
+            InformationCard.FromUserName = fromUserName;
+            InformationCard.Card = card;
+            InformationCard.ToUserName = toUserName;
+            InformationCard.Transmit = transmit;
+            InformationCard.Direction = direction;
         }
 
         public void Close()

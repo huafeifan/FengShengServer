@@ -19,8 +19,8 @@ namespace FengShengServer
         private List<ChairInfo> mChairList;
         private List<UserData> mUserList;
         private List<CSConnect> mConnectList;
-        private Func<bool> mUpdateCache;
         private Task mGameTask;
+        private int mUpdateDelay = 50;
 
         private bool mIsDebug;
         private string[] mDebugs;
@@ -82,43 +82,37 @@ namespace FengShengServer
             while (mRoomInfo.GameStageQueue.Count > 0)
             {
                 await Task.Delay(100);
+
+                CustomQueue<Func<bool>> list = null;
                 if (mRoomInfo.PlayCardStageQueue.Count > 0)
                 {
-                    mUpdateCache = mRoomInfo.PlayCardStageQueue.Peek();
-                    if (mUpdateCache.Invoke())
-                    {
-                        mRoomInfo.PlayCardStageQueue.Dequeue();
-                    }
+                    list = mRoomInfo.PlayCardStageQueue;
                 }
                 else if (mRoomInfo.InformationStageQueue.Count > 0)
                 {
-                    mUpdateCache = mRoomInfo.InformationStageQueue.Peek();
-                    if (mUpdateCache.Invoke())
-                    {
-                        mRoomInfo.InformationStageQueue.Dequeue();
-                    }
+                    list = mRoomInfo.InformationStageQueue;
                 }
                 else if (mRoomInfo.GameStageQueue.Count > 0)
                 {
-                    mUpdateCache = mRoomInfo.GameStageQueue.Peek();
-                    if (mUpdateCache.Invoke())
-                    {
-                        mRoomInfo.GameStageQueue.Dequeue();
-                    }
+                    list = mRoomInfo.GameStageQueue;
                 }
                 else
                 {
-                    mUpdateCache = null;
                     Console.WriteLine("Game Update End");
                 }
-                if (mIsDebug && mUpdateCache != null)
+
+                if (list == null) break;
+                var func = list.Peek();
+                if (mIsDebug) UpdateDebug(func);
+
+                if (func.Invoke() && list.Count > 0)
                 {
-                    UpdateDebug();   
+                    list.Dequeue();
                 }
             }
         }
 
-        private void UpdateDebug()
+        private void UpdateDebug(Func<bool> func)
         {
             if (mDebugs == null)
             {
@@ -127,13 +121,15 @@ namespace FengShengServer
                 mDebugs[1] = string.Empty;
             }
             mDebugs[0] = mDebugs[1];
-            mDebugs[1] = mUpdateCache.GetMethodInfo().Name;
+            mDebugs[1] = func.GetMethodInfo().Name;
             if (mDebugs[0] == mDebugs[1])
             {
+                mUpdateDelay = 100;
                 return;
             }
             else
             {
+                mUpdateDelay = 10;
                 Console.WriteLine(mDebugs[1]);
             }
         }
@@ -749,7 +745,7 @@ namespace FengShengServer
         /// <summary>
         /// 通知全桌玩家情报传递的对象
         /// </summary>
-        private bool InformationStage5()
+        public bool InformationStage5()
         {
             mRoomInfo.InformationStage = InformationStage.InformationTransmit;
             mRoomInfo.Data.WaitInformationReceive_C2S = null;
@@ -799,6 +795,7 @@ namespace FengShengServer
         /// </summary>
         private bool InformationStage8()
         {
+            mRoomInfo.InformationStage = InformationStage.InformationReceive;
             var data = mRoomInfo.Data.WaitInformationReceive_C2S;
             var chair = mRoomInfo.GetChair(mRoomInfo.CurrentAskInformationReceivedPlayerName);
             chair.ReceiveInformation(mRoomInfo.InformationCard.Card);
@@ -1433,6 +1430,7 @@ namespace FengShengServer
             var sendData = new LoginServer.Game.TriggerCardResult_S2C();
             sendData.UserName = mRoomInfo.WaitTriggerCard.UserName;
             sendData.IsTrigger = !mRoomInfo.WaitTriggerCard.IsShiPo;
+            sendData.Card = mRoomInfo.WaitTriggerCard.CardInfo;
             ProtosManager.Instance.Multicast(mConnectList, CmdConfig.TriggerCardResult_S2C, sendData);
         }
         #endregion

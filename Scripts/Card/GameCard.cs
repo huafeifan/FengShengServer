@@ -1540,6 +1540,8 @@ namespace FengShengServer
                     return new JiMiWenJian();
                 case Card_XiaoGuoType.SuoDing:
                     return new SuoDing();
+                case Card_XiaoGuoType.JieHuo:
+                    return new JieHuo();
             }
             return null;
         }

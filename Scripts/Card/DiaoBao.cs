@@ -54,7 +54,8 @@ namespace FengShengServer
             SendUseDiaoBao();
             CSConnect connect = mRoomInfo.UserListCache.Find(user => user.Name == mUserName).CSConnect;
             ProtosManager.Instance.AddProtosListener(connect.ID, CmdConfig.UseDiaoBao_C2S, OnReceiveUseDiaoBao, 1);
-            mRoomInfo.InformationStageQueue.InsertFirst(DiaoBaoStage1);
+            mRoomInfo.InformationStageQueue.Clear();
+            mRoomInfo.InformationStageQueue.Enqueue(mGame.InformationStage5);
         }
 
         public bool IsComplete()
@@ -65,48 +66,24 @@ namespace FengShengServer
         private void OnReceiveUseDiaoBao(object obj)
         {
             UseDiaoBao_C2S = obj as UseDiaoBao_C2S;
-            var data = UseDiaoBao_C2S;
-            var askUser = mRoomInfo.GetNextUserData(mRoomInfo.CurrentGameTurnPlayerName, data.Transmit, data.Direction);
-            data.ToUserName = askUser.Name;
-            mRoomInfo.InformationTransmit(data);
-            //回合结束不再询问其他玩家是否出牌
-            for (int i = 0; i < mRoomInfo.ChairListCache.Count; i++)
-            {
-                mRoomInfo.ChairListCache[i].IsSkip = true;
-            }
+            mRoomInfo.InformationTransmit(
+                fromUserName: mRoomInfo.InformationCard.FromUserName,
+                card: UseDiaoBao_C2S.Card,
+                toUserName: mRoomInfo.GetNextUserData(mRoomInfo.CurrentGameTurnPlayerName, UseDiaoBao_C2S.Transmit, UseDiaoBao_C2S.Direction).Name,
+                transmit: UseDiaoBao_C2S.Transmit,
+                direction: UseDiaoBao_C2S.Direction);
+
+            mRoomInfo.CurrentAskInformationReceivedPlayerName = mRoomInfo.InformationCard.ToUserName;
+            mRoomInfo.PlayCardStageQueue.Enqueue(DiaoBaoStage1);
             mIsComplete = true;
         }
 
         /// <summary>
-        /// 等待客户端使用调包的消息,通知全桌玩家情报传递的对象
+        /// 清空出牌链
         /// </summary>
         private bool DiaoBaoStage1()
         {
-            if (UseDiaoBao_C2S == null)
-            {
-                return false;
-            }
-
-            mRoomInfo.InformationStage = InformationStage.InformationTransmit;
-            mRoomInfo.CurrentAskInformationReceivedPlayerName = mRoomInfo.InformationCard.ToUserName;
-            mGame.SendInformationTransmit(mRoomInfo.CurrentAskInformationReceivedPlayerName);
-            mRoomInfo.Data.WaitInformationReceive_C2S = null;
-            mRoomInfo.PlayCardStageQueue.Enqueue(DiaoBaoStage2);
-            return true;
-        }
-
-        /// <summary>
-        /// 除了没有手牌的玩家和发出调包的玩家,其他人可以出牌
-        /// </summary>
-        private bool DiaoBaoStage2()
-        {
-            for (int i = 0; i < mRoomInfo.ChairListCache.Count; i++)
-            {
-                mRoomInfo.ChairListCache[i].IsSkip =
-                    mRoomInfo.ChairListCache[i].HandCard.Count == 0 ||
-                    mRoomInfo.ChairListCache[i].UserData.Name == mUserName;
-            }
-            mRoomInfo.PlayCardStageQueue.Enqueue(mGame.PlayCardStage2);
+            mRoomInfo.PlayCardStageQueue.Clear();
             return true;
         }
 

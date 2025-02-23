@@ -233,5 +233,11 @@ namespace FengShengServer
         /// </summary>
         public const uint UseSuoDing_C2S = 0x0220;
         public const uint UseSuoDing_S2C = 0x0220;
+
+        /// <summary>
+        /// 截获效果协议号
+        /// </summary>
+        public const uint UseJieHuo_C2S = 0x0221;
+        public const uint UseJieHuo_S2C = 0x0221;
     }
 }

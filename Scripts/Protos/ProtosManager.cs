@@ -312,6 +312,10 @@ namespace FengShengServer
                 case CmdConfig.UseSuoDing_C2S:
                     TriggerProtos(connectID, cmd, LoginServer.Game.UseSuoDing_C2S.Parser.ParseFrom(bytes));
                     return;
+
+                case CmdConfig.UseJieHuo_C2S:
+                    TriggerProtos(connectID, cmd, LoginServer.Game.UseJieHuo_C2S.Parser.ParseFrom(bytes));
+                    return;
             }
         }
         #endregion
