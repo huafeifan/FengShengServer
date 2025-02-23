@@ -804,6 +804,11 @@ namespace FengShengServer
             if (!GameComplete(chair))
             {
                 SendGameTurnOpertateEnd();
+                for (int i = 0; i < mChairList.Count; i++)
+                {
+                    mChairList[i].SuoDingFlag = false;
+                    mChairList[i].ZhuanYiFlag = false;
+                }
             }
             mRoomInfo.InformationCard = null;
             return true;
@@ -874,7 +879,8 @@ namespace FengShengServer
             sendData.UserName = userName;
             var chair = mRoomInfo.GetChair(userName);
             sendData.CanReceive = chair.CanReceive;
-            sendData.CanRefuse = chair.CanRefuse;
+            sendData.CanRefuse = !chair.SuoDingFlag && !chair.ZhuanYiFlag && chair.CanRefuse;
+            chair.ZhuanYiFlag = false;
             ProtosManager.Instance.Multicast(mConnectList, CmdConfig.WaitInformationReceive_S2C, sendData);
         }
 

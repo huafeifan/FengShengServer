@@ -245,5 +245,11 @@ namespace FengShengServer
         /// </summary>
         public const uint UseDiaoHuLiShan_C2S = 0x0222;
         public const uint UseDiaoHuLiShan_S2C = 0x0222;
+
+        /// <summary>
+        /// 转移效果协议号
+        /// </summary>
+        public const uint UseZhuanYi_C2S = 0x0223;
+        public const uint UseZhuanYi_S2C = 0x0223;
     }
 }

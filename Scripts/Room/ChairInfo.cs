@@ -44,6 +44,16 @@ namespace FengShengServer
         /// </summary>
         public bool CanRefuse { get; set; }
 
+        /// <summary>
+        /// 锁定标志
+        /// </summary>
+        public bool SuoDingFlag { get; set; }
+
+        /// <summary>
+        /// 转移标志
+        /// </summary>
+        public bool ZhuanYiFlag { get; set; }
+
         public void Clear()
         {
             if (UserData != null)

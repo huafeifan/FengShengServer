@@ -58,7 +58,7 @@ public class SuoDing : ICard
         mRoomInfo = mGame.GetRoomInfo();
         SendSuoDing();
         var chair = mRoomInfo.GetChair(mRoomInfo.CurrentAskInformationReceivedPlayerName);
-        chair.CanRefuse = false;
+        chair.SuoDingFlag = true;
         CSConnect connect = mRoomInfo.UserListCache.Find(user => user.Name == mUserName).CSConnect;
         ProtosManager.Instance.AddProtosListener(connect.ID, CmdConfig.UseSuoDing_C2S, OnReceiveUseSuoDing, 1);
     }

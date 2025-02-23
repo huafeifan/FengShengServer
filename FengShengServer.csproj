@@ -73,6 +73,7 @@
     <Compile Include="Scripts\Card\SuoDing.cs" />
     <Compile Include="Scripts\Card\WaitTriggerCard.cs" />
     <Compile Include="Scripts\Card\ZengYuan.cs" />
+    <Compile Include="Scripts\Card\ZhuanYi.cs" />
     <Compile Include="Scripts\Character\EmeiFeng.cs" />
     <Compile Include="Scripts\Character\ICharacter.cs" />
     <Compile Include="Scripts\Character\DaMeiNv.cs" />

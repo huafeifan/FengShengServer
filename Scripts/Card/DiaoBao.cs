@@ -83,6 +83,8 @@ namespace FengShengServer
         /// </summary>
         private bool DiaoBaoStage1()
         {
+            mRoomInfo.Data.PlayHandCard_C2S = null;
+            mRoomInfo.WaitTriggerCard = null;
             mRoomInfo.PlayCardStageQueue.Clear();
             return true;
         }
