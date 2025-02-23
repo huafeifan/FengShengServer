@@ -239,5 +239,11 @@ namespace FengShengServer
         /// </summary>
         public const uint UseJieHuo_C2S = 0x0221;
         public const uint UseJieHuo_S2C = 0x0221;
+
+        /// <summary>
+        /// 调虎离山效果协议号
+        /// </summary>
+        public const uint UseDiaoHuLiShan_C2S = 0x0222;
+        public const uint UseDiaoHuLiShan_S2C = 0x0222;
     }
 }

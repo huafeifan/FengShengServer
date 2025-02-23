@@ -74,7 +74,7 @@ namespace FengShengServer
                 direction: UseDiaoBao_C2S.Direction);
 
             mRoomInfo.CurrentAskInformationReceivedPlayerName = mRoomInfo.InformationCard.ToUserName;
-            mRoomInfo.PlayCardStageQueue.Enqueue(DiaoBaoStage1);
+            mRoomInfo.PlayCardStageQueue.InsertFirst(DiaoBaoStage1);
             mIsComplete = true;
         }
 

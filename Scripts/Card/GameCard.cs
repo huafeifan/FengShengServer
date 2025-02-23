@@ -1542,6 +1542,8 @@ namespace FengShengServer
                     return new SuoDing();
                 case Card_XiaoGuoType.JieHuo:
                     return new JieHuo();
+                case Card_XiaoGuoType.DiaoHuLiShan:
+                    return new DiaoHuLiShan();
             }
             return null;
         }

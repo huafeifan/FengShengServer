@@ -1,15 +1,15 @@
 ﻿using FengShengServer;
 using LoginServer.Game;
 
-public class JieHuo : ICard
+public class DiaoHuLiShan : ICard
 {
     private bool mIsComplete;
     private Game mGame;
     private RoomInfo mRoomInfo;
     private string mUserName;
-    private UseJieHuo_C2S UseJieHuo_C2S;
+    private UseDiaoHuLiShan_C2S UseDiaoHuLiShan_C2S;
 
-    private Card_XiaoGuoType mCard = Card_XiaoGuoType.JieHuo;
+    private Card_XiaoGuoType mCard = Card_XiaoGuoType.DiaoHuLiShan;
     public Card_XiaoGuoType GetCardXiaoGuoType()
     {
         return mCard;
@@ -18,9 +18,9 @@ public class JieHuo : ICard
     public bool CheckUseCondition(RoomInfo roomInfo, out string errorMsg)
     {
         var data = roomInfo.Data.PlayHandCard_C2S;
-        if (data.UserName == roomInfo.CurrentGameTurnPlayerName)
+        if (data.UserName == roomInfo.CurrentAskInformationReceivedPlayerName)
         {
-            errorMsg = "只能在他人回合使用";
+            errorMsg = "自己接收情报时无法使用";
             return false;
         }
         if (roomInfo.InformationStage != InformationStage.WaitInformationReceive)
@@ -33,24 +33,24 @@ public class JieHuo : ICard
         return true;
     }
 
-    private void SendJieHuo()
+    private void SendDiaoHuLiShan()
     {
-        var sendData = new LoginServer.Game.UseJieHuo_S2C();
+        var sendData = new LoginServer.Game.UseDiaoHuLiShan_S2C();
         mUserName = mRoomInfo.WaitTriggerCard.UserName;
         sendData.UserName = mUserName;
         sendData.Card = mRoomInfo.WaitTriggerCard.CardInfo;
-        ProtosManager.Instance.Multicast(mRoomInfo.ConnectListCache, CmdConfig.UseJieHuo_S2C, sendData);
+        ProtosManager.Instance.Multicast(mRoomInfo.ConnectListCache, CmdConfig.UseDiaoHuLiShan_S2C, sendData);
     }
 
     public void Trigger(Game game, params object[] args)
     {
         mIsComplete = false;
-        UseJieHuo_C2S = null;
+        UseDiaoHuLiShan_C2S = null;
         mGame = game;
         mRoomInfo = mGame.GetRoomInfo();
-        SendJieHuo();
+        SendDiaoHuLiShan();
         CSConnect connect = mRoomInfo.UserListCache.Find(user => user.Name == mUserName).CSConnect;
-        ProtosManager.Instance.AddProtosListener(connect.ID, CmdConfig.UseJieHuo_C2S, OnReceiveUseJieHuo, 1);
+        ProtosManager.Instance.AddProtosListener(connect.ID, CmdConfig.UseDiaoHuLiShan_C2S, OnReceiveUseDiaoHuLiShan, 1);
         mRoomInfo.InformationStageQueue.Clear();
         mRoomInfo.InformationStageQueue.Enqueue(mGame.InformationStage5);
     }
@@ -60,25 +60,25 @@ public class JieHuo : ICard
         return mIsComplete;
     }
 
-    private void OnReceiveUseJieHuo(object obj)
+    private void OnReceiveUseDiaoHuLiShan(object obj)
     {
-        UseJieHuo_C2S = obj as UseJieHuo_C2S;
+        UseDiaoHuLiShan_C2S = obj as UseDiaoHuLiShan_C2S;
         mRoomInfo.InformationTransmit(
             fromUserName: mRoomInfo.InformationCard.FromUserName, 
             card: mRoomInfo.InformationCard.Card, 
-            toUserName: UseJieHuo_C2S.UserName, 
+            toUserName: mRoomInfo.GetNextUserData(mRoomInfo.CurrentAskInformationReceivedPlayerName, mRoomInfo.InformationCard.Transmit, mRoomInfo.InformationCard.Direction).Name, 
             transmit: mRoomInfo.InformationCard.Transmit, 
             direction: mRoomInfo.InformationCard.Direction);
 
-        mRoomInfo.CurrentAskInformationReceivedPlayerName = UseJieHuo_C2S.UserName;
-        mRoomInfo.PlayCardStageQueue.InsertFirst(JieHuoStage1);
+        mRoomInfo.CurrentAskInformationReceivedPlayerName = mRoomInfo.InformationCard.ToUserName;
+        mRoomInfo.PlayCardStageQueue.InsertFirst(DiaoHuLiShanStage1);
         mIsComplete = true;
     }
 
     /// <summary>
     /// 清空出牌链
     /// </summary>
-    private bool JieHuoStage1()
+    private bool DiaoHuLiShanStage1()
     {
         mRoomInfo.PlayCardStageQueue.Clear();
         return true;

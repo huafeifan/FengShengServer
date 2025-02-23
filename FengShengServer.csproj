@@ -63,6 +63,7 @@
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Scripts\Card\DiaoBao.cs" />
+    <Compile Include="Scripts\Card\DiaoHuLiShan.cs" />
     <Compile Include="Scripts\Card\ICard.cs" />
     <Compile Include="Scripts\Card\JieHuo.cs" />
     <Compile Include="Scripts\Card\JiMiWenJian.cs" />
